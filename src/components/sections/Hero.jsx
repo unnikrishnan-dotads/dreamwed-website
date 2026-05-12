@@ -37,7 +37,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Button to="/services" variant="secondary" className="w-full sm:w-auto px-12">
-              View Our Portfolio
+              View Our Package
               <FaArrowRight className="ml-2" />
             </Button>
             <Button to="/contact" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-black px-12">
