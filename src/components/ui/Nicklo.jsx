@@ -1,25 +1,21 @@
 import React, { useState } from "react";
-import pic1 from "../../assets/images/pic1.jpeg";
-import pic2 from "../../assets/images/pic2.jpeg";
-import pic3 from "../../assets/images/pic3.jpeg";
-import pic4 from "../../assets/images/pic4.jpeg";
 
 const segments = [
   {
     title: "Bridal Portraits",
-    image: pic1,
+    image: "https://ik.imagekit.io/b4ebf3ouf/dreamwed/pic1.jpeg?tr=w-1000",
   },
   {
     title: "Couple Stories",
-    image: pic2,
+    image: "https://ik.imagekit.io/b4ebf3ouf/dreamwed/pic2.jpeg?tr=w-1000",
   },
   {
     title: "Venue Details",
-    image: pic3,
+    image: "https://ik.imagekit.io/b4ebf3ouf/dreamwed/pic3.jpeg?tr=w-1000",
   },
   {
     title: "Fine Art Moments",
-    image: pic4,
+    image: "https://ik.imagekit.io/b4ebf3ouf/dreamwed/pic4.jpeg?tr=w-1000",
   },
 ];
 
