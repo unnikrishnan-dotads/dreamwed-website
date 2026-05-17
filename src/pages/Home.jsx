@@ -7,30 +7,25 @@ import PricingSection from "../components/pricing/PricingSection";
 import TestimonialSection from "../components/sections/TestimonialSection";
 import ConsultationSection from "../components/sections/ConsultationSection";
 import StickyServices from "../components/sections/StickyServices";
-import { Photos } from "../components/Photos";
+import PortraitShowcase from "../components/sections/PortraitShowcase";
 import Button from "../components/ui/Button";
 import { FaArrowRight } from "react-icons/fa6";
 import { Nicklo } from "../components/ui/Nicklo";
-
-// Assets
-import portrait1 from "../assets/images/portrait1.png";
-import portrait2 from "../assets/images/portrait2.png";
-import portrait3 from "../assets/images/portrait3.png";
-import portrait4 from "../assets/images/portrait4.png";
+import ServicesGrid from "../components/sections/ServicesGrid";
+import SEO from "../components/SEO";
 
 const Home = () => {
   return (
     <div className="relative w-full ">
+      <SEO 
+        title="Home"
+        description="Capture your timeless love story with Dreamwed Stories, the premier wedding photography and cinematic wedding films studio in Trivandrum, Kerala. Browse premium packages and book professional shoots today."
+      />
       {/* 1. Hero Section */}
       <Hero />
 
       {/* 2. Portrait Gallery Preview */}
-      <div className="flex justify-around p-10 bg-white border-b border-zinc-100 bg-gradient-to-t from-transparent to-[#1A1A14] to-white ">
-        <Photos image={portrait1} />
-        <Photos image={portrait2} />
-        <Photos image={portrait3} />
-        <Photos image={portrait4} />
-      </div>
+      <PortraitShowcase />
 
       {/* 3. Mission / Statement Section */}
 
@@ -67,6 +62,8 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
+
+      <ServicesGrid />
 
        <Nicklo />
 

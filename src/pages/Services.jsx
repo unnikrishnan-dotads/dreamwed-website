@@ -3,12 +3,13 @@ import { motion } from 'framer-motion';
 import { Camera, Video, BookOpen, Clock, Users, Heart } from 'lucide-react';
 import SectionHeader from '../components/ui/SectionHeader';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const Services = () => {
   const packages = [
     {
       title: "Silver Package",
-      price: "₹39,999",
+      price: "₹49,999",
       icon: <Camera className="w-10 h-10" />,
       features: [
         "8 Hours Coverage",
@@ -16,6 +17,22 @@ const Services = () => {
         "400+ Edited High-Res Photos",
         "Online Gallery Access",
         "30-Day Delivery"
+      ]
+    },
+    {
+      title: "Gold Lite Package",
+      price: "₹59,999",
+      icon: <Heart className="w-10 h-10" />,
+      features: [
+        "Wedding Photography",
+        "Wedding Videography",
+        "Reception Photography",
+        "Reception Videography",
+        "Premium 70-Page Album",
+        "HD Cinematic Highlights Reel",
+        "Full HD Wedding Video",
+        "Social Media Reel",
+        "Personalised Desktop Calendar"
       ]
     },
     {
@@ -46,6 +63,10 @@ const Services = () => {
 
   return (
     <div className="pt-24 bg-[#f5f5f3]">
+      <SEO 
+        title="Services & Packages"
+        description="Explore our curated wedding storytelling packages (Silver, Gold Lite, Gold, Platinum) and custom bespoke photography services in Trivandrum, Kerala."
+      />
       <section className="py-24">
         <div className="container">
           <SectionHeader 
@@ -54,7 +75,7 @@ const Services = () => {
             description="Premium photography and cinematic videography tailored to your unique love story."
           />
           
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {packages.map((pkg, i) => (
               <motion.div
                 key={i}
@@ -63,23 +84,23 @@ const Services = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ y: -10 }}
-                className={`bg-white p-12 rounded-[40px] shadow-sm hover:shadow-2xl transition-all duration-700 border border-transparent ${i === 1 ? 'border-zinc-200' : ''}`}
+                className={`bg-white p-8 md:p-10 rounded-[40px] shadow-sm hover:shadow-2xl transition-all duration-700 border border-transparent ${i === 2 ? 'border-zinc-200' : ''}`}
               >
-                <div className="text-black mb-10 flex justify-center">{pkg.icon}</div>
-                <h3 className="text-[28px] font-normal text-center mb-4 tracking-tight">{pkg.title}</h3>
-                <p className="text-[42px] font-normal text-center mb-10 text-black numbers-pro">{pkg.price}</p>
+                <div className="text-black mb-8 flex justify-center">{pkg.icon}</div>
+                <h3 className="text-[26px] font-normal text-center mb-4 tracking-tight leading-tight">{pkg.title}</h3>
+                <p className="text-[36px] font-normal text-center mb-8 text-black numbers-pro">{pkg.price}</p>
                 
-                <ul className="space-y-5 mb-12">
+                <ul className="space-y-4 mb-10">
                   {pkg.features.map((feat, idx) => (
-                    <li key={idx} className="flex gap-4 items-start text-[#66706a]">
-                      <Heart size={18} className="text-[#5d665f] shrink-0 mt-1" />
-                      <span className="numbers-pro font-light">{feat}</span>
+                    <li key={idx} className="flex gap-3 items-start text-[#66706a]">
+                      <Heart size={16} className="text-[#5d665f] shrink-0 mt-1" />
+                      <span className="numbers-pro font-light text-sm">{feat}</span>
                     </li>
                   ))}
                 </ul>
                 
-                <div className="text-center">
-                  <Button to="/contact" variant={i === 1 ? 'primary' : 'outline'} className="w-full">
+                <div className="text-center mt-auto">
+                  <Button to="/contact" variant={i === 2 ? 'primary' : 'outline'} className="w-full">
                     Book a Consultation
                   </Button>
                 </div>

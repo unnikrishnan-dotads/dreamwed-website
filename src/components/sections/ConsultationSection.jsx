@@ -1,16 +1,27 @@
-    import React from "react";
+import React from "react";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import Button from "../ui/Button";
+
+// Assets
 import capure1 from "../../assets/images/capture1.png";
 import capure2 from "../../assets/images/capture2.png";
 import capure3 from "../../assets/images/capture3.png";
 import capure4 from "../../assets/images/capture4.png";
 import capure5 from "../../assets/images/capture5.png";
 import capure6 from "../../assets/images/capture6.png";
+import portrait1 from "../../assets/images/portrait1.png";
+import portrait2 from "../../assets/images/portrait2.png";
+import portrait3 from "../../assets/images/portrait3.png";
+import portrait4 from "../../assets/images/portrait4.png";
+
+// Setup two sets of premium images
+const leftImages = [capure1, capure2, capure3, portrait1, portrait3];
+const rightImages = [capure4, capure5, capure6, portrait2, portrait4];
 
 const ConsultationSection = () => {
   return (
-    <section className="w-full bg-[#f5f5f3] pt-20 md:pt-32 pb-32 md:pb-48 px-4 md:px-6">
+    <section className="w-full bg-[#f5f5f3] pt-20 md:pt-32 pb-32 md:pb-48 px-4 md:px-6 overflow-hidden">
       <div
         className="
           max-w-7xl
@@ -76,37 +87,64 @@ const ConsultationSection = () => {
           </Button>
         </div>
 
-        {/* RIGHT IMAGE GRID */}
-        <div className="grid grid-cols-2 gap-4 md:gap-5 h-[450px] md:h-[650px]">
-
-          {/* LEFT COLUMN */}
-          <div className="flex flex-col gap-4 md:gap-5">
-            <img
-              src={capure6}
-              alt="Wedding Moment 6"
-              className="h-[120px] md:h-[180px] w-full object-cover rounded-[20px] md:rounded-[28px] shadow-md"
-            />
-            <img
-              src={capure5}
-              alt="Wedding Moment 5"
-              className="flex-1 w-full object-cover rounded-[20px] md:rounded-[28px] shadow-md"
-            />
+        {/* RIGHT IMAGE GRID - SEAMLESS INFINITE AUTO-SCROLL */}
+        <div className="grid grid-cols-2 gap-4 md:gap-5 h-[450px] md:h-[600px] overflow-hidden rounded-[24px] md:rounded-[32px] relative bg-[#e3e3e0]">
+          
+          {/* LEFT COLUMN - SCROLLS UPWARD */}
+          <div className="relative h-full overflow-hidden">
+            <motion.div
+              animate={{ y: [0, "-50%"] }}
+              transition={{
+                ease: "linear",
+                duration: 22,
+                repeat: Infinity,
+              }}
+              className="flex flex-col gap-4 md:gap-5 pb-4 md:pb-5"
+            >
+              {[...leftImages, ...leftImages].map((img, i) => (
+                <div key={`left-${i}`} className="overflow-hidden rounded-[16px] md:rounded-[24px] shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <motion.img
+                    src={img}
+                    alt={`Love Story Up ${i}`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
+                    className="h-[180px] md:h-[240px] w-full object-cover cursor-pointer"
+                  />
+                </div>
+              ))}
+            </motion.div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="flex flex-col gap-4 md:gap-5">
-            <img
-              src={capure4}
-              alt="Wedding Moment 4"
-              className="flex-1 w-full object-cover rounded-[20px] md:rounded-[28px] shadow-md"
-            />
-            <img
-              src={capure1}
-              alt="Wedding Moment 1"
-              className="h-[140px] md:h-[220px] w-full object-cover rounded-[20px] md:rounded-[28px] shadow-md"
-            />
+          {/* RIGHT COLUMN - SCROLLS DOWNWARD */}
+          <div className="relative h-full overflow-hidden">
+            <motion.div
+              animate={{ y: ["-50%", 0] }}
+              transition={{
+                ease: "linear",
+                duration: 22,
+                repeat: Infinity,
+              }}
+              className="flex flex-col gap-4 md:gap-5 pb-4 md:pb-5"
+            >
+              {[...rightImages, ...rightImages].map((img, i) => (
+                <div key={`right-${i}`} className="overflow-hidden rounded-[16px] md:rounded-[24px] shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <motion.img
+                    src={img}
+                    alt={`Love Story Down ${i}`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
+                    className="h-[180px] md:h-[240px] w-full object-cover cursor-pointer"
+                  />
+                </div>
+              ))}
+            </motion.div>
           </div>
+
+          {/* TOP & BOTTOM SMOOTH BLUR GRADIENT OVERLAYS */}
+          <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#ececea] via-[#ececea]/60 to-transparent pointer-events-none z-10" />
+          <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#ececea] via-[#ececea]/60 to-transparent pointer-events-none z-10" />
         </div>
+
       </div>
     </section>
   );

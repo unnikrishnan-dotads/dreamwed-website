@@ -9,6 +9,8 @@ import Services from './pages/Services';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Policies from './pages/Policies';
+import Admin from './pages/Admin';
+import Offer from './pages/Offer';
 import NotFound from './pages/NotFound';
 
 // Scroll to top on route change
@@ -42,6 +44,8 @@ const AnimatedRoutes = () => {
         <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
         <Route path="/policies" element={<PageWrapper><Policies /></PageWrapper>} />
+        <Route path="/offer" element={<PageWrapper><Offer /></PageWrapper>} />
+        <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>

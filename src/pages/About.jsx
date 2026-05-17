@@ -2,12 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../components/ui/SectionHeader';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const About = () => {
   const ABOUT_IMAGE = "https://images.unsplash.com/photo-1510076857177-744361488957?auto=format&fit=crop&q=80&w=1000";
 
   return (
     <div className="pt-24">
+      <SEO 
+        title="About Us"
+        description="Learn more about Dreamwed Stories, our team, legacy, and artistic philosophy. Based in Trivandrum, Kerala, we blend unscripted emotion with fine-art cinematic wedding photography."
+      />
       <section className="bg-white">
         <div className="container">
           <SectionHeader 

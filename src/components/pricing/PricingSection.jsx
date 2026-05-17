@@ -6,7 +6,7 @@ import Button from "../ui/Button";
 const pricingPlans = [
   {
     title: "Silver",
-    price: "₹39,999",
+    price: "₹49,999",
     tag: "Essential",
     desc: "Perfect for intimate weddings. Candid & traditional coverage for your special day.",
     features: [
@@ -15,6 +15,21 @@ const pricingPlans = [
       "400+ Edited High-Res Photos",
       "Online Gallery Access",
       "30-Day Delivery",
+    ],
+  },
+  {
+    title: "Gold Lite",
+    price: "₹59,999",
+    tag: "Best Value",
+    desc: "Complete photography & videography coverage with a premium layflat album.",
+    features: [
+      "Wedding Photo + Video Coverage",
+      "Reception Photo + Video Coverage",
+      "Premium 70-Page Album",
+      "HD Cinematic Highlights Reel",
+      "Full HD Wedding Video",
+      "Social Media Reel",
+      "Personalised Desktop Calendar",
     ],
   },
   {
@@ -87,9 +102,9 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
           {pricingPlans.map((plan, index) => {
-            const isPopular = index === 1;
+            const isPopular = index === 2;
             return (
               <motion.div
                 key={index}
@@ -98,9 +113,9 @@ const PricingSection = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className={`relative rounded-[30px] md:rounded-[40px] p-8 md:p-12 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group ${
+                className={`relative rounded-[30px] md:rounded-[40px] p-8 md:p-10 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group ${
                   isPopular 
-                    ? "bg-[#1a1a1a] text-white lg:scale-105 lg:z-10 shadow-2xl" 
+                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-2xl" 
                     : "bg-[#ececea] text-black hover:bg-white border border-transparent hover:border-zinc-200"
                 }`}
               >

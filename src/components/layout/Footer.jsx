@@ -119,6 +119,9 @@ const Footer = () => {
           <p className="text-[18px] md:text-[20px] text-zinc-500 font-light numbers-pro">
             © 2026 Dreamwed Stories. All rights reserved.
           </p>
+          <Link to="/admin" className="text-[14px] text-zinc-500 hover:text-[#b4975a] tracking-widest uppercase font-semibold transition-colors duration-300">
+            Admin Portal
+          </Link>
           <p className="text-[14px] text-zinc-600 tracking-widest uppercase font-semibold">
             Trivandrum, Kerala
           </p>

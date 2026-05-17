@@ -146,7 +146,7 @@ const ExperienceBento = () => {
             >
               <div>
                 <h3 className="text-[36px] md:text-[58px] leading-[1.1] tracking-[-0.04em] text-black font-normal mb-6">
-                  Starting @ <span className="numbers-pro">₹39,999</span>
+                  Starting @ <span className="numbers-pro">₹49,999</span>
                 </h3>
                 <p className="text-[17px] md:text-[22px] text-[#6d756f] leading-relaxed font-light">
                   Premium Wedding Photography in Trivandrum.

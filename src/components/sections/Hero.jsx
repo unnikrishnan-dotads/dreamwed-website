@@ -2,11 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import Button from "../ui/Button";
 import { FaArrowRight } from "react-icons/fa6";
-import pic4 from "../../assets/images/pic4.jpeg"
+import RED from "../../assets/images/RED.jpg"
 
 const Hero = () => {
   const COUPLE_IMAGE_URL =
-    {pic4};
+    {RED};
 
   return (
     <section className="relative h-screen flex items-center justify-center p-0 overflow-hidden">
@@ -15,7 +15,7 @@ const Hero = () => {
         animate={{ scale: 1 }}
         transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${pic4})` }}
+        style={{ backgroundImage: `url(${RED})` }}
       >
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>

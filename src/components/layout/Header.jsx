@@ -45,6 +45,7 @@ const Header = () => {
     { name: "Services", path: "/services" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
+    { name: "Special Offer", path: "/offer", isSpecial: true },
   ];
 
   return (
@@ -64,7 +65,7 @@ const Header = () => {
         }
         ${
           scrolled
-            ? "bg-black/10 backdrop-blur-2xl border-0 border-white/10 py-4"
+            ? "bg-black/80 backdrop-blur-2xl border-b border-white/5 py-4"
             : "bg-transparent py-6"
         }
       `}
@@ -91,7 +92,9 @@ const Header = () => {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `
+                link.isSpecial
+                  ? "text-[11px] font-bold uppercase tracking-[2px] px-5 py-2.5 bg-gradient-to-r from-amber-500 via-[#d1a852] to-[#b4975a] text-white rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(180,151,90,0.3)] select-none"
+                  : `
                 text-sm
                 font-medium
                 uppercase
@@ -102,8 +105,8 @@ const Header = () => {
                 text-white
                 ${
                   isActive
-                    ? "text-black"
-                    : "text-gray-700"
+                    ? "text-[#b4975a]"
+                    : "text-zinc-300 hover:text-white"
                 }
               `
               }
@@ -115,7 +118,7 @@ const Header = () => {
 
         {/* MOBILE BUTTON */}
         <button
-          className="md:hidden text-black"
+          className="md:hidden text-white hover:opacity-80 transition-opacity"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -135,8 +138,8 @@ const Header = () => {
               top-full
               left-0
               w-full
-              glass
-              backdrop-blur-xl
+              bg-zinc-950/95
+              backdrop-blur-2xl
               p-8
               flex
               flex-col
@@ -144,6 +147,8 @@ const Header = () => {
               md:hidden
               items-center
               shadow-lg
+              border-b
+              border-white/5
             "
           >
             {navLinks.map((link) => (
@@ -151,13 +156,13 @@ const Header = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className="
-                  text-lg
-                  tracking-wide
-                  text-black
-                  hover:opacity-70
-                  transition-all
-                "
+                className={({ isActive }) =>
+                  link.isSpecial
+                    ? "text-sm font-bold uppercase tracking-widest px-8 py-3 bg-gradient-to-r from-amber-500 to-[#b4975a] text-white rounded-full text-center shadow-lg w-full max-w-[240px] block mt-2"
+                    : `text-lg tracking-wide ${
+                        isActive ? "text-[#b4975a]" : "text-zinc-300"
+                      } hover:text-white transition-all`
+                }
               >
                 {link.name}
               </NavLink>

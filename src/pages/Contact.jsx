@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Globe, Send, Heart, Loader2, X } from 'lucide-reac
 import { FaInstagram, FaFacebook } from 'react-icons/fa6';
 import SectionHeader from '../components/ui/SectionHeader';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy15y5t2F5uM9NiYPimHvlS6xDw2N1Z5oTHF3SQnR6AI_fxo6y6mhIepsUj-kav31g/exec";
 
@@ -45,6 +46,10 @@ const Contact = () => {
 
   return (
     <div className="pt-24 bg-white">
+      <SEO 
+        title="Contact Us"
+        description="Get in touch with Dreamwed Stories today to book a professional wedding shoot, cinematic film consultation, or pre-wedding session in Trivandrum, Kerala. View pricing and options."
+      />
       <section className="py-24">
         <div className="container">
           <SectionHeader 
