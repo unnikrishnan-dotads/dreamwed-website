@@ -148,7 +148,13 @@ function askQuestion(query) {
 async function runGitPush(token) {
   console.log('\n🚀 Starting Git operations using isomorphic-git...');
   const git = require('isomorphic-git');
-  const http = require('isomorphic-git/http/node');
+  const nodeHttp = require('isomorphic-git/http/node');
+  const http = {
+    request(opts) {
+      opts.timeout = 300000; // 5 minutes timeout
+      return nodeHttp.request(opts);
+    }
+  };
   
   const dir = __dirname;
   
