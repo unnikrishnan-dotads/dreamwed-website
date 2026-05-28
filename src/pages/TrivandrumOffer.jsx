@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, Clock, Check, Star, ArrowRight, Gift, Flame, 
-  Heart, Camera, ShieldCheck, Mail, Phone, Calendar, User, MessageSquare, AlertCircle, X
+  Heart, Camera, ShieldCheck, Mail, Phone, Calendar, User, MessageSquare, AlertCircle, X, Tv
 } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa6";
 import SEO from "../components/SEO";
@@ -31,6 +31,19 @@ const TrivandrumOffer = () => {
     prewedVideo: false,
     ledScreen: "none" // "none", "single" (14999), "double" (24999)
   });
+
+  const [isConfirmBookingOpen, setIsConfirmBookingOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("Bride & Groom Pack 01");
+  const [selectedPackagePrice, setSelectedPackagePrice] = useState(49999);
+  const [bookingForm, setBookingForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    date: "",
+    venue: "",
+    notes: ""
+  });
+  const [bookingStatus, setBookingStatus] = useState("idle");
 
   // Automatically reset pre-wedding video if selected package already includes it (Pack 03 includes both photo and video)
   useEffect(() => {
@@ -232,6 +245,100 @@ const TrivandrumOffer = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const triggerBookingModal = (packageName, packagePrice) => {
+    setSelectedPackage(packageName);
+    setSelectedPackagePrice(packagePrice);
+    setBookingForm(prev => ({
+      ...prev,
+      name: formData.name || prev.name,
+      phone: formData.phone || prev.phone,
+      email: formData.email || prev.email,
+      date: formData.date || prev.date,
+      venue: formData.message || prev.venue
+    }));
+    setIsConfirmBookingOpen(true);
+  };
+
+  const handleConfirmBookingSubmit = async (e) => {
+    e.preventDefault();
+    setBookingStatus("loading");
+    
+    const isPack03 = selectedPackage === "Bride & Groom Pack 03";
+    const selectedAddonsList = [];
+    if (!isPack03 && selectedAddons.prewedVideo) {
+      selectedAddonsList.push({ name: "Cinematic Pre-Wedding Shoot", price: 9999 });
+    }
+    if (selectedAddons.drone) {
+      selectedAddonsList.push({ name: "Aerial Drone Coverage", price: 8000 });
+    }
+    if (selectedAddons.ledScreen === "single") {
+      selectedAddonsList.push({ name: "Single LED Screen setup", price: 14999 });
+    } else if (selectedAddons.ledScreen === "double") {
+      selectedAddonsList.push({ name: "Double LED Screen setup", price: 24999 });
+    }
+    
+    const addonsSum = selectedAddonsList.reduce((sum, item) => sum + item.price, 0);
+    const totalPrice = selectedPackagePrice + addonsSum;
+    const advancePaid = 5000;
+    
+    const bookingPayload = {
+      customer_name: bookingForm.name,
+      customer_phone: bookingForm.phone,
+      customer_email: bookingForm.email,
+      event_date: bookingForm.date,
+      event_venue: bookingForm.venue,
+      package_name: selectedPackage,
+      package_price: selectedPackagePrice,
+      add_ons: selectedAddonsList,
+      total_price: totalPrice,
+      advance_paid: advancePaid,
+      status: "pending"
+    };
+
+    // Google Sheets Backup Sync
+    try {
+      const gForm = new FormData();
+      gForm.append("name", bookingForm.name);
+      gForm.append("email", bookingForm.email);
+      gForm.append("phone", bookingForm.phone);
+      gForm.append("date", bookingForm.date);
+      gForm.append("reception_date", "Wedding Booking Order");
+      
+      const addonsStr = selectedAddonsList.map(a => `${a.name}(₹${a.price})`).join(", ");
+      gForm.append("message", `[CONFIRMED BOOKING ORDER] Package: ${selectedPackage} (₹${selectedPackagePrice}). Add-ons: [${addonsStr || 'None'}]. Venue: ${bookingForm.venue}. Notes: ${bookingForm.notes}`);
+      gForm.append("timestamp", new Date().toLocaleString());
+      
+      fetch(SCRIPT_URL, { method: "POST", body: gForm, mode: "no-cors" }).catch(e => console.log('AppsScript backup sync error ignored'));
+    } catch (gErr) {
+      console.log('AppsScript payload err', gErr);
+    }
+    
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+    
+    try {
+      const res = await fetch(`${API_BASE}/api/bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingPayload)
+      });
+      
+      if (res.ok) {
+        setBookingStatus("success");
+        setTimeout(() => {
+          setIsConfirmBookingOpen(false);
+          setBookingStatus("idle");
+          setBookingForm({ name: "", phone: "", email: "", date: "", venue: "", notes: "" });
+        }, 5000);
+      } else {
+        throw new Error("Server rejected booking request");
+      }
+    } catch (err) {
+      console.error("Booking API error:", err);
+      setBookingStatus("error");
+      setTimeout(() => setBookingStatus("idle"), 8000);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -523,7 +630,7 @@ const TrivandrumOffer = () => {
               </div>
 
               <button 
-                onClick={(e) => { e.stopPropagation(); scrollToForm(); }}
+                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 01", 49999); }}
                 className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
               >
                 Secure ₹49,999 Offer
@@ -599,7 +706,7 @@ const TrivandrumOffer = () => {
               </div>
 
               <button 
-                onClick={(e) => { e.stopPropagation(); scrollToForm(); }}
+                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 02", 99999); }}
                 className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
               >
                 Secure ₹99,999 Offer
@@ -679,7 +786,7 @@ const TrivandrumOffer = () => {
               </div>
 
               <button 
-                onClick={(e) => { e.stopPropagation(); scrollToForm(); }}
+                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 03", 110000); }}
                 className="w-full py-4 bg-[#9b1c1c] text-white font-bold rounded-xl hover:bg-[#801414] transition-all text-xs tracking-widest uppercase shadow-md mt-4"
               >
                 Secure ₹1,10,000 Offer
@@ -756,7 +863,7 @@ const TrivandrumOffer = () => {
               </div>
 
               <button 
-                onClick={(e) => { e.stopPropagation(); scrollToForm(); }}
+                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Engagement + Wedding Pack 04", 159000); }}
                 className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
               >
                 Secure ₹1,59,000 Offer
@@ -1350,6 +1457,235 @@ const TrivandrumOffer = () => {
       >
         <FaWhatsapp size={28} />
       </a>
+
+      {/* 8. INTERACTIVE BOOKING CONFIRMATION MODAL */}
+      <AnimatePresence>
+        {isConfirmBookingOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+            onClick={() => setIsConfirmBookingOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="relative w-full max-w-xl rounded-[32px] bg-white p-8 border border-zinc-200 shadow-[0_25px_60px_rgba(0,0,0,0.15)] overflow-hidden text-zinc-800"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsConfirmBookingOpen(false)}
+                className="absolute top-6 right-6 w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/50 flex items-center justify-center text-zinc-500 hover:text-zinc-800 transition-all hover:rotate-90 duration-300 z-10 cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+
+              <div className="space-y-6">
+                <div>
+                  <span className="text-[#b4975a] text-[10px] font-bold tracking-[0.2em] uppercase block mb-1">Secure Your Wedding Offer</span>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-zinc-900 font-light tracking-tight">
+                    Confirm Your <span className="italic font-serif text-[#b4975a]">Booking Request</span>
+                  </h3>
+                  <p className="text-zinc-500 text-[11px] font-light mt-1">
+                    Fill out the reservation form below. We will check availability for your date, save a pending invoice, and send a coordinator to confirm details.
+                  </p>
+                </div>
+
+                {/* Pre-selected package card summary */}
+                <div className="bg-[#fbfbfa] border border-zinc-200/60 p-5 rounded-2xl space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#b4975a]">Package Chosen</span>
+                      <h4 className="text-base font-semibold text-zinc-900 mt-0.5">{selectedPackage}</h4>
+                    </div>
+                    <span className="text-base font-bold text-[#9b1c1c]">₹{selectedPackagePrice.toLocaleString("en-IN")}</span>
+                  </div>
+                  
+                  {/* Real-time Dynamic Add-ons Selector */}
+                  <div className="border-t border-zinc-200/60 pt-3 mt-2 space-y-2">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">Customize Optional Add-ons</span>
+                    
+                    {/* Cinematic Pre-wedding check (Unless it's Pack 03, which includes it free) */}
+                    {selectedPackage !== "Bride & Groom Pack 03" ? (
+                      <label className="flex items-center justify-between text-xs text-zinc-600 cursor-pointer py-1 hover:text-zinc-900 select-none">
+                        <span className="flex items-center gap-2">
+                          <input 
+                            type="checkbox" 
+                            checked={selectedAddons.prewedVideo}
+                            onChange={(e) => setSelectedAddons({ ...selectedAddons, prewedVideo: e.target.checked })}
+                            className="accent-[#9b1c1c] w-4.5 h-4.5 rounded cursor-pointer"
+                          />
+                          <span>Cinematic Pre-Wedding Shoot Add-on</span>
+                        </span>
+                        <span className="font-semibold text-zinc-800">+ ₹9,999</span>
+                      </label>
+                    ) : (
+                      <div className="flex justify-between text-xs text-emerald-700 py-1 font-medium bg-emerald-50/50 px-3 rounded-lg border border-emerald-100">
+                        <span>Cinematic Pre-Wedding shoot</span>
+                        <span className="uppercase text-[9px] tracking-wider font-bold">Included Free</span>
+                      </div>
+                    )}
+
+                    <label className="flex items-center justify-between text-xs text-zinc-600 cursor-pointer py-1 hover:text-zinc-900 select-none">
+                      <span className="flex items-center gap-2">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedAddons.drone}
+                          onChange={(e) => setSelectedAddons({ ...selectedAddons, drone: e.target.checked })}
+                          className="accent-[#9b1c1c] w-4.5 h-4.5 rounded cursor-pointer"
+                        />
+                        <span>Aerial Drone Coverage</span>
+                      </span>
+                      <span className="font-semibold text-zinc-800">+ ₹8,000</span>
+                    </label>
+
+                    <div className="flex items-center justify-between text-xs text-zinc-600 py-1">
+                      <span className="flex items-center gap-2">
+                        <Tv size={14} className="text-zinc-400" />
+                        <span>Rental LED Screen Setup</span>
+                      </span>
+                      <select
+                        value={selectedAddons.ledScreen}
+                        onChange={(e) => setSelectedAddons({ ...selectedAddons, ledScreen: e.target.value })}
+                        className="bg-zinc-50 border border-zinc-200 rounded px-2 py-0.5 text-zinc-800 font-medium text-xs focus:outline-none"
+                      >
+                        <option value="none">No LED Screen</option>
+                        <option value="single">Single screen (+₹14,999)</option>
+                        <option value="double">Double screen (+₹24,999)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Calculated live total */}
+                  <div className="border-t border-zinc-200/60 pt-3 flex justify-between items-center text-sm font-bold">
+                    <span className="text-zinc-800">Total Booking Value:</span>
+                    <span className="text-lg text-[#9b1c1c]">
+                      ₹{(
+                        selectedPackagePrice + 
+                        (selectedPackage !== "Bride & Groom Pack 03" && selectedAddons.prewedVideo ? 9999 : 0) + 
+                        (selectedAddons.drone ? 8000 : 0) + 
+                        (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0)
+                      ).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Form fields */}
+                <form onSubmit={handleConfirmBookingSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">Full Names (Bride & Groom)</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={bookingForm.name}
+                        onChange={(e) => setBookingForm({ ...bookingForm, name: e.target.value })}
+                        placeholder="Athul & Priya"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">WhatsApp Number</label>
+                      <input 
+                        type="tel" 
+                        required
+                        value={bookingForm.phone}
+                        onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
+                        placeholder="+91 9995412955"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">Email Address</label>
+                      <input 
+                        type="email" 
+                        required
+                        value={bookingForm.email}
+                        onChange={(e) => setBookingForm({ ...bookingForm, email: e.target.value })}
+                        placeholder="athul@example.com"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">Wedding Date</label>
+                      <input 
+                        type="date" 
+                        required
+                        value={bookingForm.date}
+                        onChange={(e) => setBookingForm({ ...bookingForm, date: e.target.value })}
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">Event Venue & Location</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={bookingForm.venue}
+                      onChange={(e) => setBookingForm({ ...bookingForm, venue: e.target.value })}
+                      placeholder="e.g. Al Saj Convention Centre, Trivandrum"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9px] text-zinc-400 font-bold tracking-widest uppercase">Additional Notes / Special Requests</label>
+                    <textarea 
+                      rows="2"
+                      value={bookingForm.notes}
+                      onChange={(e) => setBookingForm({ ...bookingForm, notes: e.target.value })}
+                      placeholder="Any customized album requirements, coverage times, etc..."
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3 px-4 text-zinc-800 text-xs focus:border-[#9b1c1c] focus:outline-none transition-colors resize-none"
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={bookingStatus === "loading"}
+                    className="w-full py-4 bg-[#9b1c1c] text-white font-bold rounded-xl hover:bg-[#801414] active:scale-98 transition-all text-xs tracking-widest uppercase shadow-md flex items-center justify-center gap-2 mt-2 cursor-pointer"
+                  >
+                    {bookingStatus === "loading" ? "Submitting Booking..." : "Confirm Booking Request"}
+                  </button>
+                </form>
+
+                <AnimatePresence>
+                  {bookingStatus === "success" && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-xs text-center flex items-center gap-2"
+                    >
+                      <Check size={16} className="shrink-0 text-green-600" />
+                      🎉 Booking submitted successfully! Our coordinator will contact you on WhatsApp to confirm details, and your printable pending invoice is registered!
+                    </motion.div>
+                  )}
+                  {bookingStatus === "error" && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-xs text-center flex items-center gap-2"
+                    >
+                      <AlertCircle size={16} className="shrink-0 text-red-600" />
+                      ⚠️ Server connection error. We have backup synced your details! Please WhatsApp us directly to confirm dates immediately.
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* CINEMATIC THEATER MODAL */}
       <AnimatePresence>
