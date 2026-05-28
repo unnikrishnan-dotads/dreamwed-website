@@ -24,6 +24,7 @@ const ClientPortal = () => {
   const [isInvoicePrintOpen, setIsInvoicePrintOpen] = useState(false);
   const [photoComments, setPhotoComments] = useState({}); // photoId -> comment text
   const [activeCommentPhotoId, setActiveCommentPhotoId] = useState(null);
+  const [activeLightboxPhotoId, setActiveLightboxPhotoId] = useState(null);
 
   const [showDevServer, setShowDevServer] = useState(false);
   const [serverInput, setServerInput] = useState(() => {
@@ -616,7 +617,11 @@ const ClientPortal = () => {
                         const inReel = img.categories && img.categories.includes("reel");
                         
                         return (
-                          <div key={img.id} className="group relative rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-50 aspect-square flex flex-col justify-end shadow-sm hover:shadow-md transition-all">
+                          <div 
+                            key={img.id} 
+                            onClick={() => setActiveLightboxPhotoId(img.id)}
+                            className="group relative rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-50 aspect-square flex flex-col justify-end shadow-sm hover:shadow-md transition-all cursor-pointer animate-fade-in"
+                          >
                             <img src={img.url} className="absolute inset-0 w-full h-full object-fit-cover transition-transform duration-300 group-hover:scale-105" />
                             
                             {/* Hover overlay triggers */}
@@ -624,7 +629,7 @@ const ClientPortal = () => {
                               {/* Top row - Favorite and comment triggers */}
                               <div className="flex justify-between items-center">
                                 <button 
-                                  onClick={() => togglePhotoFavorite(img.id)}
+                                  onClick={(e) => { e.stopPropagation(); togglePhotoFavorite(img.id); }}
                                   className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110 cursor-pointer backdrop-blur-md border ${
                                     img.favorited 
                                       ? "bg-red-500 border-red-500 text-white" 
@@ -635,7 +640,8 @@ const ClientPortal = () => {
                                 </button>
                                 
                                 <button 
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     setActiveCommentPhotoId(activeCommentPhotoId === img.id ? null : img.id);
                                     setPhotoComments({ ...photoComments, [img.id]: img.comment || "" });
                                   }}
@@ -647,29 +653,7 @@ const ClientPortal = () => {
                                 </button>
                               </div>
 
-                              {/* Bottom row - Folder allocations */}
-                              <div className="flex gap-2">
-                                <button 
-                                  onClick={() => togglePhotoCategory(img.id, "album")}
-                                  className={`flex-1 py-1.5 rounded text-[8px] font-bold uppercase tracking-wider border cursor-pointer transition-all ${
-                                    inAlbum 
-                                      ? "bg-[#b4975a] border-[#b4975a] text-zinc-950" 
-                                      : "bg-black/60 border-white/20 text-white hover:bg-black/80"
-                                  }`}
-                                >
-                                  📖 Album
-                                </button>
-                                <button 
-                                  onClick={() => togglePhotoCategory(img.id, "reel")}
-                                  className={`flex-1 py-1.5 rounded text-[8px] font-bold uppercase tracking-wider border cursor-pointer transition-all ${
-                                    inReel 
-                                      ? "bg-[#b4975a] border-[#b4975a] text-zinc-950" 
-                                      : "bg-black/60 border-white/20 text-white hover:bg-black/80"
-                                  }`}
-                                >
-                                  🎥 Reel
-                                </button>
-                              </div>
+                              {/* Only top row buttons in hover overlay */}
                             </div>
 
                             {/* Default permanent badges for unhovered visual states */}
@@ -1189,6 +1173,172 @@ const ClientPortal = () => {
 
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ENLARGED PHOTO LIGHTBOX MODAL */}
+      <AnimatePresence>
+        {activeLightboxPhotoId !== null && (
+          (() => {
+            const photos = getFilteredPhotos();
+            const photoIndex = photos.findIndex(img => img.id === activeLightboxPhotoId);
+            const activePhoto = photos[photoIndex] || (project && project.gallery_images.find(img => img.id === activeLightboxPhotoId));
+            if (!activePhoto) return null;
+
+            const inAlbum = activePhoto.categories && activePhoto.categories.includes("album");
+            const inReel = activePhoto.categories && activePhoto.categories.includes("reel");
+
+            const handlePrev = (e) => {
+              e.stopPropagation();
+              if (photoIndex > 0) {
+                setActiveLightboxPhotoId(photos[photoIndex - 1].id);
+              } else {
+                setActiveLightboxPhotoId(photos[photos.length - 1].id);
+              }
+            };
+
+            const handleNext = (e) => {
+              e.stopPropagation();
+              if (photoIndex < photos.length - 1) {
+                setActiveLightboxPhotoId(photos[photoIndex + 1].id);
+              } else {
+                setActiveLightboxPhotoId(photos[0].id);
+              }
+            };
+
+            return (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+                onClick={() => setActiveLightboxPhotoId(null)}
+              >
+                <motion.div
+                  initial={{ scale: 0.93, y: 20 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.93, y: 20 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 220 }}
+                  className="relative w-full max-w-5xl rounded-[32px] bg-zinc-950 border border-zinc-800 overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.8)] grid grid-cols-1 md:grid-cols-3 max-h-[90vh] text-white"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Extremely Prominent Close Button */}
+                  <button
+                    onClick={() => setActiveLightboxPhotoId(null)}
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 border border-white/10 flex items-center justify-center text-white transition-all hover:rotate-90 hover:scale-105 duration-300 z-50 cursor-pointer"
+                    title="Close"
+                  >
+                    <X size={20} />
+                  </button>
+
+                  {/* Left 2 Columns: Image View with navigation arrows */}
+                  <div className="md:col-span-2 relative aspect-[4/5] md:aspect-auto h-[40vh] md:h-[70vh] bg-zinc-950 flex items-center justify-center select-none border-b md:border-b-0 md:border-r border-zinc-800">
+                    <img 
+                      src={activePhoto.url} 
+                      alt="Wedding" 
+                      className="max-w-full max-h-full object-contain p-4"
+                    />
+
+                    {/* Navigation Arrows */}
+                    <button
+                      onClick={handlePrev}
+                      className="absolute left-4 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 border border-white/5 flex items-center justify-center text-white transition-colors cursor-pointer text-xl font-bold font-mono"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="absolute right-4 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 border border-white/5 flex items-center justify-center text-white transition-colors cursor-pointer text-xl font-bold font-mono"
+                    >
+                      ›
+                    </button>
+
+                    {/* Photo Info Banner */}
+                    <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/5 text-[10px] text-zinc-400 font-light">
+                      Photo ID: #{activePhoto.id} • Folder: {activePhoto.categories?.join(' & ').toUpperCase() || 'NONE'}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Premium Selection and Comments Sidebar */}
+                  <div className="p-6 md:p-8 flex flex-col justify-between overflow-y-auto h-[45vh] md:h-[70vh] bg-zinc-900/60 text-left">
+                    
+                    {/* Header */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Selection Panel</span>
+                        <button
+                          onClick={() => togglePhotoFavorite(activePhoto.id)}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center transition-transform hover:scale-110 cursor-pointer backdrop-blur-md border ${
+                            activePhoto.favorited 
+                              ? "bg-red-500 border-red-500 text-white" 
+                              : "bg-zinc-800 border-zinc-700 text-zinc-300"
+                          }`}
+                        >
+                          <Heart size={16} className={activePhoto.favorited ? "fill-current" : ""} />
+                        </button>
+                      </div>
+
+                      <h3 className="text-xl font-light text-white tracking-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                        {project.couple_name}'s Photo
+                      </h3>
+                      <p className="text-zinc-500 text-xs font-light leading-relaxed">
+                        Customize how this photo is processed. You can select it for the Layflat Album or Reels, or add specific retouch comments.
+                      </p>
+                    </div>
+
+                    {/* Selector Buttons */}
+                    <div className="space-y-3.5 my-6">
+                      
+                      {/* PRIMARY ALBUM SELECTION BUTTON */}
+                      <button
+                        onClick={() => togglePhotoCategory(activePhoto.id, "album")}
+                        className={`w-full py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 border ${
+                          inAlbum 
+                            ? "bg-[#b4975a] border-[#b4975a] text-zinc-950 shadow-[0_4px_20px_rgba(180,151,90,0.15)]" 
+                            : "bg-zinc-850 border-zinc-800 text-zinc-200 hover:bg-zinc-800"
+                        }`}
+                      >
+                        {inAlbum ? "✕ Unselect Photo" : "✓ Select this Photo"}
+                      </button>
+
+                      {/* REEL SELECTION BUTTON */}
+                      <button
+                        onClick={() => togglePhotoCategory(activePhoto.id, "reel")}
+                        className={`w-full py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 border ${
+                          inReel 
+                            ? "bg-[#b4975a] border-[#b4975a] text-zinc-950 shadow-[0_4px_20px_rgba(180,151,90,0.15)]" 
+                            : "bg-zinc-850 border-zinc-800 text-zinc-200 hover:bg-zinc-800"
+                        }`}
+                      >
+                        {inReel ? "✕ Unselect from Reels" : "✓ Select for Reels"}
+                      </button>
+                    </div>
+
+                    {/* Comments / Retouch Notes Section */}
+                    <div className="space-y-3 flex-grow flex flex-col justify-end">
+                      <div className="w-full h-px bg-zinc-800 my-2" />
+                      
+                      <label className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block">Retouching Instructions</label>
+                      <textarea
+                        rows="3"
+                        value={photoComments[activePhoto.id] !== undefined ? photoComments[activePhoto.id] : (activePhoto.comment || "")}
+                        onChange={(e) => setPhotoComments({ ...photoComments, [activePhoto.id]: e.target.value })}
+                        placeholder="e.g. 'Airbrush skin blemishes', 'Crop slightly to center us', 'Make this black & white'"
+                        className="w-full bg-zinc-950 border border-zinc-850 rounded-xl p-3 text-white text-xs focus:border-[#b4975a] focus:outline-none resize-none"
+                      />
+                      <button
+                        onClick={() => savePhotoComment(activePhoto.id, photoComments[activePhoto.id] || "")}
+                        className="w-full py-3 bg-zinc-200 hover:bg-white text-zinc-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                      >
+                        Save Retouch Notes
+                      </button>
+                    </div>
+
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })()
         )}
       </AnimatePresence>
 
