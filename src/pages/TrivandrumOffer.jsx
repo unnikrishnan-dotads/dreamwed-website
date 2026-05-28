@@ -314,7 +314,7 @@ const TrivandrumOffer = () => {
       console.log('AppsScript payload err', gErr);
     }
     
-    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+    const API_BASE = localStorage.getItem("dreamwed_api_base") || import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
     
     try {
       const res = await fetch(`${API_BASE}/api/bookings`, {

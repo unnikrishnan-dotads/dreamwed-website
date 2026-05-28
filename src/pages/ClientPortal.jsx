@@ -25,8 +25,24 @@ const ClientPortal = () => {
   const [photoComments, setPhotoComments] = useState({}); // photoId -> comment text
   const [activeCommentPhotoId, setActiveCommentPhotoId] = useState(null);
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  const [showDevServer, setShowDevServer] = useState(false);
+  const [serverInput, setServerInput] = useState(() => {
+    return localStorage.getItem("dreamwed_api_base") || import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  });
+
+  const API_BASE = serverInput;
   const chatInterval = useRef(null);
+
+  const saveCustomServer = () => {
+    let cleanUrl = serverInput.trim();
+    if (cleanUrl.endsWith("/")) {
+      cleanUrl = cleanUrl.slice(0, -1);
+    }
+    localStorage.setItem("dreamwed_api_base", cleanUrl);
+    setServerInput(cleanUrl);
+    setShowDevServer(false);
+    alert(`Connected to server: ${cleanUrl}`);
+  };
 
   const handleLookup = async (e) => {
     if (e) e.preventDefault();
@@ -378,6 +394,39 @@ const ClientPortal = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Dev Mode Connection Settings */}
+              <div className="pt-4 border-t border-zinc-100 flex flex-col items-center">
+                <button 
+                  type="button"
+                  onClick={() => setShowDevServer(!showDevServer)}
+                  className="text-[10px] text-zinc-400 hover:text-[#b4975a] transition-colors flex items-center gap-1 cursor-pointer bg-transparent border-none outline-none font-medium"
+                >
+                  ⚙️ Server Connection Settings
+                </button>
+                
+                {showDevServer && (
+                  <div className="w-full mt-3 p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-2.5 text-[11px] text-left">
+                    <div className="text-zinc-500 font-light leading-relaxed">
+                      If your bot server is running locally or via a dynamic tunnel (e.g. localhost.run), enter the URL below:
+                    </div>
+                    <input 
+                      type="url" 
+                      placeholder="http://localhost:3000"
+                      value={serverInput}
+                      onChange={(e) => setServerInput(e.target.value)}
+                      className="w-full bg-white border border-zinc-200 rounded-lg p-2.5 text-zinc-800 text-xs focus:border-[#b4975a] focus:outline-none"
+                    />
+                    <button 
+                      type="button"
+                      onClick={saveCustomServer}
+                      className="w-full py-2.5 bg-zinc-950 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider hover:bg-black transition-colors cursor-pointer"
+                    >
+                      Save & Apply URL
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ) : (
