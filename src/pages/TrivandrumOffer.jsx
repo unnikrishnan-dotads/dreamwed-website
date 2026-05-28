@@ -1492,7 +1492,45 @@ const TrivandrumOffer = () => {
               <div className="space-y-4">
                 
                 {/* DRONE REMOVED — included in larger packs */}
-                {/* PRE-WEDDING CINEMATIC VIDEO REMOVED — included in packages */}
+                
+                {/* ITEM 2: PRE-WEDDING CINEMATIC VIDEO */}
+                <div 
+                  className={`p-4 rounded-2xl border transition-all duration-300 ${
+                    selectedAddons.prewedVideo
+                      ? "bg-[#1e3f20]/5 border-[#1e3f20]/40 shadow-sm" 
+                      : "bg-zinc-50/50 border-zinc-200 hover:border-zinc-100"
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-bold text-sm text-zinc-900">Pre-Wedding Cinematic Video</span>
+                    <span className="font-extrabold text-xs text-zinc-500 italic">Optional Add-on</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-500 font-light leading-relaxed block mb-4">
+                    High-end romantic video shoot before the wedding, capturing a stunning cinematic film to share or play at your reception.
+                  </span>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: false, label: "No Video", price: "—" },
+                      { value: true, label: "Add Video Film", price: "₹9,999" }
+                    ].map((opt) => (
+                      <button
+                        key={opt.label}
+                        onClick={() => setSelectedAddons({ ...selectedAddons, prewedVideo: opt.value })}
+                        className={`py-2.5 px-1 rounded-xl text-center flex flex-col gap-0.5 border cursor-pointer transition-all duration-300 ${
+                          selectedAddons.prewedVideo === opt.value
+                            ? "bg-[#1e3f20] border-[#1e3f20] text-white shadow-md scale-[1.02]"
+                            : "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300"
+                        }`}
+                      >
+                        <span className="text-[10px] font-bold select-none">{opt.label}</span>
+                        <span className={`text-[9px] font-extrabold ${selectedAddons.prewedVideo === opt.value ? "text-amber-300" : "text-[#9b1c1c]"}`}>
+                          {opt.price}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
                 {/* ITEM 3: LED SCREEN SETUP */}
                 <div 
@@ -1541,6 +1579,7 @@ const TrivandrumOffer = () => {
                       onClick={() => {
                         let extras = [];
 
+                        if (selectedAddons.prewedVideo) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
                         if (selectedAddons.ledScreen === "single") extras.push("Single 8x10ft LED Screen (₹14,999)");
                         if (selectedAddons.ledScreen === "double") extras.push("Double Side Dual-LED Display (₹24,999)");
 
@@ -1574,7 +1613,8 @@ const TrivandrumOffer = () => {
                   <span>Selected Add-ons Total:</span>
                   <span className="text-[#9b1c1c] font-extrabold text-sm">
                     + ₹{(
-                      (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0)
+                      (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0) +
+                      (selectedAddons.prewedVideo ? 9999 : 0)
                     ).toLocaleString("en-IN")}/-
                   </span>
                 </div>
@@ -1589,6 +1629,7 @@ const TrivandrumOffer = () => {
                   // Generate a custom request details message
                   let extras = [];
 
+                  if (selectedAddons.prewedVideo) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
                   if (selectedAddons.ledScreen === "single") extras.push("Single 8x10ft LED Screen (₹14,999)");
                   if (selectedAddons.ledScreen === "double") extras.push("Double Side Dual-LED Display (₹24,999)");
 
@@ -1622,7 +1663,8 @@ const TrivandrumOffer = () => {
           // Dynamic calculation of final price inside the AnimatePresence closure
           const basePriceNum = parseInt(packagesInfo[activeDetailPackage].offerPrice.replace(/[^0-9]/g, ""));
           const addonPrice = 
-            (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0);
+            (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0) +
+            ((selectedAddons.prewedVideo && activeDetailPackage !== 2) ? 9999 : 0);
           const finalCalculatedPrice = basePriceNum + addonPrice;
 
           return (
@@ -1799,7 +1841,51 @@ const TrivandrumOffer = () => {
 
                       <div className="space-y-3">
                         {/* DRONE REMOVED — included in larger pack */}
-                        {/* PRE-WEDDING CINEMATIC VIDEO REMOVED — included in packages */}
+                        
+                        {/* ITEM 2: PRE-WEDDING CINEMATIC VIDEO */}
+                        {activeDetailPackage === 2 ? (
+                          <div className="p-3.5 rounded-2xl border bg-[#1e3f20]/5 border-[#1e3f20]/20">
+                            <div className="flex justify-between items-center mb-2 select-none">
+                              <span className="font-bold text-xs text-[#1e3f20]">Pre-Wedding Cinematic Video</span>
+                              <span className="text-[9px] font-extrabold bg-[#1e3f20] text-white px-2 py-0.5 rounded uppercase">Included Free</span>
+                            </div>
+                            <span className="text-[10px] text-zinc-500 font-light leading-relaxed block select-none">
+                              Save ₹30,000! Pre-wedding cinematic video film is fully included free in Pack 03!
+                            </span>
+                          </div>
+                        ) : (
+                          <div className={`p-3.5 rounded-2xl border transition-all duration-300 ${selectedAddons.prewedVideo ? 'bg-[#1e3f20]/5 border-[#1e3f20]/30 shadow-sm' : 'bg-zinc-50/50 border-zinc-200'}`}>
+                            <div className="flex justify-between items-center mb-2 select-none">
+                              <span className="font-bold text-xs text-zinc-900">Pre-Wedding Cinematic Video</span>
+                              <span className="text-[9px] font-semibold text-zinc-500">Romantic Film Extra</span>
+                            </div>
+                            <span className="text-[10px] text-zinc-500 font-light leading-relaxed block mb-3 select-none">
+                              High-end cinematic video shoot before the wedding, creating a beautiful romantic story film.
+                            </span>
+                            <div className="grid grid-cols-2 gap-2">
+                              {[
+                                { value: false, label: "No Video", price: "—" },
+                                { value: true, label: "Add Video Film", price: "₹9,999" }
+                              ].map((opt) => (
+                                <button
+                                  key={opt.label}
+                                  type="button"
+                                  onClick={() => setSelectedAddons({ ...selectedAddons, prewedVideo: opt.value })}
+                                  className={`py-2 px-1 rounded-xl text-center flex flex-col gap-0.5 border cursor-pointer transition-all duration-300 select-none ${
+                                    selectedAddons.prewedVideo === opt.value
+                                      ? "bg-[#1e3f20] border-[#1e3f20] text-white shadow-sm scale-[1.02]"
+                                      : "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300"
+                                  }`}
+                                >
+                                  <span className="text-[10px] font-bold">{opt.label}</span>
+                                  <span className={`text-[9px] font-extrabold ${selectedAddons.prewedVideo === opt.value ? "text-amber-300" : "text-[#9b1c1c]"}`}>
+                                    {opt.price}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                         {/* ITEM 3: LED SCREEN SETUP */}
                         <div className={`p-3.5 rounded-2xl border transition-all duration-300 ${selectedAddons.ledScreen !== "none" ? 'bg-[#1e3f20]/5 border-[#1e3f20]/30 shadow-sm' : 'bg-zinc-50/50 border-zinc-200'}`}>
@@ -1841,6 +1927,7 @@ const TrivandrumOffer = () => {
                               onClick={() => {
                                 let extras = [];
 
+                                if (selectedAddons.prewedVideo && activeDetailPackage !== 2) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
                                 if (selectedAddons.ledScreen === "single") extras.push("Single 8x10ft LED Screen (₹14,999)");
                                 if (selectedAddons.ledScreen === "double") extras.push("Double Side Dual-LED Display (₹24,999)");
 
@@ -1884,6 +1971,7 @@ const TrivandrumOffer = () => {
                       onClick={() => {
                         let extras = [];
 
+                        if (selectedAddons.prewedVideo && activeDetailPackage !== 2) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
                         if (selectedAddons.ledScreen === "single") extras.push("Single 8x10ft LED Screen (₹14,999)");
                         if (selectedAddons.ledScreen === "double") extras.push("Double Side Dual-LED Display (₹24,999)");
 
