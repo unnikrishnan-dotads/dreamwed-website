@@ -431,13 +431,27 @@ const ClientPortal = () => {
                       onChange={(e) => setServerInput(e.target.value)}
                       className="w-full bg-white border border-zinc-200 rounded-lg p-2.5 text-zinc-800 text-xs focus:border-[#b4975a] focus:outline-none"
                     />
-                    <button 
-                      type="button"
-                      onClick={saveCustomServer}
-                      className="w-full py-2.5 bg-zinc-950 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider hover:bg-black transition-colors cursor-pointer"
-                    >
-                      Save & Apply URL
-                    </button>
+                    <div className="flex gap-2 w-full">
+                      <button 
+                        type="button"
+                        onClick={saveCustomServer}
+                        className="flex-grow py-2.5 bg-zinc-950 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider hover:bg-black transition-colors cursor-pointer"
+                      >
+                        Save & Apply
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          localStorage.removeItem("dreamwed_api_base");
+                          setServerInput("http://localhost:3000");
+                          alert("Reset to default local server (http://localhost:3000) successfully!");
+                          setShowDevServer(false);
+                        }}
+                        className="px-3.5 py-2.5 bg-zinc-150 hover:bg-zinc-200 text-zinc-600 rounded-lg text-[10px] font-bold uppercase tracking-wider cursor-pointer transition-colors"
+                      >
+                        Reset Local
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
