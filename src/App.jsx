@@ -11,6 +11,7 @@ import Contact from './pages/Contact';
 import Policies from './pages/Policies';
 import Admin from './pages/Admin';
 import TrivandrumOffer from './pages/TrivandrumOffer';
+import MyBooking from './pages/MyBooking';
 import NotFound from './pages/NotFound';
 import CustomCursor from './components/ui/CustomCursor';
 
@@ -47,6 +48,7 @@ const AnimatedRoutes = () => {
         <Route path="/policies" element={<PageWrapper><Policies /></PageWrapper>} />
         <Route path="/offer" element={<PageWrapper><TrivandrumOffer /></PageWrapper>} />
         <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
+        <Route path="/my-booking" element={<PageWrapper><MyBooking /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
