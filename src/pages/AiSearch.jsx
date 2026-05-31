@@ -8,7 +8,7 @@ import SEO from "../components/SEO";
 
 // Premium Mock Photos matching seed tags
 const SAMPLE_PHOTOS_ARCHIVE = [
-  { id: 1, url: "/ai_search_banner.png", tags: ["couple", "portrait"] },
+  { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800", tags: ["couple", "portrait"] },
   { id: 2, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800", tags: ["couple", "dance"] },
   { id: 3, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800", tags: ["ceremony", "bride"] },
   { id: 4, url: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=800", tags: ["details", "groom"] },
@@ -186,7 +186,9 @@ const AiSearch = () => {
 
     setTimeout(() => {
       setIsScanning(false);
-      const activeWeddingPhotos = activeWedding && activeWedding.photos ? activeWedding.photos : [];
+      const activeWeddingPhotos = activeWedding && activeWedding.photos && activeWedding.photos.length > 0
+        ? activeWedding.photos
+        : SAMPLE_PHOTOS_ARCHIVE;
       setMatches(activeWeddingPhotos);
       setActiveStep("results");
       showToast("✨ AI Photo search complete! Matched photos isolated.");
