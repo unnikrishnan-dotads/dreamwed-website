@@ -111,8 +111,26 @@ const AiSearch = () => {
 
   // Initialize DB on Mount
   useEffect(() => {
-    if (!localStorage.getItem("dreamwed_galleries")) {
+    const stored = localStorage.getItem("dreamwed_galleries");
+    if (!stored) {
       localStorage.setItem("dreamwed_galleries", JSON.stringify(INITIAL_GALLERIES));
+    } else {
+      try {
+        const parsed = JSON.parse(stored);
+        const needsUpgrade = parsed.some(g => !g.photos || g.photos.length === 0);
+        if (needsUpgrade) {
+          const upgraded = parsed.map(g => {
+            const initialMatch = INITIAL_GALLERIES.find(ig => ig.id === g.id);
+            if (initialMatch && (!g.photos || g.photos.length === 0)) {
+              return { ...g, photos: initialMatch.photos };
+            }
+            return g;
+          });
+          localStorage.setItem("dreamwed_galleries", JSON.stringify(upgraded));
+        }
+      } catch (e) {
+        localStorage.setItem("dreamwed_galleries", JSON.stringify(INITIAL_GALLERIES));
+      }
     }
     if (!localStorage.getItem("dreamwed_orders")) {
       localStorage.setItem("dreamwed_orders", JSON.stringify(INITIAL_ORDERS));
@@ -220,11 +238,15 @@ const AiSearch = () => {
       }, script.delay);
     });
 
+    // Load absolute freshest galleries to bypass stale tab state!
+    const freshGalleries = JSON.parse(localStorage.getItem("dreamwed_galleries") || "[]");
+    const freshActiveWedding = freshGalleries.find(g => g.id === selectedWeddingId);
+
     try {
       const selfieColor = await analyzeImageColor(selfieSrc);
 
-      const activeWeddingPhotos = activeWedding && activeWedding.photos && activeWedding.photos.length > 0
-        ? activeWedding.photos
+      const activeWeddingPhotos = freshActiveWedding && freshActiveWedding.photos && freshActiveWedding.photos.length > 0
+        ? freshActiveWedding.photos
         : SAMPLE_PHOTOS_ARCHIVE;
 
       const analyzedMatches = await Promise.all(
@@ -254,7 +276,7 @@ const AiSearch = () => {
       console.error("Biometric match failure, falling back:", err);
       setTimeout(() => {
         setIsScanning(false);
-        setMatches(activeWedding && activeWedding.photos && activeWedding.photos.length > 0 ? activeWedding.photos : SAMPLE_PHOTOS_ARCHIVE);
+        setMatches(freshActiveWedding && freshActiveWedding.photos && freshActiveWedding.photos.length > 0 ? freshActiveWedding.photos : SAMPLE_PHOTOS_ARCHIVE);
         setActiveStep("results");
         showToast("✨ AI Photo search complete! Matched photos isolated.");
       }, 3200);
