@@ -12,6 +12,37 @@ const API_BASE = typeof window !== "undefined"
   ? (localStorage.getItem("dreamwed_api_base") || "http://localhost:3000")
   : "http://localhost:3000";
 
+const INITIAL_GALLERIES = [
+  {
+    id: "wedding-aarav-meera",
+    name: "Aarav & Meera's Royal Wedding",
+    gdriveLink: "https://drive.google.com/drive/folders/1AaravMeeraRoyalWeddingDreamwedDemo",
+    type: "After Event Gallery",
+    coverUrl: "/ai_search_banner.png",
+    photos: [
+      { id: "am-1", url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800" },
+      { id: "am-2", url: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800" },
+      { id: "am-3", url: "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=800" },
+      { id: "am-4", url: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800" },
+      { id: "am-5", url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800" }
+    ]
+  },
+  {
+    id: "wedding-rohan-dia",
+    name: "Rohan & Dia's Mumbai Sangeet",
+    gdriveLink: "https://drive.google.com/drive/folders/2RohanDiaMumbaiSangeetDreamwedDemo",
+    type: "Live Gallery",
+    coverUrl: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800",
+    photos: [
+      { id: "rd-1", url: "https://images.unsplash.com/photo-1507504038482-76210f5c0be6?q=80&w=800" },
+      { id: "rd-2", url: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800" },
+      { id: "rd-3", url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800" },
+      { id: "rd-4", url: "https://images.unsplash.com/photo-1519225495810-7517cbdb222d?q=80&w=800" },
+      { id: "rd-5", url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800" }
+    ]
+  }
+];
+
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
@@ -53,6 +84,8 @@ const Admin = () => {
   const [newGalDrive, setNewGalDrive] = useState("");
   const [newGalType, setNewGalType] = useState("After Event Gallery");
   const [newGalCover, setNewGalCover] = useState("https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800");
+  const [selectedGalForPhotos, setSelectedGalForPhotos] = useState(null);
+  const [bulkPhotoUrls, setBulkPhotoUrls] = useState("");
 
   // Check auth on mount
   useEffect(() => {
@@ -69,6 +102,9 @@ const Admin = () => {
       fetchBookings();
 
       // Load AI galleries & orders
+      if (!localStorage.getItem("dreamwed_galleries")) {
+        localStorage.setItem("dreamwed_galleries", JSON.stringify(INITIAL_GALLERIES));
+      }
       const storedGals = JSON.parse(localStorage.getItem("dreamwed_galleries") || "[]");
       const storedOrds = JSON.parse(localStorage.getItem("dreamwed_orders") || "[]");
       setAiGalleries(storedGals);
@@ -420,6 +456,57 @@ const Admin = () => {
     const updated = aiGalleries.filter(g => g.id !== id);
     setAiGalleries(updated);
     localStorage.setItem("dreamwed_galleries", JSON.stringify(updated));
+  };
+
+  const handleAddBulkPhotos = (e) => {
+    e.preventDefault();
+    if (!selectedGalForPhotos || !bulkPhotoUrls.trim()) return;
+
+    const urls = bulkPhotoUrls
+      .split(/[,\n]/)
+      .map(url => url.trim())
+      .filter(url => url.length > 0 && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/") || url.startsWith("data:image")));
+
+    if (urls.length === 0) {
+      alert("Please enter at least one valid image URL starting with http://, https://, or data:image");
+      return;
+    }
+
+    const currentPhotos = selectedGalForPhotos.photos || [];
+    const newPhotos = urls.map((url, index) => ({
+      id: `photo-${Date.now()}-${index}-${Math.floor(Math.random() * 1000)}`,
+      url: url
+    }));
+
+    const updatedGal = {
+      ...selectedGalForPhotos,
+      photos: [...currentPhotos, ...newPhotos]
+    };
+
+    const updatedGalleries = aiGalleries.map(g => g.id === selectedGalForPhotos.id ? updatedGal : g);
+    setAiGalleries(updatedGalleries);
+    localStorage.setItem("dreamwed_galleries", JSON.stringify(updatedGalleries));
+    
+    setSelectedGalForPhotos(updatedGal);
+    setBulkPhotoUrls("");
+  };
+
+  const handleDeletePhotoFromGal = (photoId) => {
+    if (!selectedGalForPhotos) return;
+
+    const currentPhotos = selectedGalForPhotos.photos || [];
+    const updatedPhotos = currentPhotos.filter(p => p.id !== photoId);
+
+    const updatedGal = {
+      ...selectedGalForPhotos,
+      photos: updatedPhotos
+    };
+
+    const updatedGalleries = aiGalleries.map(g => g.id === selectedGalForPhotos.id ? updatedGal : g);
+    setAiGalleries(updatedGalleries);
+    localStorage.setItem("dreamwed_galleries", JSON.stringify(updatedGalleries));
+
+    setSelectedGalForPhotos(updatedGal);
   };
 
   const handleUpdateAiOrderStatus = (orderId, newStatus) => {
@@ -1179,7 +1266,13 @@ const Admin = () => {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-3 shrink-0">
+                      <div className="flex items-center gap-3.5 shrink-0">
+                        <button 
+                          onClick={() => setSelectedGalForPhotos(g)}
+                          className="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-[#b4975a] hover:text-zinc-950 text-white text-[10px] font-bold uppercase tracking-wider border border-zinc-750 transition-all flex items-center gap-1 cursor-pointer"
+                        >
+                          <Camera size={12} /> Manage Photos ({g.photos ? g.photos.length : 0})
+                        </button>
                         <a href={g.gdriveLink} target="_blank" rel="noopener noreferrer"
                           className="text-[10px] text-[#b4975a] font-bold uppercase tracking-wider hover:underline">
                           Drive Folder ↗
@@ -1250,6 +1343,106 @@ const Admin = () => {
             )}
           </div>
         )}
+
+      {/* 4. AI Gallery Photos Manager Modal */}
+      <AnimatePresence>
+        {selectedGalForPhotos && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+            onClick={() => setSelectedGalForPhotos(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="bg-zinc-950 border border-zinc-800 max-w-2xl w-full rounded-[32px] p-6 sm:p-8 space-y-6 text-zinc-300 relative shadow-2xl overflow-y-auto max-h-[90vh] text-left"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setSelectedGalForPhotos(null)}
+                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-black border border-white/5 flex items-center justify-center transition-all cursor-pointer z-10"
+              >
+                <X size={15} />
+              </button>
+
+              <div className="space-y-1 select-none border-b border-zinc-850 pb-4">
+                <span className="text-[#b4975a] font-bold text-[9px] tracking-[0.2em] uppercase block">Biometric Repository</span>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-2xl text-white font-light">
+                  Manage <span className="italic font-serif text-[#b4975a]">{selectedGalForPhotos.name}</span> Photos
+                </h3>
+                <p className="text-zinc-500 text-[10px] font-light">Add custom direct photo URLs for guests to query via AI face recognition.</p>
+              </div>
+
+              {/* Bulk add textarea */}
+              <form onSubmit={handleAddBulkPhotos} className="space-y-3.5 bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div className="space-y-1.5">
+                  <label className="text-[9px] uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-1.5">
+                    📸 Bulk Import Direct Photo URLs
+                  </label>
+                  <textarea 
+                    rows="3"
+                    value={bulkPhotoUrls}
+                    onChange={(e) => setBulkPhotoUrls(e.target.value)}
+                    placeholder="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&#10;https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&#10;(Separate multiple URLs with commas or new lines)"
+                    className="w-full bg-zinc-950 border border-zinc-850 rounded-xl px-4 py-3 text-white text-xs font-mono focus:border-[#b4975a] focus:outline-none leading-relaxed"
+                  />
+                </div>
+                <button 
+                  type="submit"
+                  className="w-full py-3 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Plus size={14} /> Add Direct Photo URLs
+                </button>
+              </form>
+
+              {/* Photos list count */}
+              <div className="flex justify-between items-center text-xs font-semibold">
+                <span className="text-zinc-400 font-bold uppercase tracking-wider">Cataloged Photos ({selectedGalForPhotos.photos ? selectedGalForPhotos.photos.length : 0})</span>
+                <span className="text-[10px] text-zinc-500 font-light">Guests see these matches upon biometric search</span>
+              </div>
+
+              {/* Photos grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-h-[30vh] overflow-y-auto p-1 bg-zinc-900/20 border border-zinc-850 rounded-2xl">
+                {!selectedGalForPhotos.photos || selectedGalForPhotos.photos.length === 0 ? (
+                  <div className="col-span-full py-10 text-center text-zinc-600 text-xs font-light italic">
+                    No custom photos added yet. Paste direct URLs above to begin!
+                  </div>
+                ) : (
+                  selectedGalForPhotos.photos.map(p => (
+                    <div key={p.id} className="relative aspect-[3/4] rounded-xl overflow-hidden group border border-zinc-800 shadow-sm bg-zinc-950">
+                      <img src={p.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Gallery item" />
+                      
+                      {/* Delete Overlay */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <button 
+                          onClick={() => handleDeletePhotoFromGal(p.id)}
+                          className="w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform cursor-pointer"
+                          title="Delete photo"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="pt-4 border-t border-zinc-850">
+                <button 
+                  onClick={() => setSelectedGalForPhotos(null)}
+                  className="w-full py-4.5 bg-zinc-900 hover:bg-zinc-850 text-white text-xs font-bold uppercase tracking-widest rounded-xl border border-zinc-800 transition-all cursor-pointer text-center"
+                >
+                  Save & Finish Management
+                </button>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       </motion.div>
     </div>

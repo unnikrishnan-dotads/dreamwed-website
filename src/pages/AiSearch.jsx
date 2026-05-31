@@ -26,14 +26,28 @@ const INITIAL_GALLERIES = [
     name: "Aarav & Meera's Royal Wedding",
     gdriveLink: "https://drive.google.com/drive/folders/1AaravMeeraRoyalWeddingDreamwedDemo",
     type: "After Event Gallery",
-    coverUrl: "/ai_search_banner.png"
+    coverUrl: "/ai_search_banner.png",
+    photos: [
+      { id: "am-1", url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800" },
+      { id: "am-2", url: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800" },
+      { id: "am-3", url: "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=800" },
+      { id: "am-4", url: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800" },
+      { id: "am-5", url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800" }
+    ]
   },
   {
     id: "wedding-rohan-dia",
     name: "Rohan & Dia's Mumbai Sangeet",
     gdriveLink: "https://drive.google.com/drive/folders/2RohanDiaMumbaiSangeetDreamwedDemo",
     type: "Live Gallery",
-    coverUrl: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800"
+    coverUrl: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800",
+    photos: [
+      { id: "rd-1", url: "https://images.unsplash.com/photo-1507504038482-76210f5c0be6?q=80&w=800" },
+      { id: "rd-2", url: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800" },
+      { id: "rd-3", url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800" },
+      { id: "rd-4", url: "https://images.unsplash.com/photo-1519225495810-7517cbdb222d?q=80&w=800" },
+      { id: "rd-5", url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800" }
+    ]
   }
 ];
 
@@ -172,7 +186,8 @@ const AiSearch = () => {
 
     setTimeout(() => {
       setIsScanning(false);
-      setMatches(SAMPLE_PHOTOS_ARCHIVE.slice(0, 5));
+      const activeWeddingPhotos = activeWedding && activeWedding.photos ? activeWedding.photos : [];
+      setMatches(activeWeddingPhotos);
       setActiveStep("results");
       showToast("✨ AI Photo search complete! Matched photos isolated.");
     }, 3200);
@@ -540,58 +555,72 @@ const AiSearch = () => {
                 </div>
               )}
 
-              {/* Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {matches.map(img => (
-                  <div 
-                    key={img.id}
-                    className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden aspect-[4/5] relative group shadow-lg"
-                  >
-                    <img 
-                      src={img.url} 
-                      alt="AI Match" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                    />
-                    
-                    {/* Dark gradient mask */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 gap-4" />
+              {/* Grid or Empty State */}
+              {matches && matches.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {matches.map(img => (
+                    <div 
+                      key={img.id}
+                      className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden aspect-[4/5] relative group shadow-lg"
+                    >
+                      <img 
+                        src={img.url} 
+                        alt="AI Match" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      />
+                      
+                      {/* Dark gradient mask */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 gap-4" />
 
-                    {/* Actions overlay */}
-                    <div className="absolute inset-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end gap-3.5 z-10">
-                      <div className="flex items-center justify-center gap-2">
+                      {/* Actions overlay */}
+                      <div className="absolute inset-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end gap-3.5 z-10">
+                        <div className="flex items-center justify-center gap-2">
+                          <button 
+                            onClick={() => setActiveLightbox(img.url)}
+                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                            title="Zoom view"
+                          >
+                            <ZoomIn size={15} />
+                          </button>
+                          <button 
+                            onClick={() => handleDownload(img.url)}
+                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                            title="Download photo"
+                          >
+                            <Download size={15} />
+                          </button>
+                          <button 
+                            onClick={() => handleShare(img.url)}
+                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                            title="Share link"
+                          >
+                            <Share2 size={15} />
+                          </button>
+                        </div>
+
                         <button 
-                          onClick={() => setActiveLightbox(img.url)}
-                          className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                          title="Zoom view"
+                          onClick={() => handlePrintTrigger(img.url)}
+                          className="w-full py-2.5 bg-[#d4af37] text-zinc-950 text-[10px] font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer hover:bg-white transition-all flex items-center justify-center gap-1.5 active:scale-95"
                         >
-                          <ZoomIn size={15} />
-                        </button>
-                        <button 
-                          onClick={() => handleDownload(img.url)}
-                          className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                          title="Download photo"
-                        >
-                          <Download size={15} />
-                        </button>
-                        <button 
-                          onClick={() => handleShare(img.url)}
-                          className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                          title="Share link"
-                        >
-                          <Share2 size={15} />
+                          <ShoppingCart size={12} /> Print This Photo
                         </button>
                       </div>
-
-                      <button 
-                        onClick={() => handlePrintTrigger(img.url)}
-                        className="w-full py-2.5 bg-[#d4af37] text-zinc-950 text-[10px] font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer hover:bg-white transition-all flex items-center justify-center gap-1.5 active:scale-95"
-                      >
-                        <ShoppingCart size={12} /> Print This Photo
-                      </button>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-zinc-950 border border-white/5 rounded-[28px] p-10 text-center space-y-4 max-w-lg mx-auto">
+                  <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/20 mx-auto">
+                    <AlertCircle size={20} className="stroke-[1.5]" />
                   </div>
-                ))}
-              </div>
+                  <div className="space-y-1.5 flex flex-col items-center">
+                    <h4 className="text-white text-base font-serif">No Portraits Cataloged Yet</h4>
+                    <p className="text-zinc-500 text-xs font-light leading-relaxed">
+                      Our lead design team is currently sorting and aligning high-res deliverables for this registry. Please tap the Google Drive button above to view all raw photo streams, or contact your coordinator to sync custom photos in the admin portal!
+                    </p>
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
 
