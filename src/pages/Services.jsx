@@ -146,6 +146,75 @@ const Services = () => {
         </div>
       </section>
 
+      {/* AI Photo Search Highlights Section */}
+      <section className="w-full py-24 px-6 md:px-8 bg-zinc-950 text-white relative overflow-hidden">
+        {/* Glow vector backdrops */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-amber-500/5 rounded-full blur-[90px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-[#881337]/5 rounded-full blur-[90px] pointer-events-none"></div>
+
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          {/* Left Scan Illustration Mockup */}
+          <div className="flex-1 relative w-full max-w-md lg:max-w-none">
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 bg-black/60 p-5 flex items-center justify-center">
+              <div className="absolute inset-6 rounded-2xl border border-[#b4975a]/30 bg-zinc-900/60 overflow-hidden flex items-center justify-center shadow-inner">
+                <img 
+                  src="/ai_search_banner.png" 
+                  alt="AI Face Scan Preview"
+                  className="w-full h-full object-cover opacity-70"
+                />
+                {/* Glowing bounce laser */}
+                <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_15px_#f59e0b] animate-bounce w-full" style={{ animationDuration: '4s' }}></div>
+              </div>
+              <div className="absolute bottom-10 left-10 right-10 bg-black/85 backdrop-blur-xl border border-white/5 rounded-xl p-3 flex justify-between items-center shadow-lg">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-300">Biometric Sync Active</span>
+                </div>
+                <span className="text-[8px] font-mono text-amber-500 uppercase tracking-widest">Confidence 99.2%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Text Contents */}
+          <div className="flex-1 text-left space-y-8">
+            <span className="text-[11px] font-bold uppercase tracking-[2.5px] text-[#b4975a] bg-[#b4975a]/10 px-4 py-2 rounded-full inline-block">
+              ✨ Included in all packages
+            </span>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-4xl sm:text-5xl text-white font-light tracking-tight leading-none">
+              AI Photo Search & <span className="italic font-serif text-[#b4975a]">Print Preserves</span>
+            </h2>
+            <p className="text-zinc-400 text-sm font-light leading-relaxed max-w-lg">
+              Empower your guests to skip scrolling through thousands of photos. By uploading a single portrait selfie, our high-precision facial scanner cross-references the wedding database to isolate their custom moments in milliseconds.
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+              <div className="space-y-1.5">
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">⚡ Instant Selfie Scan</h4>
+                <p className="text-[11px] text-zinc-500 font-light leading-relaxed">Guests scan in real-time with gold laser feedback & diagnostic logs.</p>
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">🛍️ Archival Print Checkout</h4>
+                <p className="text-[11px] text-zinc-500 font-light leading-relaxed">Direct size selection (8x12, 10x15, 12x18) with home dispatch.</p>
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">🔒 Instagram Access Gate</h4>
+                <p className="text-[11px] text-zinc-500 font-light leading-relaxed">Seamless lockscreen verification gate to grow social engagement.</p>
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">📦 Real-time Dispatch Sync</h4>
+                <p className="text-[11px] text-zinc-500 font-light leading-relaxed">Fulfilled and managed seamlessly in the central Dreamwed admin portal.</p>
+              </div>
+            </div>
+
+            <div className="pt-4">
+              <Button to="/ai-search/" variant="primary" className="px-10 py-4.5 text-xs tracking-widest uppercase font-bold">
+                Experience AI Search Demo
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* DYNAMIC IMMERSIVE DETAILED MODAL */}
       <AnimatePresence>
         {activePlanIndex !== null && (

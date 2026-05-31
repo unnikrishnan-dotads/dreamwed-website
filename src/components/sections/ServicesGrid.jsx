@@ -75,6 +75,16 @@ const services = [
     tag: "Memories",
     image: capture6, // collage of photos/portraits
     link: "/services"
+  },
+  {
+    id: 7,
+    title: "AI Photo Search",
+    description: "Upload a selfie to find all your high-resolution wedding photos instantly with neural scanning.",
+    rating: "5.0",
+    tag: "New ✨",
+    image: "/ai_search_banner.png",
+    link: "/ai-search/",
+    isExternal: true
   }
 ];
 
@@ -254,12 +264,18 @@ const ServicesGrid = () => {
               variants={cardVariants}
               whileHover={{ y: -12 }}
               onClick={() => {
+                if (service.isExternal) {
+                  window.location.href = service.link;
+                  return;
+                }
                 setActiveServiceId(service.id);
                 setActiveTab("all");
                 setPlayingVideoId(null);
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="group relative h-[480px] sm:h-[520px] rounded-[32px] overflow-hidden cursor-pointer shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-all duration-500 bg-zinc-100"
+              className={`group relative h-[480px] sm:h-[520px] rounded-[32px] overflow-hidden cursor-pointer shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-all duration-500 bg-zinc-100 ${
+                service.id === 7 ? "lg:col-span-3 md:col-span-2" : ""
+              }`}
             >
               
               {/* IMAGE BACKGROUND */}

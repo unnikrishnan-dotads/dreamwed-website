@@ -12,6 +12,10 @@ import Policies from './pages/Policies';
 import Admin from './pages/Admin';
 import TrivandrumOffer from './pages/TrivandrumOffer';
 import ClientPortal from './pages/ClientPortal';
+import EditorPortal from './pages/EditorPortal';
+import DesignerPortal from './pages/DesignerPortal';
+import MyBooking from './pages/MyBooking';
+import AiSearch from './pages/AiSearch';
 import NotFound from './pages/NotFound';
 import CustomCursor from './components/ui/CustomCursor';
 
@@ -49,9 +53,30 @@ const AnimatedRoutes = () => {
         <Route path="/offer" element={<PageWrapper><TrivandrumOffer /></PageWrapper>} />
         <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
         <Route path="/my-booking" element={<PageWrapper><ClientPortal /></PageWrapper>} />
+        <Route path="/booking" element={<PageWrapper><MyBooking /></PageWrapper>} />
+        <Route path="/editor" element={<PageWrapper><EditorPortal /></PageWrapper>} />
+        <Route path="/designer" element={<PageWrapper><DesignerPortal /></PageWrapper>} />
+        <Route path="/ai-search" element={<PageWrapper><AiSearch /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
+  );
+};
+
+const AppContent = () => {
+  const location = useLocation();
+  const isPortalPath = ["/my-booking", "/admin", "/editor", "/designer", "/ai-search"].some(path => 
+    location.pathname.startsWith(path)
+  );
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {!isPortalPath && <Header />}
+      <main className="flex-grow">
+        <AnimatedRoutes />
+      </main>
+      {!isPortalPath && <Footer />}
+    </div>
   );
 };
 
@@ -60,13 +85,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <CustomCursor />
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-      </div>
+      <AppContent />
     </Router>
   );
 }
