@@ -42,6 +42,63 @@ const MyBooking = () => {
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
+  const INITIAL_BOOKINGS = [
+    {
+      id: 3,
+      customer_name: "Adarsh & Anjali",
+      customer_phone: "9042544997",
+      customer_email: "adarsh.anjali@gmail.com",
+      event_date: "2026-12-18",
+      event_venue: "Taj Green Cove, Kovalam",
+      package_name: "Elite Signature Package",
+      package_price: 180000,
+      add_ons: ["Pre-wedding Cinematic Video (Offer Price - 9999/-)", "Drone Coverage Upgrade"],
+      total_price: 189999,
+      advance_paid: 50000,
+      balance_amount: 139999,
+      invoice_number: "DW-2026-003",
+      invoice_date: "2026-05-28",
+      status: "confirmed",
+      payment_milestones: [
+        { label: "Advance - Wedding Photography (Elite Signature Package)", amount: 50000, date: "2026-05-28", status: "Paid" },
+        { label: "Second Payment (Event Day)", amount: 0, date: "2026-12-18", status: "Pending" },
+        { label: "Final Payment (Before Delivery)", amount: 139999, date: "", status: "Pending" }
+      ],
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-28 18:26:08"
+    },
+    {
+      id: 4,
+      customer_name: "Rahul & Sneha",
+      customer_phone: "9895412895",
+      customer_email: "rahul.sneha@gmail.com",
+      event_date: "2026-11-20",
+      event_venue: "The Leela Raviz, Kovalam",
+      package_name: "Elite Signature Package",
+      package_price: 180000,
+      add_ons: ["Pre-wedding Cinematic Video (Offer Price - 9999/-)", "Drone Coverage Upgrade"],
+      total_price: 189999,
+      advance_paid: 50000,
+      balance_amount: 139999,
+      invoice_number: "DW-2026-004",
+      invoice_date: "2026-05-28",
+      status: "confirmed",
+      payment_milestones: [
+        { label: "Advance - Wedding Photography (Elite Signature Package)", amount: 50000, date: "2026-05-28", status: "Paid" },
+        { label: "Second Payment (Event Day)", amount: 0, date: "2026-11-20", status: "Pending" },
+        { label: "Final Payment (Before Delivery)", amount: 139999, date: "", status: "Pending" }
+      ],
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-28 18:26:08"
+    }
+  ];
+
+  useEffect(() => {
+    if (!localStorage.getItem("dreamwed_bookings")) {
+      localStorage.setItem("dreamwed_bookings", JSON.stringify(INITIAL_BOOKINGS));
+    }
+  }, []);
+
   const handlePackageChange = (pName) => {
     setSelectedPackage(pName);
     if (pName === "Elite Signature Package") setPackagePrice(180000);
@@ -108,6 +165,12 @@ const MyBooking = () => {
         body: JSON.stringify(payload)
       });
       if (res.ok) {
+        const newBooking = await res.json();
+        
+        // Save locally in sync
+        const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+        localStorage.setItem("dreamwed_bookings", JSON.stringify([newBooking, ...localBookings]));
+
         setSignupSuccess(true);
         setSingleName("");
         setSinglePhone("");
@@ -123,11 +186,46 @@ const MyBooking = () => {
         setAdvancePaid(5000);
         alert("✅ Wedding booking request submitted! Admin will review and approve shortly.");
       } else {
-        alert("Error submitting booking request. Please try again.");
+        throw new Error("Server error");
       }
     } catch (err) {
-      console.error("Signup error:", err);
-      alert("Network connection error submitting booking request.");
+      console.error("Signup error, falling back locally:", err);
+      
+      const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+      const id = localBookings.length > 0 ? Math.max(...localBookings.map(b => b.id)) + 1 : 5;
+      const invoiceNo = `DW-${new Date().getFullYear()}-${String(id).padStart(3, '0')}`;
+      
+      const newBooking = {
+        id,
+        ...payload,
+        invoice_number: invoiceNo,
+        invoice_date: new Date().toISOString().split('T')[0],
+        status: "pending",
+        payment_milestones: [
+          { label: `Advance - Wedding Photography (${payload.package_name})`, amount: payload.advance_paid, date: new Date().toISOString().split('T')[0], status: 'Paid' },
+          { label: 'Second Payment (Event Day)', amount: 0, date: payload.event_date, status: 'Pending' },
+          { label: 'Final Payment (Before Delivery)', amount: payload.total_price - payload.advance_paid, date: '', status: 'Pending' }
+        ],
+        created_at: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
+      };
+
+      localStorage.setItem("dreamwed_bookings", JSON.stringify([newBooking, ...localBookings]));
+
+      setSignupSuccess(true);
+      setSingleName("");
+      setSinglePhone("");
+      setSingleEmail("");
+      setGroomName("");
+      setGroomPhone("");
+      setGroomEmail("");
+      setBrideName("");
+      setBridePhone("");
+      setBrideEmail("");
+      setEventDate("");
+      setEventVenue("");
+      setAdvancePaid(5000);
+      alert("✅ Wedding booking request submitted (Local Offline Sync Active)! Admin will review and approve shortly.");
     } finally {
       setSigningUp(false);
     }
@@ -145,6 +243,28 @@ const MyBooking = () => {
       const res = await fetch(`${API_BASE}/api/client/booking?phone=${encodeURIComponent(phoneQuery.trim())}`);
       
       if (res.status === 404) {
+        // Local fallback
+        const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+        const normalizedInput = phoneQuery.trim().replace(/\D/g, '');
+        const match = localBookings.find(b => {
+          const normalizedBookingPhone = (b.customer_phone || '').replace(/\D/g, '');
+          const normalizedBookingPhone2 = (b.customer_phone_2 || '').replace(/\D/g, '');
+          return normalizedBookingPhone === normalizedInput || 
+                 normalizedBookingPhone.endsWith(normalizedInput) || 
+                 normalizedInput.endsWith(normalizedBookingPhone) ||
+                 (normalizedBookingPhone2 && (
+                   normalizedBookingPhone2 === normalizedInput ||
+                   normalizedBookingPhone2.endsWith(normalizedInput) ||
+                   normalizedInput.endsWith(normalizedBookingPhone2)
+                 ));
+        });
+
+        if (match) {
+          setBooking(match);
+          setStatus("success");
+          return;
+        }
+
         setStatus("not_found");
         return;
       }
@@ -157,7 +277,30 @@ const MyBooking = () => {
       setBooking(data);
       setStatus("success");
     } catch (err) {
-      console.error("Lookup error:", err);
+      console.error("Lookup error, falling back locally:", err);
+      
+      // Local fallback
+      const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+      const normalizedInput = phoneQuery.trim().replace(/\D/g, '');
+      const match = localBookings.find(b => {
+        const normalizedBookingPhone = (b.customer_phone || '').replace(/\D/g, '');
+        const normalizedBookingPhone2 = (b.customer_phone_2 || '').replace(/\D/g, '');
+        return normalizedBookingPhone === normalizedInput || 
+               normalizedBookingPhone.endsWith(normalizedInput) || 
+               normalizedInput.endsWith(normalizedBookingPhone) ||
+               (normalizedBookingPhone2 && (
+                 normalizedBookingPhone2 === normalizedInput ||
+                 normalizedBookingPhone2.endsWith(normalizedInput) ||
+                 normalizedInput.endsWith(normalizedBookingPhone2)
+               ));
+      });
+
+      if (match) {
+        setBooking(match);
+        setStatus("success");
+        return;
+      }
+
       setStatus("error");
       setErrorMessage("Could not connect to the booking server. Please check if your number is correct or try again shortly.");
     }

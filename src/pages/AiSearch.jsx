@@ -493,7 +493,7 @@ const AiSearch = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              className="space-y-6 text-left"
+              className="space-y-8 text-left"
             >
               <div className="flex justify-between items-center bg-zinc-950/30 p-4.5 border border-white/5 rounded-2xl backdrop-blur-xl">
                 <div>
@@ -511,6 +511,34 @@ const AiSearch = () => {
                   🔄 New Search
                 </button>
               </div>
+
+              {/* Premium Google Drive Stream Unlock Callout */}
+              {activeWedding && activeWedding.gdriveLink && (
+                <div className="bg-gradient-to-r from-[#d4af37]/5 via-zinc-950/90 to-[#d4af37]/5 border border-[#d4af37]/35 rounded-[24px] p-6 sm:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[0_0_40px_rgba(212,175,55,0.05)] relative overflow-hidden text-center md:text-left">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.03),transparent)] pointer-events-none" />
+                  <div className="space-y-2.5 z-10 max-w-xl">
+                    <div className="flex items-center justify-center md:justify-start gap-2 text-[#d4af37] text-[10px] font-bold uppercase tracking-widest">
+                      <span className="animate-pulse">✨</span> Biometric matches isolated successfully
+                    </div>
+                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-2xl sm:text-3xl text-white font-light leading-snug">
+                      Access <span className="italic font-serif text-[#d4af37]">{activeWedding.name}</span> High-Res Folder
+                    </h3>
+                    <p className="text-zinc-400 text-xs font-light leading-relaxed">
+                      Your original, high-resolution photographs and cine deliverables are safely stored in your wedding's secure shared Google Drive workspace. Tap below to access, download, or view all original memories.
+                    </p>
+                  </div>
+                  
+                  <a 
+                    href={activeWedding.gdriveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-4 bg-[#d4af37] hover:bg-[#c59d2a] active:scale-95 text-zinc-950 font-bold rounded-xl text-xs uppercase tracking-widest transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 shrink-0 z-10 group"
+                  >
+                    <span>🔓 Access Full Google Drive Gallery</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                  </a>
+                </div>
+              )}
 
               {/* Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

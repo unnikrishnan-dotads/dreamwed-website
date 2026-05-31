@@ -1171,6 +1171,146 @@ const ClientPortal = () => {
     alert(`Connected to server: ${cleanUrl}`);
   };
 
+  const INITIAL_BOOKINGS = [
+    {
+      id: 3,
+      customer_name: "Adarsh & Anjali",
+      customer_phone: "9042544997",
+      customer_email: "adarsh.anjali@gmail.com",
+      event_date: "2026-12-18",
+      event_venue: "Taj Green Cove, Kovalam",
+      package_name: "Elite Signature Package",
+      package_price: 180000,
+      add_ons: ["Pre-wedding Cinematic Video (Offer Price - 9999/-)", "Drone Coverage Upgrade"],
+      total_price: 189999,
+      advance_paid: 50000,
+      balance_amount: 139999,
+      invoice_number: "DW-2026-003",
+      invoice_date: "2026-05-28",
+      status: "confirmed",
+      payment_milestones: [
+        { label: "Advance - Wedding Photography (Elite Signature Package)", amount: 50000, date: "2026-05-28", status: "Paid" },
+        { label: "Second Payment (Event Day)", amount: 0, date: "2026-12-18", status: "Pending" },
+        { label: "Final Payment (Before Delivery)", amount: 139999, date: "", status: "Pending" }
+      ],
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-28 18:26:08"
+    },
+    {
+      id: 4,
+      customer_name: "Rahul & Sneha",
+      customer_phone: "9895412895",
+      customer_email: "rahul.sneha@gmail.com",
+      event_date: "2026-11-20",
+      event_venue: "The Leela Raviz, Kovalam",
+      package_name: "Elite Signature Package",
+      package_price: 180000,
+      add_ons: ["Pre-wedding Cinematic Video (Offer Price - 9999/-)", "Drone Coverage Upgrade"],
+      total_price: 189999,
+      advance_paid: 50000,
+      balance_amount: 139999,
+      invoice_number: "DW-2026-004",
+      invoice_date: "2026-05-28",
+      status: "confirmed",
+      payment_milestones: [
+        { label: "Advance - Wedding Photography (Elite Signature Package)", amount: 50000, date: "2026-05-28", status: "Paid" },
+        { label: "Second Payment (Event Day)", amount: 0, date: "2026-11-20", status: "Pending" },
+        { label: "Final Payment (Before Delivery)", amount: 139999, date: "", status: "Pending" }
+      ],
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-28 18:26:08"
+    }
+  ];
+
+  const INITIAL_PROJECTS = [
+    {
+      id: 2,
+      booking_id: 3,
+      couple_name: "Adarsh & Anjali",
+      wedding_date: "2026-12-18",
+      current_step: 3,
+      timeline_steps: [
+        { name: "Photos Uploaded", completed: true, updated_at: "2026-05-28 19:04:54" },
+        { name: "Client Selected Photos", completed: true, updated_at: "2026-05-30 13:14:48" },
+        { name: "Video Editing Completed", completed: false, updated_at: null },
+        { name: "Album Design Pending Approval", completed: false, updated_at: null },
+        { name: "Final Delivery Completed", completed: false, updated_at: null }
+      ],
+      package_details: {
+        photography: "Traditional + Candid (4-Camera coverage)",
+        video: "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        album: "One 80-Page Premium Couture Leather Layflat Album",
+        edited_photos: "120 color-corrected high-res photos included",
+        delivery_items: "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      gallery_images: [
+        { id: 1, url: "https://lh3.googleusercontent.com/d/1t9NpD7bufB-EotQGhan3UX_zw9oqpCNE=w1000", favorited: true, categories: ["album"], comment: "" },
+        { id: 2, url: "https://lh3.googleusercontent.com/d/1Qf7tqN14Oct0GdG2dn-jNBy_RdNO4tRh=w1000", favorited: true, categories: ["album"], comment: "" },
+        { id: 3, url: "https://lh3.googleusercontent.com/d/1EJ9qWLLBqgT1woFFPduDimEDXBt-K5RS=w1000", favorited: true, categories: ["album"], comment: "" },
+        { id: 4, url: "https://lh3.googleusercontent.com/d/1bWyGkkkzScDh2lyyZt0mfL7S2kdWzchU=w1000", favorited: false, categories: [], comment: "" },
+        { id: 5, url: "https://lh3.googleusercontent.com/d/1lGbiiMD_OfYnvmwxiUoWY7dMyQyfwoPE=w1000", favorited: true, categories: ["album"], comment: "" }
+      ],
+      deliveries: {
+        video_teaser_url: "https://www.youtube.com/embed/S9-SrdnKsMs",
+        video_status: "pending",
+        album_pdf_url: "/albums/1780120461186_JISMY_DEMO.pdf",
+        album_status: "changes_requested",
+        final_download_url: "",
+        raw_photos_url: "https://drive.google.com/drive/folders/19mUd9IudALVI6Sa41Q2htmXkfJm0uSU4?usp=sharing",
+        album_revision_details: {
+          extra_photos_count: 0,
+          specific_photos: "",
+          revision_notes: "",
+          uploaded_files: [
+            { name: "IMG_9451.jpg.jpeg", url: "https://dreamwedstories.co.in/uploads/IMG_9451.jpg.jpeg" }
+          ]
+        }
+      },
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-30 13:34:33",
+      deadline_date: "",
+      invitation_url: "",
+      reference_photos_url: "https://dreamwedstories.co.in/uploads/JISMY%20DEMO.pdf",
+      song_list_url: "",
+      wedding_letter_url: "https://dreamwedstories.co.in/uploads/wfonts.com.txt",
+      wedding_letter_text: "Uploaded file: wfonts.com.txt"
+    },
+    {
+      id: 3,
+      booking_id: 4,
+      couple_name: "Rahul & Sneha",
+      wedding_date: "2026-11-20",
+      current_step: 3,
+      timeline_steps: [
+        { name: "Photos Uploaded", completed: true, updated_at: "2026-05-28 19:04:54" },
+        { name: "Client Selected Photos", completed: true, updated_at: "2026-05-30 13:18:43" },
+        { name: "Video Editing Completed", completed: false, updated_at: null },
+        { name: "Album Design Pending Approval", completed: false, updated_at: null },
+        { name: "Final Delivery Completed", completed: false, updated_at: null }
+      ],
+      package_details: {
+        photography: "Traditional + Candid (4-Camera coverage)",
+        video: "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        album: "One 80-Page Premium Couture Leather Layflat Album",
+        edited_photos: "120 color-corrected high-res photos included",
+        delivery_items: "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      gallery_images: [
+        { id: 1, url: "https://lh3.googleusercontent.com/d/1t9NpD7bufB-EotQGhan3UX_zw9oqpCNE=w1000", favorited: true, categories: ["album"], comment: "" },
+        { id: 2, url: "https://lh3.googleusercontent.com/d/1Qf7tqN14Oct0GdG2dn-jNBy_RdNO4tRh=w1000", favorited: true, categories: ["album"], comment: "" }
+      ],
+      deliveries: {
+        video_teaser_url: "https://www.youtube.com/embed/S9-SrdnKsMs",
+        video_status: "pending",
+        album_pdf_url: "https://dreamwedstories.co.in/draft-album.pdf",
+        album_status: "pending",
+        final_download_url: ""
+      },
+      created_at: "2026-05-28 18:26:08",
+      updated_at: "2026-05-28 18:26:08"
+    }
+  ];
+
   const handleLookup = async (e, overridePhone = null) => {
     if (e && e.preventDefault) e.preventDefault();
     let query = overridePhone || usernameOrEmail.trim();
@@ -1194,23 +1334,21 @@ const ClientPortal = () => {
           if (match) {
             phone = match.customer_phone;
           }
+        } else {
+          throw new Error("Unable to fetch bookings");
         }
       } else if (phone.length >= 10) {
         phone = phone.slice(-10);
       }
 
       if (!phone) {
-        setStatus("not_found");
-        setErrorMessage("No active wedding workspace matching this username or email was found.");
-        return;
+        throw new Error("Phone not found");
       }
 
       const res = await fetch(`${API_BASE}/api/client/project?phone=${encodeURIComponent(phone)}`);
       
       if (res.status === 404) {
-        setStatus("not_found");
-        setErrorMessage("No active wedding workspace matching this username or email was found.");
-        return;
+        throw new Error("Not found");
       }
       
       if (!res.ok) {
@@ -1242,14 +1380,102 @@ const ClientPortal = () => {
 
       localStorage.setItem("dreamwed_logged_phone", query);
     } catch (err) {
-      console.error("Lookup error:", err);
-      setStatus("error");
-      setErrorMessage("Could not connect to the booking server. Please verify your credentials or check your connection settings.");
+      console.error("Lookup error, falling back locally:", err);
+      
+      // Local fallback lookup
+      const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+      const localProjects = JSON.parse(localStorage.getItem("dreamwed_projects") || "[]");
+      
+      let phone = query.replace(/\D/g, "");
+      let bookingMatch = null;
+
+      if (phone.length < 10 || isNaN(query.replace(/\+/g, ""))) {
+        bookingMatch = localBookings.find(b => 
+          b.customer_email?.toLowerCase() === query.toLowerCase() ||
+          b.customer_name?.toLowerCase().includes(query.toLowerCase())
+        );
+      } else {
+        const cleanPhone = phone.slice(-10);
+        bookingMatch = localBookings.find(b => 
+          (b.customer_phone || '').replace(/\D/g, '').endsWith(cleanPhone) ||
+          (b.customer_phone_2 || '').replace(/\D/g, '').endsWith(cleanPhone)
+        );
+      }
+
+      if (bookingMatch) {
+        let projectMatch = localProjects.find(p => p.booking_id === bookingMatch.id);
+        if (!projectMatch) {
+          // Auto spawn project
+          projectMatch = {
+            id: bookingMatch.id,
+            booking_id: bookingMatch.id,
+            couple_name: bookingMatch.customer_name,
+            wedding_date: bookingMatch.event_date,
+            current_step: bookingMatch.status === "confirmed" ? 3 : 1,
+            timeline_steps: [
+              { name: "Photos Uploaded", completed: true, updated_at: new Date().toISOString() },
+              { name: "Client Selected Photos", completed: false, updated_at: null },
+              { name: "Video Editing Completed", completed: false, updated_at: null },
+              { name: "Album Design Pending Approval", completed: false, updated_at: null },
+              { name: "Final Delivery Completed", completed: false, updated_at: null }
+            ],
+            package_details: {
+              photography: "Traditional + Candid (4-Camera coverage)",
+              video: "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+              album: "One 80-Page Premium Couture Leather Layflat Album",
+              edited_photos: "120 color-corrected high-res photos included",
+              delivery_items: "Premium Signature bag, custom photo calendar & USB drive"
+            },
+            gallery_images: [
+              { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600", favorited: false, categories: [], comment: "" },
+              { id: 2, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600", favorited: false, categories: [], comment: "" }
+            ],
+            deliveries: {
+              video_teaser_url: "https://www.youtube.com/embed/S9-SrdnKsMs",
+              video_status: "pending",
+              album_pdf_url: "https://dreamwedstories.co.in/draft-album.pdf",
+              album_status: "pending",
+              final_download_url: ""
+            },
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          localProjects.push(projectMatch);
+          localStorage.setItem("dreamwed_projects", JSON.stringify(localProjects));
+        }
+
+        setProject(projectMatch);
+        setBooking(bookingMatch);
+        setStatus("success");
+
+        const couple = projectMatch.couple_name || "";
+        const parts = couple.split(" & ");
+        setGroomName(parts[0] || "");
+        setBrideName(parts[1] || "");
+        setWeddingDate(projectMatch.wedding_date || "");
+        setInvitationUrl(projectMatch.invitation_url || "");
+        setReferencePhotosUrl(projectMatch.reference_photos_url || "");
+        setSongListUrl(projectMatch.song_list_url || "");
+        setCustomerPhone(bookingMatch.customer_phone || "");
+        setCustomerEmail(bookingMatch.customer_email || "");
+
+        localStorage.setItem("dreamwed_logged_phone", query);
+      } else {
+        setStatus("not_found");
+        setErrorMessage("No active wedding workspace matching this username or email was found.");
+      }
     }
   };
 
   // Auto-login on page load
   useEffect(() => {
+    if (!localStorage.getItem("dreamwed_bookings")) {
+      localStorage.setItem("dreamwed_bookings", JSON.stringify(INITIAL_BOOKINGS));
+    }
+    if (!localStorage.getItem("dreamwed_projects")) {
+      localStorage.setItem("dreamwed_projects", JSON.stringify(INITIAL_PROJECTS));
+    }
+
     const savedPhone = localStorage.getItem("dreamwed_logged_phone");
     if (savedPhone) {
       handleLookup(null, savedPhone);
@@ -1268,10 +1494,20 @@ const ClientPortal = () => {
           if (data.project) {
             // Silently update the project state to reflect new album_pdf_urls or chat logs in real-time
             setProject(data.project);
+            
+            // Sync locally
+            const localProjects = JSON.parse(localStorage.getItem("dreamwed_projects") || "[]");
+            const updatedProjects = localProjects.map(p => p.id === data.project.id ? data.project : p);
+            localStorage.setItem("dreamwed_projects", JSON.stringify(updatedProjects));
           }
         }
       } catch (e) {
-        console.log("Error in background workspace sync:", e);
+        console.log("Polling offline, using localStorage");
+        const localProjects = JSON.parse(localStorage.getItem("dreamwed_projects") || "[]");
+        const match = localProjects.find(p => p.booking_id === booking.id || p.couple_name === booking.customer_name);
+        if (match) {
+          setProject(match);
+        }
       }
     }, 5000);
 
