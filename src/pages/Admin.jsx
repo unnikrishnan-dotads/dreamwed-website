@@ -458,6 +458,16 @@ const Admin = () => {
     localStorage.setItem("dreamwed_galleries", JSON.stringify(updated));
   };
 
+  const convertGoogleDriveUrl = (url) => {
+    const matchd = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (matchd && matchd[1]) return `https://lh3.googleusercontent.com/d/${matchd[1]}`;
+    
+    const matchid = url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (matchid && matchid[1]) return `https://lh3.googleusercontent.com/d/${matchid[1]}`;
+    
+    return url;
+  };
+
   const handleAddBulkPhotos = (e) => {
     e.preventDefault();
     if (!selectedGalForPhotos || !bulkPhotoUrls.trim()) return;
@@ -472,9 +482,11 @@ const Admin = () => {
       return;
     }
 
+    const processedUrls = urls.map(url => convertGoogleDriveUrl(url));
+
     const currentPhotos = selectedGalForPhotos.photos || [];
-    const newPhotos = urls.map((url, index) => ({
-      id: `photo-${Date.now()}-${index}-${Math.floor(Math.random() * 1000)}`,
+    const newPhotos = processedUrls.map((url, index) => ({
+      id: `photo-${Date.now()}-${index}-${Math.floor(Math.random() * 1050)}`,
       url: url
     }));
 
@@ -1389,6 +1401,9 @@ const Admin = () => {
                     placeholder="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&#10;https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&#10;(Separate multiple URLs with commas or new lines)"
                     className="w-full bg-zinc-950 border border-zinc-850 rounded-xl px-4 py-3 text-white text-xs font-mono focus:border-[#b4975a] focus:outline-none leading-relaxed"
                   />
+                  <p className="text-[9px] text-zinc-500 leading-relaxed mt-1 select-none">
+                    💡 <strong>Google Drive Auto-Sync</strong>: Paste standard Google Drive share links directly! The portal converts them instantly into high-res rendering URLs.
+                  </p>
                 </div>
                 <button 
                   type="submit"
