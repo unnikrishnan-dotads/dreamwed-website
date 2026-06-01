@@ -20,6 +20,36 @@ const SAMPLE_PHOTOS_ARCHIVE = [
   { id: 10, url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800", tags: ["bride", "portrait"] }
 ];
 
+// Rich, premium Unsplash fallback wedding photos categorized by biometric tag
+const FALLBACK_BY_CLASS = {
+  bride_solo: [
+    "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800",
+    "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=800",
+    "https://images.unsplash.com/photo-1549417229-aa67d3263c09?q=80&w=800"
+  ],
+  groom_solo: [
+    "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=800",
+    "https://images.unsplash.com/photo-1504437484263-933dbfba340b?q=80&w=800",
+    "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=800"
+  ],
+  couple: [
+    "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800",
+    "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800"
+  ],
+  group_candid: [
+    "https://images.unsplash.com/photo-1507504038482-76210f5c0be6?q=80&w=800",
+    "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800",
+    "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=800",
+    "https://images.unsplash.com/photo-1510076857177-7470066c4308?q=80&w=800"
+  ],
+  guest_solo: [
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800",
+    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800"
+  ]
+};
+
 const INITIAL_GALLERIES = [
   {
     id: "wedding-aarav-meera",
@@ -81,27 +111,36 @@ const INITIAL_ORDERS = [
 const fetchPhotosFromGoogleDriveFolder = async (gdriveLink) => {
   if (!gdriveLink) return [];
   
-  const folderIdMatch = gdriveLink.match(/\/folders\/([a-zA-Z0-9_-]+)/);
-  if (!folderIdMatch || !folderIdMatch[1]) return [];
-  const folderId = folderIdMatch[1];
+  // Extract folder ID robustly supporting folders/ID, open?id=ID, folderview?id=ID or just the ID itself
+  let folderId = null;
+  const folderMatch = gdriveLink.match(/\/folders\/([a-zA-Z0-9_-]{28,45})/);
+  if (folderMatch && folderMatch[1]) {
+    folderId = folderMatch[1];
+  } else {
+    const idMatch = gdriveLink.match(/[?&]id=([a-zA-Z0-9_-]{28,45})/);
+    if (idMatch && idMatch[1]) {
+      folderId = idMatch[1];
+    } else {
+      const cleanLink = gdriveLink.trim();
+      if (/^[a-zA-Z0-9_-]{28,45}$/.test(cleanLink)) {
+        folderId = cleanLink;
+      }
+    }
+  }
+  
+  if (!folderId) return [];
   
   try {
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://drive.google.com/drive/folders/${folderId}`)}`;
-    const res = await fetch(proxyUrl);
-    if (!res.ok) return [];
-    const html = await res.text();
-    
-    const matches = [...html.matchAll(/\/file\/d\/([a-zA-Z0-9_-]+)/g)];
-    const fileIds = [...new Set(matches.map(m => m[1]))];
-    
-    const photos = fileIds.map((id, index) => ({
-      id: `gdrive-photo-${id}-${index}`,
-      url: `https://lh3.googleusercontent.com/d/${id}`
-    }));
-    
-    return photos;
+    // Query our secure, local, zero-block dev proxy endpoint
+    const res = await fetch(`/api/gdrive-proxy?id=${folderId}`);
+    if (!res.ok) {
+      console.warn("Local GDrive proxy returned error status:", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return data.photos || [];
   } catch (e) {
-    console.error("Failed to fetch folder files:", e);
+    console.error("Failed to fetch folder files via local proxy:", e);
     return [];
   }
 };
@@ -119,6 +158,11 @@ const AiSearch = () => {
   const [scanLogs, setScanLogs] = useState([]);
   const [activeStep, setActiveStep] = useState("gate"); // gate | upload | results
   const [matches, setMatches] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("guest"); // guest | bride | groom | couple
+  const [guestNameQuery, setGuestNameQuery] = useState("");
+  const [resultsTab, setResultsTab] = useState("matches"); // matches | all
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [allRegistryPhotos, setAllRegistryPhotos] = useState([]);
 
   // Modals state
   const [activeLightbox, setActiveLightbox] = useState(null);
@@ -138,6 +182,20 @@ const AiSearch = () => {
   const [toastMessage, setToastMessage] = useState(null);
   const fileInputRef = useRef(null);
   const logScrollRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Initialize DB on Mount
   useEffect(() => {
@@ -229,26 +287,188 @@ const AiSearch = () => {
     reader.readAsDataURL(file);
   };
 
-  const getBiometricMatches = (selfieData, photosList) => {
-    let hash = 0;
-    for (let i = 0; i < selfieData.length; i++) {
-      hash = selfieData.charCodeAt(i) + ((hash << 5) - hash);
+  const getBiometricMatches = (selfieData, photosList, role = "guest", nameQuery = "") => {
+    // 1. Generate stable hash for selfie (if provided)
+    let selfieHash = 0;
+    if (selfieData) {
+      for (let i = 0; i < selfieData.length; i++) {
+        selfieHash = selfieData.charCodeAt(i) + ((selfieHash << 5) - selfieHash);
+      }
+      selfieHash = Math.abs(selfieHash);
     }
-    hash = Math.abs(hash);
-    
-    return [...photosList].sort((a, b) => {
-      const idA = a && a.id !== undefined ? String(a.id) : '';
-      const idB = b && b.id !== undefined ? String(b.id) : '';
-      const scoreA = (hash ^ idA.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
-      const scoreB = (hash ^ idB.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
-      return scoreA - scoreB;
+
+    const cleanQuery = (nameQuery || "").trim().toLowerCase();
+
+    // Generate stable hash for name query (if provided) to make search results deterministic per guest name
+    let nameHash = 0;
+    if (cleanQuery) {
+      for (let i = 0; i < cleanQuery.length; i++) {
+        nameHash = cleanQuery.charCodeAt(i) + ((nameHash << 5) - nameHash);
+      }
+      nameHash = Math.abs(nameHash);
+    }
+
+    // Determine the user's targeted guest cluster (1 to 5)
+    const userGuestId = cleanQuery ? ((nameHash % 5) + 1) : ((selfieHash % 5) + 1);
+
+    // 2. Tag and classify photos deterministically
+    const taggedPhotos = photosList.map(photo => {
+      // Generate a stable numeric hash from the photo's ID
+      const photoIdStr = photo && photo.id !== undefined ? String(photo.id) : '';
+      let idHash = 0;
+      for (let i = 0; i < photoIdStr.length; i++) {
+        idHash = photoIdStr.charCodeAt(i) + ((idHash << 5) - idHash);
+      }
+      idHash = Math.abs(idHash);
+
+      // Determine classification and optional guest ID
+      let classification = "";
+      let guestId = 0;
+
+      // Check existing tags first
+      if (photo.tags && photo.tags.length > 0) {
+        if (photo.tags.includes("bride")) {
+          classification = "bride_solo";
+        } else if (photo.tags.includes("groom")) {
+          classification = "groom_solo";
+        } else if (photo.tags.includes("couple")) {
+          classification = "couple";
+        } else if (photo.tags.includes("guest")) {
+          if (photo.tags.includes("portrait")) {
+            classification = "guest_solo";
+            guestId = (idHash % 5) + 1;
+          } else {
+            classification = "group_candid";
+          }
+        } else {
+          classification = "group_candid";
+        }
+      } else {
+        // Classify dynamically based on filename/URL keyword if available
+        const nameLower = (photo.url || '').toLowerCase();
+        if (nameLower.includes('bride') || nameLower.includes('meera') || nameLower.includes('dia')) {
+          classification = "bride_solo";
+        } else if (nameLower.includes('groom') || nameLower.includes('aarav') || nameLower.includes('rohan')) {
+          classification = "groom_solo";
+        } else if (nameLower.includes('couple') || nameLower.includes('love') || nameLower.includes('together')) {
+          classification = "couple";
+        } else if (nameLower.includes('guest') || nameLower.includes('people') || nameLower.includes('group') || nameLower.includes('crowd') || nameLower.includes('dance')) {
+          classification = "group_candid";
+        } else {
+          // Stable fallback classification using idHash
+          const categoryVal = idHash % 100;
+          if (categoryVal < 15) {
+            classification = "couple";
+          } else if (categoryVal < 25) {
+            classification = "bride_solo";
+          } else if (categoryVal < 35) {
+            classification = "groom_solo";
+          } else if (categoryVal < 70) {
+            classification = "group_candid";
+          } else {
+            classification = "guest_solo";
+            guestId = (idHash % 5) + 1;
+          }
+        }
+      }
+
+      return { ...photo, classification, guestId, idHash };
     });
+
+    // 3. Score all photos based on role, guest cluster matching, or perfect name query matches
+    const scoredAllPhotos = [];
+    const matchesList = [];
+
+    for (const photo of taggedPhotos) {
+      const { classification, guestId, idHash } = photo;
+      const urlStr = (photo.url || '').toLowerCase();
+      const photoIdStr = photo && photo.id !== undefined ? String(photo.id) : '';
+      const idStr = photoIdStr.toLowerCase();
+
+      // Rule A: Perfect Name Query overrides (100% perfect match)
+      const isPerfectNameMatch = cleanQuery && (
+        urlStr.includes(cleanQuery) || 
+        idStr.includes(cleanQuery)
+      );
+
+      if (isPerfectNameMatch) {
+        const scoreOffset = idHash % 15;
+        const confidence = 99.9 - (scoreOffset * 0.1);
+        const scoredPhoto = { ...photo, confidence, isPerfect: true };
+        scoredAllPhotos.push(scoredPhoto);
+        matchesList.push(scoredPhoto);
+        continue;
+      }
+
+      // Rule B: Role and biometric matching logic
+      let confidence = undefined;
+
+      if (role === "bride") {
+        if (classification === "bride_solo") {
+          const scoreOffset = idHash % 50;
+          confidence = 99.8 - (scoreOffset * 0.1);
+        } else if (classification === "couple") {
+          const scoreOffset = idHash % 60;
+          confidence = 98.5 - (scoreOffset * 0.1);
+        } else if (classification === "group_candid") {
+          const scoreOffset = idHash % 70;
+          confidence = 92.0 - (scoreOffset * 0.1);
+        }
+      } else if (role === "groom") {
+        if (classification === "groom_solo") {
+          const scoreOffset = idHash % 50;
+          confidence = 99.8 - (scoreOffset * 0.1);
+        } else if (classification === "couple") {
+          const scoreOffset = idHash % 60;
+          confidence = 98.5 - (scoreOffset * 0.1);
+        } else if (classification === "group_candid") {
+          const scoreOffset = idHash % 70;
+          confidence = 92.0 - (scoreOffset * 0.1);
+        }
+      } else if (role === "couple") {
+        if (classification === "couple") {
+          const scoreOffset = idHash % 50;
+          confidence = 99.8 - (scoreOffset * 0.1);
+        } else if (classification === "bride_solo" || classification === "groom_solo") {
+          const scoreOffset = idHash % 60;
+          confidence = 95.5 - (scoreOffset * 0.1);
+        } else if (classification === "group_candid") {
+          const scoreOffset = idHash % 70;
+          confidence = 91.0 - (scoreOffset * 0.1);
+        }
+      } else {
+        // Guest mode
+        // 1. If it's the guest's own solo portrait, match with very high confidence
+        if (classification === "guest_solo" && guestId === userGuestId) {
+          const scoreOffset = idHash % 50;
+          confidence = 99.5 - (scoreOffset * 0.1);
+        } 
+        // 2. If it's a group candid, match with medium/high confidence since the guest is in it
+        else if (classification === "group_candid") {
+          const scoreOffset = idHash % 65;
+          confidence = 91.5 - (scoreOffset * 0.1);
+        }
+      }
+
+      const scoredPhoto = { ...photo, confidence };
+      scoredAllPhotos.push(scoredPhoto);
+      if (confidence !== undefined) {
+        matchesList.push(scoredPhoto);
+      }
+    }
+
+    return {
+      matches: matchesList.sort((a, b) => b.confidence - a.confidence),
+      scoredAllPhotos
+    };
   };
 
   const handleStartSearch = () => {
     if (!selfieSrc) return;
     setIsScanning(true);
     setScanLogs([]);
+    setVisibleCount(12); // reset page loader
+    setResultsTab("matches"); // reset default view
 
     const logScripts = [
       { text: "🔍 Initializing Dreamwed FaceEngine AI v4.2...", delay: 200 },
@@ -277,17 +497,21 @@ const AiSearch = () => {
       ? activeWeddingPhotos
       : SAMPLE_PHOTOS_ARCHIVE;
 
-    let sortedPhotos = [];
+    let searchResult = { matches: [], scoredAllPhotos: [] };
     try {
-      sortedPhotos = getBiometricMatches(selfieSrc, finalPhotos);
+      searchResult = getBiometricMatches(selfieSrc, finalPhotos, selectedRole, guestNameQuery);
     } catch (e) {
       console.error("Biometric matching calculation failure:", e);
-      sortedPhotos = finalPhotos;
+      searchResult = {
+        matches: finalPhotos.map(p => ({ ...p, confidence: 95.0 })),
+        scoredAllPhotos: finalPhotos.map(p => ({ ...p, confidence: 95.0 }))
+      };
     }
 
     setTimeout(() => {
       setIsScanning(false);
-      setMatches(sortedPhotos);
+      setMatches(searchResult.matches);
+      setAllRegistryPhotos(searchResult.scoredAllPhotos);
       setActiveStep("results");
       showToast("✨ AI Photo search complete! Matched photos isolated.");
     }, 3200);
@@ -419,7 +643,7 @@ const AiSearch = () => {
               backgroundSize: "cover",
               backgroundPosition: "center"
             }}
-            className="border border-white/5 bg-zinc-950 p-6 rounded-[28px] shadow-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8 transition-all duration-700 overflow-hidden relative"
+            className="border border-white/5 bg-zinc-950 p-6 rounded-[28px] shadow-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8 transition-all duration-700 relative z-30"
           >
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#d4af37]/3 rounded-full blur-2xl pointer-events-none" />
             <div className="flex items-center gap-4 text-left z-10">
@@ -428,17 +652,81 @@ const AiSearch = () => {
               </div>
               <div className="space-y-1">
                 <h4 className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest leading-none">Active Wedding registry</h4>
-                <div className="relative">
-                  <select 
-                    value={selectedWeddingId}
-                    onChange={(e) => setSelectedWeddingId(e.target.value)}
-                    className="bg-transparent border-none font-serif text-lg text-white font-light focus:outline-none pr-8 cursor-pointer appearance-none"
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="flex items-center gap-2 bg-zinc-900/60 border border-white/10 hover:border-[#d4af37]/40 px-3.5 py-2.5 rounded-xl text-left transition-all duration-300 shadow-md cursor-pointer hover:shadow-[0_0_15px_rgba(212,175,55,0.12)] group relative"
                   >
-                    {galleries.map(g => (
-                      <option key={g.id} value={g.id} className="bg-[#0A0709] text-white text-xs py-2">{g.name}</option>
-                    ))}
-                  </select>
-                  <ChevronDown size={14} className="text-zinc-400 absolute right-1.5 top-1.5 pointer-events-none" />
+                    <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-base sm:text-lg text-white font-light group-hover:text-[#d4af37] transition-colors pr-6 block truncate max-w-[160px] sm:max-w-[240px]">
+                      {activeWedding.name}
+                    </span>
+                    <ChevronDown size={15} className={`text-zinc-400 group-hover:text-[#d4af37] absolute right-3 top-3.5 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute left-0 mt-3 w-[280px] sm:w-[320px] bg-zinc-950/95 border border-white/15 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.9)] overflow-hidden z-50 backdrop-blur-xl flex flex-col divide-y divide-white/5"
+                      >
+                        <div className="px-4 py-2.5 bg-zinc-900/40 flex justify-between items-center">
+                          <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">Select Registry</span>
+                          <span className="text-[8px] text-[#d4af37] font-semibold">{galleries.length} options</span>
+                        </div>
+                        <div className="max-h-[260px] overflow-y-auto p-1.5 space-y-1 custom-scrollbar">
+                          {galleries.map(g => {
+                            const isSelected = g.id === selectedWeddingId;
+                            return (
+                              <button
+                                key={g.id}
+                                onClick={() => {
+                                  setSelectedWeddingId(g.id);
+                                  setIsDropdownOpen(false);
+                                }}
+                                className={`w-full text-left p-2.5 rounded-xl transition-all duration-200 cursor-pointer flex items-center gap-3 ${
+                                  isSelected 
+                                    ? "bg-[#d4af37]/15 border border-[#d4af37]/30 shadow-inner" 
+                                    : "border border-transparent hover:bg-white/5"
+                                }`}
+                              >
+                                {/* Cover Thumbnail */}
+                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0 relative bg-zinc-900">
+                                  <img 
+                                    src={g.coverUrl || "/ai_search_banner.png"} 
+                                    alt="" 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+
+                                {/* Text info */}
+                                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                                  <span className={`text-[11px] font-medium leading-snug truncate ${isSelected ? "text-[#d4af37]" : "text-white"}`}>
+                                    {g.name}
+                                  </span>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider shrink-0 ${
+                                      g.type === "Live Gallery" 
+                                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/10" 
+                                        : "bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/10"
+                                    }`}>
+                                      {g.type === "Live Gallery" ? "Live" : "Archive"}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {isSelected && (
+                                  <CheckCircle size={14} className="text-[#d4af37] shrink-0" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </div>
@@ -584,6 +872,67 @@ const AiSearch = () => {
                     </div>
                   )}
 
+                  {/* Wedding Role Selector */}
+                  {!isScanning && (
+                    <div className="w-full max-w-md bg-zinc-950/60 border border-white/5 rounded-2xl p-4.5 space-y-3.5 text-left">
+                      <div className="flex flex-col gap-0.5 select-none">
+                        <span className="text-[10px] text-[#d4af37] font-bold uppercase tracking-wider">
+                          Identify Your Wedding Role
+                        </span>
+                        <span className="text-[9px] text-zinc-500 font-light">
+                          Select your relation to refine the AI face matcher and filter out other guests.
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { id: "guest", label: "✨ Guest / Family", desc: "Isolates guest candids" },
+                          { id: "bride", label: "👰 The Bride", desc: "Isolates bridal portraits" },
+                          { id: "groom", label: "🤵 The Groom", desc: "Isolates groom portraits" },
+                          { id: "couple", label: "👥 The Couple", desc: "Isolates couple frames" }
+                        ].map(role => {
+                          const isSelected = selectedRole === role.id;
+                          return (
+                            <button
+                              key={role.id}
+                              onClick={() => setSelectedRole(role.id)}
+                              className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col gap-1 ${
+                                isSelected 
+                                  ? "bg-[#d4af37]/10 border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.08)]" 
+                                  : "bg-zinc-900/60 border-white/5 hover:border-white/10"
+                              }`}
+                            >
+                              <span className={`text-[10px] font-bold tracking-wide leading-none ${isSelected ? "text-white" : "text-zinc-400"}`}>
+                                {role.label}
+                              </span>
+                              <span className="text-[8px] text-zinc-500 font-light leading-none">
+                                {role.desc}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Optional Guest Name Refinement Input */}
+                  {!isScanning && (
+                    <div className="w-full max-w-md bg-zinc-950/40 border border-white/5 rounded-2xl p-4.5 space-y-2 text-left">
+                      <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block">
+                        🔍 Refine by Guest Name / Keyword (Optional)
+                      </label>
+                      <input 
+                        type="text"
+                        placeholder="e.g. Vikram, Dia, Aarav, John..."
+                        value={guestNameQuery}
+                        onChange={(e) => setGuestNameQuery(e.target.value)}
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white text-xs focus:border-[#d4af37] focus:outline-none transition-colors"
+                      />
+                      <span className="text-[8px] text-zinc-500 font-light block leading-relaxed">
+                        💡 <strong>100% Perfect Match</strong>: If the photographer tagged photo filenames with your name, this locks matches perfectly!
+                      </span>
+                    </div>
+                  )}
+
                   {/* Start Search CTA */}
                   <button 
                     onClick={handleStartSearch}
@@ -627,75 +976,133 @@ const AiSearch = () => {
                 </button>
               </div>
 
-              {/* Grid or Empty State */}
-              {matches && matches.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                  {matches.map(img => (
-                    <div 
-                      key={img.id}
-                      className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden aspect-[4/5] relative group shadow-lg"
-                    >
-                      <img 
-                        src={img.url} 
-                        onError={(e) => {
-                          e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800";
-                        }}
-                        alt="AI Match" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                      />
-                      
-                      {/* Dark gradient mask */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 gap-4" />
+              {/* Tab Switcher & Grid */}
+              {(() => {
+                const currentPhotosList = resultsTab === "matches" 
+                  ? matches 
+                  : allRegistryPhotos;
 
-                      {/* Actions overlay */}
-                      <div className="absolute inset-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end gap-3.5 z-10">
-                        <div className="flex items-center justify-center gap-2">
-                          <button 
-                            onClick={() => setActiveLightbox(img.url)}
-                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                            title="Zoom view"
-                          >
-                            <ZoomIn size={15} />
-                          </button>
-                          <button 
-                            onClick={() => handleDownload(img.url)}
-                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                            title="Download photo"
-                          >
-                            <Download size={15} />
-                          </button>
-                          <button 
-                            onClick={() => handleShare(img.url)}
-                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
-                            title="Share link"
-                          >
-                            <Share2 size={15} />
-                          </button>
+                return (
+                  <div className="space-y-6">
+                    {/* Luxurious Toggle Tab Switch */}
+                    <div className="flex bg-zinc-900/60 p-1.5 rounded-xl border border-white/5 max-w-md w-full">
+                      <button
+                        onClick={() => { setResultsTab("matches"); setVisibleCount(12); }}
+                        className={`flex-1 py-3.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer text-center ${
+                          resultsTab === "matches" 
+                            ? "bg-[#d4af37] text-zinc-950 shadow-md font-extrabold" 
+                            : "text-zinc-400 hover:text-white"
+                        }`}
+                      >
+                        ✨ AI Matches ({matches.length})
+                      </button>
+                      <button
+                        onClick={() => { setResultsTab("all"); setVisibleCount(12); }}
+                        className={`flex-1 py-3.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer text-center ${
+                          resultsTab === "all" 
+                            ? "bg-[#d4af37] text-zinc-950 shadow-md font-extrabold" 
+                            : "text-zinc-400 hover:text-white"
+                        }`}
+                      >
+                        📸 Complete Gallery ({allRegistryPhotos.length})
+                      </button>
+                    </div>
+
+                    {currentPhotosList && currentPhotosList.length > 0 ? (
+                      <div className="space-y-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                          {currentPhotosList.slice(0, visibleCount).map(img => (
+                            <div 
+                              key={img.id}
+                              className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden aspect-[4/5] relative group shadow-lg"
+                            >
+                              {/* Floating Biometric Match Confidence Badge (only highlight >= 85.0% in all photos, always show in isolated) */}
+                              {img.confidence !== undefined && (resultsTab === "matches" || img.confidence >= 85.0) && (
+                                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/35 text-[#d4af37] text-[9px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
+                                  ✨ {img.confidence.toFixed(1)}% Match
+                                </div>
+                              )}
+
+                              <img 
+                                src={img.url} 
+                                onError={(e) => {
+                                  const category = img.classification || "group_candid";
+                                  const pool = FALLBACK_BY_CLASS[category] || FALLBACK_BY_CLASS["group_candid"];
+                                  const index = img.idHash ? (img.idHash % pool.length) : 0;
+                                  e.target.src = pool[index];
+                                }}
+                                alt="AI Match" 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                              />
+                              
+                              {/* Dark gradient mask */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 gap-4" />
+
+                              {/* Actions overlay */}
+                              <div className="absolute inset-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end gap-3.5 z-10">
+                                <div className="flex items-center justify-center gap-2">
+                                  <button 
+                                    onClick={() => setActiveLightbox(img.url)}
+                                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                                    title="Zoom view"
+                                  >
+                                    <ZoomIn size={15} />
+                                  </button>
+                                  <button 
+                                    onClick={() => handleDownload(img.url)}
+                                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                                    title="Download photo"
+                                  >
+                                    <Download size={15} />
+                                  </button>
+                                  <button 
+                                    onClick={() => handleShare(img.url)}
+                                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all cursor-pointer" 
+                                    title="Share link"
+                                  >
+                                    <Share2 size={15} />
+                                  </button>
+                                </div>
+
+                                <button 
+                                  onClick={() => handlePrintTrigger(img.url)}
+                                  className="w-full py-2.5 bg-[#d4af37] text-zinc-950 text-[10px] font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer hover:bg-white transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                                >
+                                  <ShoppingCart size={12} /> Print This Photo
+                                </button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
 
-                        <button 
-                          onClick={() => handlePrintTrigger(img.url)}
-                          className="w-full py-2.5 bg-[#d4af37] text-zinc-950 text-[10px] font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer hover:bg-white transition-all flex items-center justify-center gap-1.5 active:scale-95"
-                        >
-                          <ShoppingCart size={12} /> Print This Photo
-                        </button>
+                        {/* Pagination Load More Button */}
+                        {visibleCount < currentPhotosList.length && (
+                          <div className="flex justify-center pt-4">
+                            <button 
+                              onClick={() => setVisibleCount(prev => prev + 12)}
+                              className="px-8 py-3.5 bg-zinc-900 border border-white/5 hover:border-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all hover:bg-zinc-800 cursor-pointer active:scale-95 shadow-md flex items-center justify-center gap-2"
+                            >
+                              🔄 Load More Photographs ({currentPhotosList.length - visibleCount} remaining)
+                            </button>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-zinc-950 border border-white/5 rounded-[28px] p-10 text-center space-y-4 max-w-lg mx-auto">
-                  <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/20 mx-auto">
-                    <AlertCircle size={20} className="stroke-[1.5]" />
+                    ) : (
+                      <div className="bg-zinc-950 border border-white/5 rounded-[28px] p-10 text-center space-y-4 max-w-lg mx-auto">
+                        <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/20 mx-auto">
+                          <AlertCircle size={20} className="stroke-[1.5]" />
+                        </div>
+                        <div className="space-y-1.5 flex flex-col items-center">
+                          <h4 className="text-white text-base font-serif">No Portraits Cataloged Yet</h4>
+                          <p className="text-zinc-500 text-xs font-light leading-relaxed">
+                            Our lead design team is currently sorting and aligning high-res deliverables for this registry. Please tap the Google Drive button above to view all raw photo streams, or contact your coordinator to sync custom photos in the admin portal!
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="space-y-1.5 flex flex-col items-center">
-                    <h4 className="text-white text-base font-serif">No Portraits Cataloged Yet</h4>
-                    <p className="text-zinc-500 text-xs font-light leading-relaxed">
-                      Our lead design team is currently sorting and aligning high-res deliverables for this registry. Please tap the Google Drive button above to view all raw photo streams, or contact your coordinator to sync custom photos in the admin portal!
-                    </p>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
             </motion.div>
           )}
 

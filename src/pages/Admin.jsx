@@ -437,7 +437,8 @@ const Admin = () => {
       name: newGalName,
       gdriveLink: newGalDrive,
       type: newGalType,
-      coverUrl: newGalCover
+      coverUrl: newGalCover,
+      photos: []
     };
     const updated = [newGal, ...aiGalleries];
     setAiGalleries(updated);
@@ -446,6 +447,7 @@ const Admin = () => {
     setNewGalDrive("");
     alert("💍 AI Photo Gallery created successfully!");
   };
+
 
   const handleDeleteAiGallery = (id) => {
     if (aiGalleries.length <= 1) {
