@@ -190,8 +190,10 @@ const AiSearch = () => {
     hash = Math.abs(hash);
     
     return [...photosList].sort((a, b) => {
-      const scoreA = (hash ^ a.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
-      const scoreB = (hash ^ b.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
+      const idA = a && a.id !== undefined ? String(a.id) : '';
+      const idB = b && b.id !== undefined ? String(b.id) : '';
+      const scoreA = (hash ^ idA.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
+      const scoreB = (hash ^ idB.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100;
       return scoreA - scoreB;
     });
   };
@@ -223,7 +225,13 @@ const AiSearch = () => {
       ? freshActiveWedding.photos
       : SAMPLE_PHOTOS_ARCHIVE;
 
-    const sortedPhotos = getBiometricMatches(selfieSrc, activeWeddingPhotos);
+    let sortedPhotos = [];
+    try {
+      sortedPhotos = getBiometricMatches(selfieSrc, activeWeddingPhotos);
+    } catch (e) {
+      console.error("Biometric matching calculation failure:", e);
+      sortedPhotos = activeWeddingPhotos;
+    }
 
     setTimeout(() => {
       setIsScanning(false);
