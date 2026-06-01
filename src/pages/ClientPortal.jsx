@@ -2122,7 +2122,7 @@ const ClientPortal = () => {
                   Create your custom Wedding Hub Workspace to access your cinematic films, photo approvals, and milestone trackers in real-time.
                 </p>
                 <a 
-                  href="/booking" 
+                  href="/groom/bride" 
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 w-full bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl text-[10px] tracking-widest uppercase shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Sign Up For Workspace &rarr;

@@ -16,6 +16,7 @@ import EditorPortal from './pages/EditorPortal';
 import DesignerPortal from './pages/DesignerPortal';
 import MyBooking from './pages/MyBooking';
 import AiSearch from './pages/AiSearch';
+import GroomBrideSignup from './pages/GroomBrideSignup';
 import NotFound from './pages/NotFound';
 import CustomCursor from './components/ui/CustomCursor';
 
@@ -54,6 +55,9 @@ const AnimatedRoutes = () => {
         <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
         <Route path="/my-booking" element={<PageWrapper><ClientPortal /></PageWrapper>} />
         <Route path="/booking" element={<PageWrapper><MyBooking /></PageWrapper>} />
+        <Route path="/groom/bride" element={<PageWrapper><GroomBrideSignup /></PageWrapper>} />
+        <Route path="/grrom/bride" element={<PageWrapper><GroomBrideSignup /></PageWrapper>} />
+        <Route path="/groom-bride" element={<PageWrapper><GroomBrideSignup /></PageWrapper>} />
         <Route path="/editor" element={<PageWrapper><EditorPortal /></PageWrapper>} />
         <Route path="/designer" element={<PageWrapper><DesignerPortal /></PageWrapper>} />
         <Route path="/ai-search" element={<PageWrapper><AiSearch /></PageWrapper>} />
@@ -65,7 +69,7 @@ const AnimatedRoutes = () => {
 
 const AppContent = () => {
   const location = useLocation();
-  const isPortalPath = ["/my-booking", "/admin", "/editor", "/designer", "/ai-search"].some(path => 
+  const isPortalPath = ["/my-booking", "/admin", "/editor", "/designer", "/ai-search", "/groom/bride", "/grrom/bride", "/groom-bride"].some(path => 
     location.pathname.startsWith(path)
   );
 

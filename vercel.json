@@ -1,47 +1,9 @@
 {
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/assets/(.*)",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" },
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/albums/(.*)",
-      "headers": { "cache-control": "public, max-age=86400, must-revalidate" },
-      "dest": "/albums/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/favicon.png",
-      "dest": "/favicon.png"
-    },
-    {
-      "src": "/favicon2.png",
-      "dest": "/favicon2.png"
-    },
-    {
-      "src": "/appIcon.png",
-      "dest": "/appIcon.png"
-    },
-    {
-      "src": "/google5e8fdcb096900a6a.html",
-      "dest": "/google5e8fdcb096900a6a.html"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "/robots.txt"
-    },
-    {
-      "src": "/sitemap.xml",
-      "dest": "/sitemap.xml"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
