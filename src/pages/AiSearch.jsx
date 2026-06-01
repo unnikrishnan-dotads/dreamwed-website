@@ -437,14 +437,9 @@ const AiSearch = () => {
           confidence = 91.0 - (scoreOffset * 0.1);
         }
       } else {
-        // Guest mode
-        // 1. If it's the guest's own solo portrait, match with very high confidence
-        if (classification === "guest_solo" && guestId === userGuestId) {
-          const scoreOffset = idHash % 50;
-          confidence = 99.5 - (scoreOffset * 0.1);
-        } 
-        // 2. If it's a group candid, match with medium/high confidence since the guest is in it
-        else if (classification === "group_candid") {
+        // Guest mode - strictly exclude solo portraits of other individuals to prevent "wrong person" errors
+        // 1. If it's a group candid (crowd, sangeet dancing, group candids), match with high confidence
+        if (classification === "group_candid") {
           const scoreOffset = idHash % 65;
           confidence = 91.5 - (scoreOffset * 0.1);
         }
@@ -976,38 +971,12 @@ const AiSearch = () => {
                 </button>
               </div>
 
-              {/* Tab Switcher & Grid */}
+              {/* AI Photo Grid */}
               {(() => {
-                const currentPhotosList = resultsTab === "matches" 
-                  ? matches 
-                  : allRegistryPhotos;
+                const currentPhotosList = matches;
 
                 return (
                   <div className="space-y-6">
-                    {/* Luxurious Toggle Tab Switch */}
-                    <div className="flex bg-zinc-900/60 p-1.5 rounded-xl border border-white/5 max-w-md w-full">
-                      <button
-                        onClick={() => { setResultsTab("matches"); setVisibleCount(12); }}
-                        className={`flex-1 py-3.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer text-center ${
-                          resultsTab === "matches" 
-                            ? "bg-[#d4af37] text-zinc-950 shadow-md font-extrabold" 
-                            : "text-zinc-400 hover:text-white"
-                        }`}
-                      >
-                        ✨ AI Matches ({matches.length})
-                      </button>
-                      <button
-                        onClick={() => { setResultsTab("all"); setVisibleCount(12); }}
-                        className={`flex-1 py-3.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer text-center ${
-                          resultsTab === "all" 
-                            ? "bg-[#d4af37] text-zinc-950 shadow-md font-extrabold" 
-                            : "text-zinc-400 hover:text-white"
-                        }`}
-                      >
-                        📸 Complete Gallery ({allRegistryPhotos.length})
-                      </button>
-                    </div>
-
                     {currentPhotosList && currentPhotosList.length > 0 ? (
                       <div className="space-y-8">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -1016,8 +985,8 @@ const AiSearch = () => {
                               key={img.id}
                               className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden aspect-[4/5] relative group shadow-lg"
                             >
-                              {/* Floating Biometric Match Confidence Badge (only highlight >= 85.0% in all photos, always show in isolated) */}
-                              {img.confidence !== undefined && (resultsTab === "matches" || img.confidence >= 85.0) && (
+                              {/* Floating Biometric Match Confidence Badge */}
+                              {img.confidence !== undefined && (
                                 <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/35 text-[#d4af37] text-[9px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
                                   ✨ {img.confidence.toFixed(1)}% Match
                                 </div>
