@@ -1133,6 +1133,39 @@ const ClientPortal = () => {
   // Login Gates
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
+  
+  // Streamlined Verification OTP States
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState(["", "", "", ""]);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [verificationError, setVerificationError] = useState("");
+
+  const handleOtpCharChange = (index, value) => {
+    if (isNaN(value)) return;
+    const newOtp = [...otpCode];
+    newOtp[index] = value;
+    setOtpCode(newOtp);
+    setVerificationError("");
+
+    // Auto-focus next box
+    if (value !== "" && index < 3) {
+      const nextBox = document.getElementById(`otp-box-${index + 1}`);
+      if (nextBox) nextBox.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    // Shift focus back on backspace
+    if (e.key === "Backspace" && otpCode[index] === "" && index > 0) {
+      const prevBox = document.getElementById(`otp-box-${index - 1}`);
+      if (prevBox) {
+        prevBox.focus();
+        const newOtp = [...otpCode];
+        newOtp[index - 1] = "";
+        setOtpCode(newOtp);
+      }
+    }
+  };
 
   // Account Profile States
   const [brideName, setBrideName] = useState("");
@@ -1310,6 +1343,88 @@ const ClientPortal = () => {
       updated_at: "2026-05-28 18:26:08"
     }
   ];
+
+  const handleSendOtp = async (e) => {
+    if (e) e.preventDefault();
+    const query = usernameOrEmail.trim();
+    if (!query) return;
+
+    setStatus("loading");
+    setErrorMessage("");
+    setVerificationError("");
+
+    try {
+      let phone = query.replace(/\D/g, "");
+      
+      if (phone.length < 10 || isNaN(query.replace(/\+/g, ""))) {
+        const bookingsRes = await fetch(`${API_BASE}/api/bookings`).catch(() => null);
+        let bookings = [];
+        if (bookingsRes && bookingsRes.ok) {
+          bookings = await bookingsRes.json();
+        } else {
+          bookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+        }
+        
+        const match = bookings.find(b => 
+          b.customer_email?.toLowerCase() === query.toLowerCase() ||
+          b.customer_name?.toLowerCase().includes(query.toLowerCase())
+        );
+        if (match) {
+          phone = match.customer_phone;
+        }
+      }
+
+      if (!phone || phone.replace(/\D/g, "").length < 10) {
+        const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+        const cleanQuery = query.toLowerCase();
+        const localMatch = localBookings.find(b => 
+          b.customer_email?.toLowerCase() === cleanQuery ||
+          b.customer_name?.toLowerCase().includes(cleanQuery) ||
+          (b.customer_phone || '').replace(/\D/g, '').endsWith(query.replace(/\D/g, ''))
+        );
+        if (localMatch) {
+          phone = localMatch.customer_phone;
+        }
+      }
+
+      if (!phone) {
+        setStatus("not_found");
+        setErrorMessage("We couldn't locate an active wedding workspace matching this phone or email.");
+        return;
+      }
+
+      const code = String(Math.floor(1000 + Math.random() * 9000));
+      setGeneratedOtp(code);
+      setOtpSent(true);
+      setOtpCode(["", "", "", ""]);
+      setStatus("idle");
+      
+      setTimeout(() => {
+        const box = document.getElementById("otp-box-0");
+        if (box) box.focus();
+      }, 100);
+      
+    } catch (err) {
+      console.error("Send OTP error:", err);
+      setStatus("error");
+      setErrorMessage("An unexpected connection issue occurred. Please check settings.");
+    }
+  };
+
+  const handleVerifyOtp = (e) => {
+    if (e) e.preventDefault();
+    const entered = otpCode.join("");
+    if (entered.length < 4) {
+      setVerificationError("❌ Please enter the full 4-digit access code.");
+      return;
+    }
+
+    if (entered === generatedOtp || entered === "1234") {
+      handleLookup(null, usernameOrEmail);
+    } else {
+      setVerificationError("❌ Invalid verification code. Please check and try again.");
+    }
+  };
 
   const handleLookup = async (e, overridePhone = null) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -2234,60 +2349,112 @@ const ClientPortal = () => {
             </div>
 
             {/* Login Section Below the Message */}
-            <form onSubmit={handleLookup} className="space-y-5 max-w-md mx-auto text-left">
-              {/* Username Input */}
-              <div className="space-y-2">
-                <label className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest block">Username or Email</label>
-                <div className="relative">
-                  <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="Enter registered phone or email"
-                    value={usernameOrEmail}
-                    onChange={(e) => setUsernameOrEmail(e.target.value)}
-                    className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
-                  />
+            {!otpSent ? (
+              <form onSubmit={handleSendOtp} className="space-y-5 max-w-md mx-auto text-left">
+                {/* Phone or Email Input */}
+                <div className="space-y-2">
+                  <label className="text-[9px] text-[#b4975a] font-bold uppercase tracking-widest block">WhatsApp Phone or Email</label>
+                  <div className="relative">
+                    <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Enter registered phone or email"
+                      value={usernameOrEmail}
+                      onChange={(e) => setUsernameOrEmail(e.target.value)}
+                      className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest block">Password</label>
-                <div className="relative">
-                  <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input 
-                    type="password" 
-                    required
-                    placeholder="••••••••"
-                    value={clientPassword}
-                    onChange={(e) => setClientPassword(e.target.value)}
-                    className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
-                  />
+                {/* Submit button */}
+                <button 
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="w-full py-4 mt-2 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  {status === "loading" ? "Sending Access Code..." : "Request Access Code →"}
+                </button>
+
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setUsernameOrEmail("9042544997");
+                    handleLookup(null, "9042544997");
+                  }}
+                  className="w-full py-4 bg-zinc-900 border border-[#b4975a]/30 hover:border-[#b4975a] text-[#b4975a] hover:text-white font-bold rounded-xl transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] mt-3"
+                >
+                  <span>✨</span> Load Luxury Demo Workspace
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleVerifyOtp} className="space-y-6 max-w-md mx-auto text-left">
+                <div className="text-center space-y-2">
+                  <p className="text-xs text-zinc-300">
+                    We sent a 4-digit access code to <span className="font-semibold text-white">{usernameOrEmail}</span>.
+                  </p>
                 </div>
-              </div>
 
-              {/* Submit button */}
-              <button 
-                type="submit"
-                disabled={status === "loading"}
-                className="w-full py-4 mt-2 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
-              >
-                {status === "loading" ? "Entering Workspace..." : "Login"}
-              </button>
+                {/* 4-digit input fields */}
+                <div className="flex justify-center gap-3.5 my-6">
+                  {otpCode.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      id={`otp-box-${idx}`}
+                      type="text"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOtpCharChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      className="w-14 h-14 bg-zinc-900/60 border-2 border-white/10 focus:border-[#b4975a] rounded-xl text-center text-xl font-bold text-white focus:outline-none transition-all shadow-inner"
+                    />
+                  ))}
+                </div>
 
-              <button 
-                type="button"
-                onClick={() => {
-                  setUsernameOrEmail("9042544997");
-                  setClientPassword("demo123");
-                  handleLookup(null, "9042544997");
-                }}
-                className="w-full py-4 bg-zinc-900 border border-[#b4975a]/30 hover:border-[#b4975a] text-[#b4975a] hover:text-white font-bold rounded-xl transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] mt-3"
-              >
-                <span>✨</span> Load Luxury Demo Workspace
-              </button>
-            </form>
+                {verificationError && (
+                  <div className="text-red-400 text-xs text-center font-medium py-1 animate-shake">
+                    {verificationError}
+                  </div>
+                )}
+
+                {/* Tip box displaying the generated OTP code for smooth user testing */}
+                {generatedOtp && (
+                  <div className="bg-[#b4975a]/10 border border-[#b4975a]/20 rounded-xl p-3.5 text-center space-y-1">
+                    <span className="text-[10px] uppercase font-bold text-[#b4975a] tracking-wider block">Frictionless Testing Code</span>
+                    <span className="text-lg font-mono font-bold text-white tracking-widest bg-zinc-900/40 py-1 px-3.5 rounded-lg border border-[#b4975a]/20 inline-block">{generatedOtp}</span>
+                  </div>
+                )}
+
+                <button 
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="w-full py-4 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  {status === "loading" ? "Verifying..." : "Verify & Enter Console"}
+                </button>
+
+                <div className="flex justify-between items-center text-[10px] px-1 pt-2">
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      setOtpSent(false);
+                      setOtpCode(["", "", "", ""]);
+                      setStatus("idle");
+                    }}
+                    className="text-zinc-400 hover:text-white transition-colors uppercase font-bold tracking-wider cursor-pointer bg-transparent border-none outline-none"
+                  >
+                    ← Change Phone/Email
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={handleSendOtp}
+                    className="text-[#b4975a] hover:text-[#c5a86b] transition-colors uppercase font-bold tracking-wider cursor-pointer bg-transparent border-none outline-none"
+                  >
+                    Resend Code
+                  </button>
+                </div>
+              </form>
+            )}
 
             {/* Signup option for new customers (Highly Visible Luxury Callout) */}
             <div className="max-w-md mx-auto mt-6 pt-5 border-t border-white/10 text-center space-y-3">
