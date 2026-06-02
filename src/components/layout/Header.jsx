@@ -44,7 +44,6 @@ const Header = () => {
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "AI Photo Search ✨", path: "/ai-search" },
-    { name: "Special Offer 🌟", path: "/offer", isSpecial: true },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
   ];

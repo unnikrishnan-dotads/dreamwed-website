@@ -10,7 +10,6 @@ import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Policies from './pages/Policies';
 import Admin from './pages/Admin';
-import TrivandrumOffer from './pages/TrivandrumOffer';
 import ClientPortal from './pages/ClientPortal';
 import EditorPortal from './pages/EditorPortal';
 import DesignerPortal from './pages/DesignerPortal';
@@ -51,7 +50,6 @@ const AnimatedRoutes = () => {
         <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
         <Route path="/policies" element={<PageWrapper><Policies /></PageWrapper>} />
-        <Route path="/offer" element={<PageWrapper><TrivandrumOffer /></PageWrapper>} />
         <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
         <Route path="/my-booking" element={<PageWrapper><ClientPortal /></PageWrapper>} />
         <Route path="/booking" element={<PageWrapper><MyBooking /></PageWrapper>} />
