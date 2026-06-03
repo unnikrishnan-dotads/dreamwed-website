@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LogIn, LogOut, ShieldCheck, AlertCircle, Link2, Calendar, CheckCircle2,
   ChevronRight, FileText, Package, Users, MessageSquare, Plus, Trash2, Edit3,
-  Eye, EyeOff, Save, X, Camera, Video, BookOpen, RefreshCw
+  Eye, EyeOff, Save, X, Camera, Video, BookOpen, RefreshCw, Search, Share2,
+  Download, Heart
 } from "lucide-react";
 import SEO from "../components/SEO";
 
 const ADMIN_PASS = "dreamwed2026";
 const API_BASE = typeof window !== "undefined"
-  ? (localStorage.getItem("dreamwed_api_base") || "http://localhost:3000")
+  ? (localStorage.getItem("dreamwed_api_base") || window.location.origin)
   : "http://localhost:3000";
 
 const INITIAL_GALLERIES = [
@@ -70,6 +71,14 @@ const Admin = () => {
   const [editingStaff, setEditingStaff] = useState(null); // staff user being edited
   const [showPassId, setShowPassId] = useState(null); // id of staff whose password is visible
   const [assigningStaffId, setAssigningStaffId] = useState(null); // staff id being assigned
+
+  // Client management tab state
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [clientSearch, setClientSearch] = useState("");
+  const [editBridePassword, setEditBridePassword] = useState("");
+  const [editGroomPassword, setEditGroomPassword] = useState("");
+  const [activeInvoiceBooking, setActiveInvoiceBooking] = useState(null);
+  const [activeClientPhotoTab, setActiveClientPhotoTab] = useState("bride"); // bride | groom | matches
 
   // Chats tab state
   const [chatProject, setChatProject] = useState(null);
@@ -344,6 +353,40 @@ const Admin = () => {
       alert("Network error updating project.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSavePasswords = async (bookingId, newBridePass, newGroomPass) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/bookings/${bookingId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bride_password: newBridePass,
+          groom_password: newGroomPass
+        })
+      });
+      if (res.ok) {
+        alert("🎉 Client access passwords updated successfully!");
+        fetchBookings();
+        setSelectedClient(prev => prev ? { ...prev, bride_password: newBridePass, groom_password: newGroomPass } : null);
+      } else {
+        throw new Error();
+      }
+    } catch (e) {
+      console.warn("Error updating password in database, syncing locally:", e);
+      const localBookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+      const match = localBookings.find(b => b.id === Number(bookingId));
+      if (match) {
+        match.bride_password = newBridePass;
+        match.groom_password = newGroomPass;
+        localStorage.setItem("dreamwed_bookings", JSON.stringify(localBookings));
+        setBookings(localBookings);
+        setSelectedClient({ ...match });
+        alert("🎉 Client access passwords updated successfully (Offline Sync Active)!");
+      } else {
+        alert("Failed to save changes. Client booking not found.");
+      }
     }
   };
 
@@ -633,6 +676,7 @@ const Admin = () => {
           {[
             { id: "projects", label: "🗂 Projects", icon: Package },
             { id: "bookings", label: "📖 Booking Approvals", icon: CheckCircle2 },
+            { id: "clients", label: "👑 Client Management", icon: Users },
             { id: "staff", label: "👥 Staff Management", icon: Users },
             { id: "chats", label: "💬 Chat Viewer", icon: MessageSquare },
             { id: "ai-galleries", label: "💍 AI Galleries", icon: Camera },
@@ -913,6 +957,269 @@ const Admin = () => {
           </div>
         )}
 
+        {/* =============================== CLIENT MANAGEMENT TAB ================================ */}
+        {activeTab === "clients" && (
+          <div className="space-y-6 text-left">
+            <div>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-light">
+                Client <span className="italic font-serif text-[#b4975a]">Management</span>
+              </h2>
+              <p className="text-zinc-500 text-[11px] font-light mt-1">Manage client passwords, access details, invoice receipts, and review photo selections.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+              {/* Left Panel: Search & List */}
+              <div className="md:col-span-2 space-y-4">
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-500">
+                    <Search size={14} />
+                  </span>
+                  <input 
+                    type="text" 
+                    placeholder="Search client by name or phone..." 
+                    value={clientSearch}
+                    onChange={(e) => setClientSearch(e.target.value)}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-9 pr-4 py-3 text-white text-xs focus:border-[#b4975a] focus:outline-none"
+                  />
+                </div>
+
+                <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
+                  {bookings
+                    .filter(b => {
+                      const query = clientSearch.toLowerCase();
+                      return b.customer_name?.toLowerCase().includes(query) || 
+                             b.customer_phone?.includes(query) || 
+                             (b.customer_phone_2 && b.customer_phone_2.includes(query));
+                    })
+                    .map(b => {
+                      const isSelected = selectedClient?.id === b.id;
+                      return (
+                        <button 
+                          key={b.id}
+                          onClick={() => {
+                            setSelectedClient(b);
+                            setEditBridePassword(b.bride_password || "");
+                            setEditGroomPassword(b.groom_password || "");
+                          }}
+                          className={`w-full text-left p-4.5 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 relative overflow-hidden ${
+                            isSelected ? "bg-zinc-900 border-[#b4975a]/45 shadow-sm" : "bg-zinc-950 border-zinc-800 hover:border-zinc-700"
+                          }`}
+                        >
+                          <div className="flex justify-between items-center gap-2">
+                            <h4 className="text-sm font-bold text-white truncate">{b.customer_name}</h4>
+                            <span className={`text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                              b.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                            }`}>
+                              {b.status === "confirmed" ? "Active" : "Pending"}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-zinc-500 truncate leading-normal">
+                            Date: {formatDateString(b.event_date)} • Phone: {b.customer_phone}
+                          </p>
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* Right Panel: Client Workspace Details, Passwords, Selections, Invoices */}
+              <div className="md:col-span-3">
+                {selectedClient ? (
+                  <div className="bg-zinc-950 border border-zinc-800 rounded-[32px] p-6 sm:p-8 space-y-6 text-left relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+
+                    {/* Top Info */}
+                    <div className="border-b border-zinc-800 pb-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="text-xl font-bold text-white truncate">{selectedClient.customer_name}</h3>
+                        <span className="text-[9px] text-[#b4975a] font-mono tracking-wider bg-[#b4975a]/10 border border-[#b4975a]/20 px-2.5 py-1 rounded-full uppercase">
+                          {selectedClient.invoice_number || `INV-${selectedClient.id}`}
+                        </span>
+                      </div>
+                      <p className="text-zinc-500 text-[10px] font-light mt-1 flex flex-wrap gap-2">
+                        <span>Date: {formatDateString(selectedClient.event_date)}</span>
+                        <span>•</span>
+                        <span>Venue: {selectedClient.event_venue || "TBA"}</span>
+                        <span>•</span>
+                        <span>Pkg: {selectedClient.package_name}</span>
+                      </p>
+                    </div>
+
+                    {/* Password management */}
+                    <div className="space-y-4 bg-zinc-900/40 p-5 border border-zinc-800 rounded-2xl">
+                      <div className="flex items-center gap-2 border-b border-zinc-800 pb-2">
+                        <ShieldCheck size={16} className="text-[#b4975a]" />
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300">Client Access Passwords</h4>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">👰 Bride Password</label>
+                          <input 
+                            type="text" 
+                            placeholder="Assign password..."
+                            value={editBridePassword} 
+                            onChange={(e) => setEditBridePassword(e.target.value)}
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white text-xs focus:border-[#b4975a] focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">🤵 Groom Password</label>
+                          <input 
+                            type="text" 
+                            placeholder="Assign password..."
+                            value={editGroomPassword} 
+                            onChange={(e) => setEditGroomPassword(e.target.value)}
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white text-xs focus:border-[#b4975a] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <button 
+                        onClick={() => handleSavePasswords(selectedClient.id, editBridePassword, editGroomPassword)}
+                        className="px-4 py-2 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                      >
+                        Save Passwords
+                      </button>
+                    </div>
+
+                    {/* Selected Photos Inspection Section */}
+                    <div className="space-y-4 bg-zinc-900/40 p-5 border border-zinc-800 rounded-2xl">
+                      <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                        <div className="flex items-center gap-2">
+                          <Camera size={16} className="text-[#b4975a]" />
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300">Client Selected Photos</h4>
+                        </div>
+                        
+                        {/* Quick toggles */}
+                        {(() => {
+                          const p = projects.find(proj => proj.booking_id === selectedClient.id || proj.couple_name === selectedClient.customer_name);
+                          if (!p) return null;
+                          return (
+                            <div className="flex gap-1 bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+                              {["bride", "groom", "matches"].map(tab => (
+                                <button 
+                                  key={tab}
+                                  onClick={() => setActiveClientPhotoTab(tab)}
+                                  className={`px-2 py-1 rounded text-[8px] font-bold uppercase tracking-wide transition-all cursor-pointer ${
+                                    activeClientPhotoTab === tab ? "bg-[#b4975a] text-zinc-950" : "text-zinc-500 hover:text-white"
+                                  }`}
+                                >
+                                  {tab}
+                                </button>
+                              ))}
+                            </div>
+                          );
+                        })()}
+                      </div>
+
+                      {(() => {
+                        const p = projects.find(proj => proj.booking_id === selectedClient.id || proj.couple_name === selectedClient.customer_name);
+                        if (!p) {
+                          return (
+                            <p className="text-[10px] text-zinc-500 italic py-2">
+                              No active wedding project spawned yet. Approval unlocks workspace gallery.
+                            </p>
+                          );
+                        }
+
+                        let list = [];
+                        if (activeClientPhotoTab === "bride") {
+                          list = (p.gallery_images || []).filter(img => img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited);
+                        } else if (activeClientPhotoTab === "groom") {
+                          list = (p.gallery_images || []).filter(img => img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited);
+                        } else {
+                          list = (p.gallery_images || []).filter(img => {
+                            const b = img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited;
+                            const g = img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited;
+                            return b && g;
+                          });
+                        }
+
+                        return (
+                          <div className="space-y-2">
+                            <p className="text-[10px] text-zinc-400">
+                              Total items: <strong>{list.length} photos</strong> found in {activeClientPhotoTab} list.
+                            </p>
+                            {list.length === 0 ? (
+                              <div className="py-8 text-center text-[10px] text-zinc-600 border border-dashed border-zinc-800 rounded-xl">
+                                No hearted photos found for this filter.
+                              </div>
+                            ) : (
+                              <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1 bg-zinc-950/45 rounded-xl border border-zinc-850">
+                                {list.map(img => (
+                                  <a key={img.id} href={img.url} target="_blank" rel="noreferrer" className="block relative aspect-square group overflow-hidden rounded-lg bg-zinc-900 border border-zinc-800">
+                                    <img src={img.url} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300" alt="" />
+                                    <span className="absolute bottom-1 right-1 bg-black/75 px-1 py-0.5 text-[7px] font-mono text-zinc-400 rounded">
+                                      #{img.id}
+                                    </span>
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    {/* Invoice Actions */}
+                    <div className="space-y-4 bg-zinc-900/40 p-5 border border-zinc-800 rounded-2xl">
+                      <div className="flex items-center gap-2 border-b border-zinc-800 pb-2">
+                        <FileText size={16} className="text-[#b4975a]" />
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300">Invoice Billing & Actions</h4>
+                      </div>
+
+                      <div className="flex justify-between items-center text-xs">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Net balance due</span>
+                          <p className="text-base font-bold text-white">
+                            ₹ {Number((selectedClient.total_price || selectedClient.package_price) - (selectedClient.advance_paid || 5000)).toLocaleString("en-IN")}/-
+                          </p>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={() => setActiveInvoiceBooking(selectedClient)}
+                            className="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                          >
+                            <FileText size={11} /> Invoice Receipt
+                          </button>
+                          
+                          <button 
+                            onClick={() => {
+                              const includesPrewedding = (parseInt(selectedClient.package_price || selectedClient.total_price) === 49999 || parseInt(selectedClient.package_price || selectedClient.total_price) === 99999 || parseInt(selectedClient.package_price || selectedClient.total_price) === 110000);
+                              const surpriseBonusText = includesPrewedding ? `🎁 SURPRISE BONUS: Free Save the Date Photoshoot (worth ₹9,999/-) included!\n` : '';
+                              const message = `Hi ${selectedClient.customer_name}! Here is your Digital Invoice Receipt for locking in your Wedding Package slot:\n\n` +
+                                              `👤 Name: ${selectedClient.customer_name}\n` +
+                                              `📞 Phone: ${selectedClient.customer_phone}\n` +
+                                              `📍 Pincode: ${selectedClient.pincode || ''}\n` +
+                                              `📦 Plan: ${selectedClient.package_name}\n` +
+                                              `💰 Quote: ₹${parseInt(selectedClient.package_price || selectedClient.total_price).toLocaleString()}/- Net\n` +
+                                              surpriseBonusText + `\n` +
+                                              `UPI: dreamwedstories@okaxis\n` +
+                                              `Passwords Assigned:\n` +
+                                              `Bride: ${selectedClient.bride_password}\n` +
+                                              `Groom: ${selectedClient.groom_password}`;
+                              window.open(`https://wa.me/91${selectedClient.customer_phone}?text=${encodeURIComponent(message)}`, '_blank');
+                            }}
+                            className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                          >
+                            <Share2 size={11} /> Share
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-96 rounded-[32px] border border-dashed border-zinc-800 bg-zinc-950/20 flex items-center justify-center text-zinc-500 text-xs">
+                    Select a client workspace from the left pane to manage access, receipts, and co-selections.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* =============================== STAFF TAB ================================ */}
         {activeTab === "staff" && (
           <div className="space-y-8 text-left">
@@ -1030,7 +1337,7 @@ const Admin = () => {
                         <span className="text-zinc-500 font-bold uppercase tracking-wider">Password</span>
                         <div className="flex items-center gap-1.5">
                           <span className="text-zinc-200 font-mono">
-                            {showPassId === staff.id ? "●●●●●● (hidden)" : "••••••••"}
+                            {showPassId === staff.id ? staff.password : "••••••••"}
                           </span>
                           <button onClick={() => setShowPassId(showPassId === staff.id ? null : staff.id)}
                             className="text-zinc-500 hover:text-[#b4975a] transition-colors cursor-pointer">
@@ -1456,6 +1763,265 @@ const Admin = () => {
                 </button>
               </div>
 
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 5. Client Invoice Modal */}
+      <AnimatePresence>
+        {activeInvoiceBooking && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+            onClick={() => setActiveInvoiceBooking(null)}
+          >
+            <style dangerouslySetInnerHTML={{ __html: `
+              @media print {
+                body * {
+                  visibility: hidden !important;
+                }
+                .invoice-print-container, .invoice-print-container * {
+                  visibility: visible !important;
+                }
+                .invoice-print-container {
+                  position: absolute !important;
+                  left: 0 !important;
+                  top: 0 !important;
+                  width: 100% !important;
+                  margin: 0 !important;
+                  padding: 24px !important;
+                  background: white !important;
+                  color: black !important;
+                  box-shadow: none !important;
+                  border: none !important;
+                }
+                .no-print {
+                  display: none !important;
+                }
+                .print-gold-text {
+                  color: #947a46 !important;
+                }
+                .print-gray-bg {
+                  background-color: #f4f4f5 !important;
+                }
+                .print-border-zinc {
+                  border-color: #e4e4e7 !important;
+                }
+              }
+            `}} />
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="invoice-print-container bg-zinc-950 border border-zinc-800 max-w-3xl w-full rounded-[32px] p-6 sm:p-8 space-y-6 text-zinc-300 relative shadow-2xl overflow-y-auto max-h-[90vh] text-left print:bg-white print:text-black print:max-h-none print:overflow-visible"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setActiveInvoiceBooking(null)}
+                className="no-print absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-black border border-white/5 flex items-center justify-center transition-all cursor-pointer z-10"
+              >
+                <X size={15} />
+              </button>
+
+              {/* Logo / Header */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-800 pb-5 print:border-zinc-200">
+                <div className="text-left">
+                  <span className="text-[#b4975a] print-gold-text font-bold text-[10px] tracking-[0.3em] uppercase block mb-1">Tax Invoice & Receipt</span>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-3xl text-white font-light tracking-tight print:text-black">
+                    Dreamwed <span className="italic font-serif text-[#b4975a] print-gold-text">Stories</span>
+                  </h2>
+                  <p className="text-zinc-500 text-[10px] font-light print:text-zinc-700">Kochi & Trivandrum, India | contact@dreamwedstories.co.in</p>
+                </div>
+                <div className="text-left sm:text-right">
+                  <span className="text-zinc-500 text-[9px] uppercase tracking-wider block print:text-zinc-700">Invoice Number</span>
+                  <span className="text-[#b4975a] print-gold-text font-mono font-bold text-sm block">
+                    {activeInvoiceBooking.invoice_number || `DW-2026-${String(activeInvoiceBooking.id).padStart(3, '0')}`}
+                  </span>
+                  <span className="text-zinc-500 text-[9px] uppercase tracking-wider block mt-1.5 print:text-zinc-700">Invoice Date</span>
+                  <span className="text-white print:text-black font-semibold text-xs block">
+                    {formatDateString(activeInvoiceBooking.invoice_date || activeInvoiceBooking.created_at)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Bill Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-zinc-900/40 p-5 border border-zinc-850 rounded-2xl print:bg-zinc-50 print:border-zinc-200 print:text-black">
+                <div className="space-y-1.5 text-left">
+                  <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block print:text-zinc-650">Billed To (Client):</span>
+                  <h4 className="text-sm font-bold text-white print:text-black">{activeInvoiceBooking.customer_name}</h4>
+                  <p className="text-xs text-zinc-400 print:text-zinc-700">📞 Phone: {activeInvoiceBooking.customer_phone}</p>
+                  {activeInvoiceBooking.customer_email && (
+                    <p className="text-xs text-zinc-400 print:text-zinc-700">✉ Email: {activeInvoiceBooking.customer_email}</p>
+                  )}
+                  {activeInvoiceBooking.pincode && (
+                    <p className="text-xs text-zinc-400 print:text-zinc-700">📍 Pincode: {activeInvoiceBooking.pincode}</p>
+                  )}
+                </div>
+                <div className="space-y-1.5 text-left sm:text-right sm:border-l sm:border-zinc-800 print:sm:border-zinc-200 sm:pl-6">
+                  <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block print:text-zinc-650">Event Details:</span>
+                  <p className="text-xs text-zinc-400 print:text-zinc-700">
+                    Venue: <strong className="text-white print:text-black">{activeInvoiceBooking.event_venue || "TBA"}</strong>
+                  </p>
+                  <p className="text-xs text-zinc-400 print:text-zinc-700">
+                    Date: <strong className="text-white print:text-black">{formatDateString(activeInvoiceBooking.event_date)}</strong>
+                  </p>
+                  <p className="text-xs text-zinc-400 print:text-zinc-700">
+                    Scope: <span className="uppercase text-[#b4975a] print-gold-text font-bold text-[10px]">
+                      {activeInvoiceBooking.coverage_scope === "both" ? "Bride & Groom Coverage" : `${activeInvoiceBooking.coverage_scope || 'Single'} Side`}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Items Table */}
+              <div className="border border-zinc-850 rounded-2xl overflow-hidden print:border-zinc-200">
+                <table className="w-full text-left text-xs leading-normal">
+                  <thead>
+                    <tr className="bg-zinc-900/60 text-[#b4975a] print-gold-text font-bold uppercase tracking-wider border-b border-zinc-850 print:border-zinc-200 print:bg-zinc-100">
+                      <th className="px-5 py-3">Description & Service Items</th>
+                      <th className="px-5 py-3 text-right">Amount (INR)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-850 print:divide-zinc-200">
+                    <tr>
+                      <td className="px-5 py-4">
+                        <span className="font-bold text-white print:text-black block">{activeInvoiceBooking.package_name}</span>
+                        <span className="text-[10px] text-zinc-500 print:text-zinc-700 block mt-0.5">
+                          Includes signature coverage, high-res editing workflows, and online photo/video portal hosting.
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-right text-white print:text-black font-semibold font-mono">
+                        ₹ {Number(activeInvoiceBooking.package_price || activeInvoiceBooking.total_price || 0).toLocaleString("en-IN")}/-
+                      </td>
+                    </tr>
+                    {activeInvoiceBooking.add_ons && activeInvoiceBooking.add_ons.map((addon, index) => (
+                      <tr key={index}>
+                        <td className="px-5 py-3 font-medium text-zinc-300 print:text-black">
+                          ➕ {addon.name || addon}
+                        </td>
+                        <td className="px-5 py-3 text-right text-zinc-300 print:text-black font-mono">
+                          ₹ {Number(addon.price || 0).toLocaleString("en-IN")}/-
+                        </td>
+                      </tr>
+                    ))}
+                    {/* Calculation rows */}
+                    <tr className="bg-zinc-900/20 print:bg-zinc-50/50">
+                      <td className="px-5 py-3 text-zinc-400 print:text-zinc-700 font-medium">Subtotal Amount:</td>
+                      <td className="px-5 py-3 text-right text-zinc-300 print:text-black font-semibold font-mono">
+                        ₹ {Number(activeInvoiceBooking.total_price || activeInvoiceBooking.package_price || 0).toLocaleString("en-IN")}/-
+                      </td>
+                    </tr>
+                    <tr className="bg-zinc-900/20 print:bg-zinc-50/50">
+                      <td className="px-5 py-3 text-zinc-400 print:text-zinc-700 font-medium">Advance Booking Paid:</td>
+                      <td className="px-5 py-3 text-right text-emerald-400 font-bold font-mono">
+                        - ₹ {Number(activeInvoiceBooking.advance_paid || 0).toLocaleString("en-IN")}/-
+                      </td>
+                    </tr>
+                    <tr className="bg-zinc-900/40 text-sm print:bg-zinc-100">
+                      <td className="px-5 py-4 text-[#b4975a] print-gold-text font-bold uppercase tracking-wider">Net Balance Due:</td>
+                      <td className="px-5 py-4 text-right text-white print:text-black font-extrabold text-base font-mono">
+                        ₹ {Number((activeInvoiceBooking.total_price || activeInvoiceBooking.package_price || 0) - (activeInvoiceBooking.advance_paid || 0)).toLocaleString("en-IN")}/-
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Payment Milestones */}
+              {activeInvoiceBooking.payment_milestones && activeInvoiceBooking.payment_milestones.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 print:text-zinc-800">Scheduled Payment Milestones</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {activeInvoiceBooking.payment_milestones.map((m, idx) => (
+                      <div key={idx} className="bg-zinc-900/35 border border-zinc-850 p-3 rounded-xl flex flex-col justify-between gap-2 print:border-zinc-200 print:bg-zinc-50">
+                        <div>
+                          <span className="text-[10px] text-zinc-400 print:text-zinc-700 block font-semibold leading-snug">{m.label}</span>
+                          <span className="text-xs text-white print:text-black font-bold block mt-1 font-mono">₹ {Number(m.amount).toLocaleString("en-IN")}/-</span>
+                        </div>
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-[8px] text-zinc-500 font-mono">{m.date ? formatDateString(m.date) : 'Upon Delivery'}</span>
+                          <span className={`text-[8px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                            m.status === "Paid" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-zinc-800 text-zinc-500 border border-zinc-700 print:border-zinc-300"
+                          }`}>
+                            {m.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Credentials Section */}
+              <div className="bg-zinc-900/30 border border-[#b4975a]/20 p-5 rounded-2xl space-y-3.5 print:border-zinc-200 print:bg-zinc-50">
+                <div className="flex items-center gap-2 border-b border-zinc-850 pb-2 print:border-zinc-200">
+                  <ShieldCheck size={16} className="text-[#b4975a] print-gold-text" />
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#b4975a] print-gold-text">Couple Wedding Hub Access Credentials</h4>
+                </div>
+                <p className="text-[10px] text-zinc-500 print:text-zinc-650 leading-relaxed mt-0.5">
+                  Share these credentials with the bride and groom so they can access their private selection lounge at the client portal page.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-zinc-950 p-3 border border-zinc-850 rounded-xl flex justify-between items-center print:bg-white print:border-zinc-200">
+                    <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">👰 Bride Password:</span>
+                    <span className="text-white print:text-black font-mono font-bold text-xs">{activeInvoiceBooking.bride_password || "—"}</span>
+                  </div>
+                  <div className="bg-zinc-950 p-3 border border-zinc-850 rounded-xl flex justify-between items-center print:bg-white print:border-zinc-200">
+                    <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">🤵 Groom Password:</span>
+                    <span className="text-white print:text-black font-mono font-bold text-xs">{activeInvoiceBooking.groom_password || "—"}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Terms / Footer */}
+              <div className="border-t border-zinc-900 pt-4 text-center select-none print:border-zinc-200">
+                <p style={{ fontFamily: "'Cormorant Garamond', serif" }} className="text-lg text-[#b4975a] print-gold-text font-light italic">
+                  Thank you for letting us capture your forever stories! 💛
+                </p>
+                <p className="text-[8px] text-zinc-650 print:text-zinc-500 uppercase tracking-widest mt-1.5 leading-normal">
+                  All rights reserved © Dreamwed Stories Private Limited. Payments are subject to contract terms.
+                </p>
+              </div>
+
+              {/* Action Buttons (no-print) */}
+              <div className="no-print pt-4 border-t border-zinc-850 flex flex-col sm:flex-row justify-end gap-3">
+                <button
+                  onClick={() => {
+                    const includesPrewedding = (parseInt(activeInvoiceBooking.package_price || activeInvoiceBooking.total_price) === 49999 || parseInt(activeInvoiceBooking.package_price || activeInvoiceBooking.total_price) === 99999 || parseInt(activeInvoiceBooking.package_price || activeInvoiceBooking.total_price) === 110000);
+                    const surpriseBonusText = includesPrewedding ? `🎁 SURPRISE BONUS: Free Save the Date Photoshoot (worth ₹9,999/-) included!\n` : '';
+                    const message = `Hi ${activeInvoiceBooking.customer_name}! Here is your Digital Invoice Receipt for locking in your Wedding Package slot:\n\n` +
+                                    `Invoice Number: ${activeInvoiceBooking.invoice_number || `DW-2026-${String(activeInvoiceBooking.id).padStart(3, '0')}`}\n` +
+                                    `Plan: ${activeInvoiceBooking.package_name}\n` +
+                                    `Quote: ₹${parseInt(activeInvoiceBooking.package_price || activeInvoiceBooking.total_price).toLocaleString()}/- Net\n` +
+                                    `Advance Paid: ₹${(activeInvoiceBooking.advance_paid || 0).toLocaleString()}/-\n` +
+                                    surpriseBonusText + `\n` +
+                                    `Your Private Access Credentials:\n` +
+                                    `👰 Bride Password: ${activeInvoiceBooking.bride_password || '—'}\n` +
+                                    `🤵 Groom Password: ${activeInvoiceBooking.groom_password || '—'}\n` +
+                                    `Link to selections: ${window.location.origin}/`;
+                    window.open(`https://wa.me/91${activeInvoiceBooking.customer_phone}?text=${encodeURIComponent(message)}`, '_blank');
+                  }}
+                  className="px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
+                >
+                  <Share2 size={13} /> Share Details
+                </button>
+                <button
+                  onClick={() => window.print()}
+                  className="px-5 py-3.5 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-md"
+                >
+                  <Download size={13} /> Download & Print Invoice
+                </button>
+                <button
+                  onClick={() => setActiveInvoiceBooking(null)}
+                  className="px-5 py-3.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 border border-zinc-800"
+                >
+                  Close Receipt
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -1116,6 +1116,7 @@ const ClientPortal = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [newMsgText, setNewMsgText] = useState("");
   const [galleryFilter, setGalleryFilter] = useState("all");
+  const [sessionRole, setSessionRole] = useState(localStorage.getItem("dreamwed_logged_role") || "bride");
   const [isInvoicePrintOpen, setIsInvoicePrintOpen] = useState(false);
   const [photoComments, setPhotoComments] = useState({}); // photoId -> comment text
   const [activeLightboxPhotoId, setActiveLightboxPhotoId] = useState(null);
@@ -1426,6 +1427,58 @@ const ClientPortal = () => {
     }
   };
 
+  const handleUsernamePasswordLogin = async (e) => {
+    if (e) e.preventDefault();
+    const query = usernameOrEmail.trim();
+    const password = clientPassword.trim();
+    if (!query || !password) return;
+
+    setStatus("loading");
+    setErrorMessage("");
+    setVerificationError("");
+
+    try {
+      let bookings = [];
+      const bookingsRes = await fetch(`${API_BASE}/api/bookings`).catch(() => null);
+      if (bookingsRes && bookingsRes.ok) {
+        bookings = await bookingsRes.json();
+      } else {
+        bookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+      }
+
+      const match = bookings.find(b => 
+        b.customer_email?.toLowerCase() === query.toLowerCase() ||
+        b.customer_phone?.replace(/\D/g, '') === query.replace(/\D/g, '') ||
+        (b.customer_phone_2 && b.customer_phone_2.replace(/\D/g, '') === query.replace(/\D/g, ''))
+      );
+
+      if (!match) {
+        setStatus("not_found");
+        setErrorMessage("We couldn't locate an active wedding workspace matching this phone or email.");
+        return;
+      }
+
+      const isBride = match.bride_password && match.bride_password.trim() === password;
+      const isGroom = match.groom_password && match.groom_password.trim() === password;
+
+      if (!isBride && !isGroom) {
+        setStatus("error");
+        setErrorMessage("Invalid username or password credentials.");
+        return;
+      }
+
+      const role = isBride ? "bride" : "groom";
+      setSessionRole(role);
+      localStorage.setItem("dreamwed_logged_role", role);
+      localStorage.setItem("dreamwed_logged_phone", match.customer_phone);
+      await handleLookup(null, match.customer_phone);
+    } catch (err) {
+      console.error("Login error:", err);
+      setStatus("error");
+      setErrorMessage("An unexpected connection issue occurred. Please check settings.");
+    }
+  };
+
   const handleLookup = async (e, overridePhone = null) => {
     if (e && e.preventDefault) e.preventDefault();
     let query = overridePhone || usernameOrEmail.trim();
@@ -1491,6 +1544,17 @@ const ClientPortal = () => {
       if (data.booking) {
         setCustomerPhone(data.booking.customer_phone || "");
         setCustomerEmail(data.booking.customer_email || "");
+        const scope = data.booking.coverage_scope || "both";
+        let defaultRole = "bride";
+        if (scope === "groom") {
+          defaultRole = "groom";
+        } else if (scope === "bride") {
+          defaultRole = "bride";
+        } else {
+          defaultRole = localStorage.getItem("dreamwed_logged_role") || "bride";
+        }
+        setSessionRole(defaultRole);
+        localStorage.setItem("dreamwed_logged_role", defaultRole);
       }
 
       localStorage.setItem("dreamwed_logged_phone", query);
@@ -1562,6 +1626,17 @@ const ClientPortal = () => {
         setProject(projectMatch);
         setBooking(bookingMatch);
         setStatus("success");
+        const scope = bookingMatch.coverage_scope || "both";
+        let defaultRole = "bride";
+        if (scope === "groom") {
+          defaultRole = "groom";
+        } else if (scope === "bride") {
+          defaultRole = "bride";
+        } else {
+          defaultRole = localStorage.getItem("dreamwed_logged_role") || "bride";
+        }
+        setSessionRole(defaultRole);
+        localStorage.setItem("dreamwed_logged_role", defaultRole);
 
         const couple = projectMatch.couple_name || "";
         const parts = couple.split(" & ");
@@ -1591,8 +1666,12 @@ const ClientPortal = () => {
       localStorage.setItem("dreamwed_projects", JSON.stringify(INITIAL_PROJECTS));
     }
 
+    const autoLoginPhone = sessionStorage.getItem("dreamwed_auto_login_phone");
     const savedPhone = localStorage.getItem("dreamwed_logged_phone");
-    if (savedPhone) {
+    if (autoLoginPhone) {
+      sessionStorage.removeItem("dreamwed_auto_login_phone");
+      handleLookup(null, autoLoginPhone);
+    } else if (savedPhone) {
       handleLookup(null, savedPhone);
     }
   }, []);
@@ -1920,12 +1999,31 @@ const ClientPortal = () => {
     }
     const gallery = project.gallery_images.map(img => {
       if (img.id === photoId) {
+        const isCurrentFav = sessionRole === 'bride' 
+          ? (img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited)
+          : (img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited);
+        const isNewFav = !isCurrentFav;
+        
+        const isBrideFav = sessionRole === 'bride' ? isNewFav : (img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited);
+        const isGroomFav = sessionRole === 'groom' ? isNewFav : (img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited);
+        
+        const scope = booking?.coverage_scope || 'both';
+        let overallFav = false;
+        if (scope === 'both') {
+          overallFav = !!(isBrideFav && isGroomFav);
+        } else if (scope === 'bride') {
+          overallFav = !!isBrideFav;
+        } else {
+          overallFav = !!isGroomFav;
+        }
+
         const cats = img.categories || [];
-        const isFav = !img.favorited;
         return { 
           ...img, 
-          favorited: isFav,
-          categories: isFav ? [...new Set([...cats, "album"])] : cats.filter(c => c !== "album")
+          selected_by_bride: isBrideFav,
+          selected_by_groom: isGroomFav,
+          favorited: overallFav,
+          categories: overallFav ? [...new Set([...cats, "album"])] : cats.filter(c => c !== "album")
         };
       }
       return img;
@@ -2146,12 +2244,48 @@ const ClientPortal = () => {
     if (galleryFilter === "fav") {
       return photos.filter(img => img.favorited);
     }
+    if (galleryFilter === "mine") {
+      return photos.filter(img => {
+        return sessionRole === 'bride'
+          ? (img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited)
+          : (img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited);
+      });
+    }
+    if (galleryFilter === "partner") {
+      return photos.filter(img => {
+        return sessionRole === 'bride'
+          ? (img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited)
+          : (img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited);
+      });
+    }
+    if (galleryFilter === "matches") {
+      return photos.filter(img => {
+        const isBrideFav = img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited;
+        const isGroomFav = img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited;
+        return isBrideFav && isGroomFav;
+      });
+    }
     return photos;
   };
 
   const getSelectedPhotosCount = () => {
     if (!project) return 0;
-    return (project.gallery_images || []).filter(img => img.favorited).length;
+    const scope = booking?.coverage_scope || "both";
+    if (scope === "both") {
+      return (project.gallery_images || []).filter(img => {
+        const isBrideFav = img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited;
+        const isGroomFav = img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited;
+        return isBrideFav && isGroomFav;
+      }).length;
+    } else if (scope === "bride") {
+      return (project.gallery_images || []).filter(img => {
+        return img.selected_by_bride !== undefined ? img.selected_by_bride : img.favorited;
+      }).length;
+    } else {
+      return (project.gallery_images || []).filter(img => {
+        return img.selected_by_groom !== undefined ? img.selected_by_groom : img.favorited;
+      }).length;
+    }
   };
 
   // CURRENCY & FORMATS
@@ -2349,107 +2483,48 @@ const ClientPortal = () => {
             </div>
 
             {/* Login Section Below the Message */}
-            {/* Login Section Below the Message */}
-            {!otpSent ? (
-              <form onSubmit={handleSendOtp} className="space-y-5 max-w-md mx-auto text-left">
-                {/* Phone or Email Input */}
-                <div className="space-y-2">
-                  <label className="text-[9px] text-[#b4975a] font-bold uppercase tracking-widest block">WhatsApp Phone or Email</label>
-                  <div className="relative">
-                    <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-                    <input 
-                      type="text" 
-                      required
-                      placeholder="Enter registered phone or email"
-                      value={usernameOrEmail}
-                      onChange={(e) => setUsernameOrEmail(e.target.value)}
-                      className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
-                    />
-                  </div>
+            <form onSubmit={handleUsernamePasswordLogin} className="space-y-5 max-w-md mx-auto text-left">
+              {/* Phone or Email Input */}
+              <div className="space-y-2">
+                <label className="text-[9px] text-[#b4975a] font-bold uppercase tracking-widest block">WhatsApp Phone or Email</label>
+                <div className="relative">
+                  <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="Enter registered phone or email"
+                    value={usernameOrEmail}
+                    onChange={(e) => setUsernameOrEmail(e.target.value)}
+                    className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
+                  />
                 </div>
+              </div>
 
-                {/* Submit button */}
-                <button 
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="w-full py-4 mt-2 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  {status === "loading" ? "Sending Access Code..." : "Request Access Code →"}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtp} className="space-y-6 max-w-md mx-auto text-left">
-                <div className="text-center space-y-2">
-                  <p className="text-xs text-zinc-300">
-                    We sent a 4-digit access code to <span className="font-semibold text-white">{usernameOrEmail}</span>.
-                  </p>
+              {/* Password Input */}
+              <div className="space-y-2">
+                <label className="text-[9px] text-[#b4975a] font-bold uppercase tracking-widest block">Access Password</label>
+                <div className="relative">
+                  <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <input 
+                    type="password" 
+                    required
+                    placeholder="Enter your partner password"
+                    value={clientPassword}
+                    onChange={(e) => setClientPassword(e.target.value)}
+                    className="w-full bg-zinc-900/40 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white text-xs focus:border-[#b4975a] focus:ring-1 focus:ring-[#b4975a] focus:outline-none transition-all shadow-inner"
+                  />
                 </div>
+              </div>
 
-                {/* 4-digit input fields */}
-                <div className="flex justify-center gap-3.5 my-6">
-                  {otpCode.map((digit, idx) => (
-                    <input
-                      key={idx}
-                      id={`otp-box-${idx}`}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleOtpCharChange(idx, e.target.value)}
-                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                      className="w-14 h-14 bg-zinc-900/60 border-2 border-white/10 focus:border-[#b4975a] rounded-xl text-center text-xl font-bold text-white focus:outline-none transition-all shadow-inner"
-                    />
-                  ))}
-                </div>
-
-                {verificationError && (
-                  <div className="text-red-400 text-xs text-center font-medium py-1 animate-shake">
-                    {verificationError}
-                  </div>
-                )}
-
-                <button 
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="w-full py-4 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  {status === "loading" ? "Verifying..." : "Verify & Enter Console"}
-                </button>
-
-                <div className="flex justify-between items-center text-[10px] px-1 pt-2 border-b border-white/5 pb-4">
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      setOtpSent(false);
-                      setOtpCode(["", "", "", ""]);
-                      setStatus("idle");
-                    }}
-                    className="text-zinc-400 hover:text-white transition-colors uppercase font-bold tracking-wider cursor-pointer bg-transparent border-none outline-none"
-                  >
-                    ← Change Phone/Email
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={handleSendOtp}
-                    className="text-[#b4975a] hover:text-[#c5a86b] transition-colors uppercase font-bold tracking-wider cursor-pointer bg-transparent border-none outline-none"
-                  >
-                    Resend Code
-                  </button>
-                </div>
-
-                {/* Professional Help WhatsApp Link */}
-                <div className="text-center pt-2">
-                  <a 
-                    href={`https://wa.me/919995412955?text=${encodeURIComponent(`Hello Dreamwed Stories, I am trying to log in to my Wedding Hub. Please provide my access code for my registered email or phone: ${usernameOrEmail}`)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-[#b4975a] text-[10px] uppercase font-bold tracking-wider transition-colors"
-                  >
-                    <FaWhatsapp size={13} className="text-green-500" />
-                    Don't have a code? Ask Coordinator
-                  </a>
-                </div>
-              </form>
-            )}
+              {/* Submit button */}
+              <button 
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full py-4 mt-2 bg-[#b4975a] hover:bg-[#c5a86b] text-zinc-950 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-lg shadow-amber-500/5 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+              >
+                {status === "loading" ? "Entering Workspace..." : "Access Selection Room →"}
+              </button>
+            </form>
 
             {/* Signup option for new customers (Highly Visible Luxury Callout) */}
             <div className="max-w-md mx-auto mt-6 pt-5 border-t border-white/10 text-center space-y-3">
@@ -2613,6 +2688,7 @@ const ClientPortal = () => {
           <button 
             onClick={() => {
               localStorage.removeItem("dreamwed_logged_phone");
+              localStorage.removeItem("dreamwed_logged_role");
               setProject(null);
               setBooking(null);
               setStatus("idle");
@@ -2658,6 +2734,7 @@ const ClientPortal = () => {
             <button 
               onClick={() => {
                 localStorage.removeItem("dreamwed_logged_phone");
+                localStorage.removeItem("dreamwed_logged_role");
                 setProject(null);
                 setBooking(null);
                 setStatus("idle");
@@ -2905,14 +2982,68 @@ const ClientPortal = () => {
                       All
                     </button>
                     <button 
-                      onClick={() => setGalleryFilter("fav")}
-                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${galleryFilter === "fav" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-800"}`}
+                      onClick={() => setGalleryFilter("mine")}
+                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${galleryFilter === "mine" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-800"}`}
                     >
-                      Hearts Only
+                      My Favorites
                     </button>
+                    {booking?.coverage_scope === "both" && (
+                      <>
+                        <button 
+                          onClick={() => setGalleryFilter("partner")}
+                          className={`px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${galleryFilter === "partner" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-800"}`}
+                        >
+                          Partner's
+                        </button>
+                        <button 
+                          onClick={() => setGalleryFilter("matches")}
+                          className={`px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${galleryFilter === "matches" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-800"}`}
+                        >
+                          Matches
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
+
+              {/* Dynamic Role Switcher inside Portal */}
+              {booking?.coverage_scope === "both" && (
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-zinc-50 p-5 rounded-2xl border border-zinc-200 shadow-sm">
+                  <div className="text-left">
+                    <div className="flex items-center gap-2">
+                      <span className={`w-2.5 h-2.5 rounded-full animate-pulse ${sessionRole === 'bride' ? 'bg-rose-500' : 'bg-sky-500'}`}></span>
+                      <strong className="text-xs font-bold text-zinc-950 uppercase tracking-wide">
+                        Active Selection Session: {sessionRole === 'bride' ? '👰 Bride Session' : '🤵 Groom Session'}
+                      </strong>
+                    </div>
+                    <p className="text-zinc-500 text-[11px] font-light leading-normal max-w-lg mt-0.5">
+                      You are editing your separate selections. The final layflat album is compiled using your Agreed Matches!
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-2 shrink-0 select-none bg-zinc-200/60 p-1.5 rounded-xl border border-zinc-300">
+                    <button
+                      onClick={() => {
+                        setSessionRole("bride");
+                        localStorage.setItem("dreamwed_logged_role", "bride");
+                      }}
+                      className={`px-4 py-2 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all duration-300 cursor-pointer ${sessionRole === "bride" ? "bg-rose-500 text-white shadow-sm border border-rose-600" : "text-zinc-600 hover:text-zinc-900 border border-transparent"}`}
+                    >
+                      👰 Bride Session
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSessionRole("groom");
+                        localStorage.setItem("dreamwed_logged_role", "groom");
+                      }}
+                      className={`px-4 py-2 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all duration-300 cursor-pointer ${sessionRole === "groom" ? "bg-sky-500 text-white shadow-sm border border-sky-600" : "text-zinc-600 hover:text-zinc-900 border border-transparent"}`}
+                    >
+                      🤵 Groom Session
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Google Drive Link Status Panel */}
               {project.deliveries?.raw_photos_url && (
@@ -2978,11 +3109,28 @@ const ClientPortal = () => {
                     )}
 
                     {/* Selection indicators */}
-                    {img.favorited && (
-                      <div className="absolute top-3.5 left-3.5 z-20">
-                        <span className="bg-[#b4975a] text-white text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
-                          ❤️ Hearted
-                        </span>
+                    {(img.selected_by_bride || img.selected_by_groom || img.favorited) && (
+                      <div className="absolute top-3.5 left-3.5 z-20 flex flex-col gap-1.5 select-none">
+                        {img.selected_by_bride && img.selected_by_groom && (
+                          <span className="bg-[#b4975a] text-white text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+                            ✨ Agreed Match
+                          </span>
+                        )}
+                        {img.selected_by_bride && !(img.selected_by_bride && img.selected_by_groom) && (
+                          <span className="bg-rose-500 text-white text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                            👰 Bride Loves
+                          </span>
+                        )}
+                        {img.selected_by_groom && !(img.selected_by_bride && img.selected_by_groom) && (
+                          <span className="bg-sky-500 text-white text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                            🤵 Groom Loves
+                          </span>
+                        )}
+                        {!img.selected_by_bride && !img.selected_by_groom && img.favorited && (
+                          <span className="bg-[#b4975a] text-white text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                            ❤️ Hearted
+                          </span>
+                        )}
                       </div>
                     )}
                   </div>
@@ -4060,16 +4208,23 @@ const ClientPortal = () => {
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Selection Panel</span>
-                        <button
-                          onClick={() => togglePhotoFavorite(activePhoto.id)}
-                          className={`w-9 h-9 rounded-full flex items-center justify-center transition-transform hover:scale-110 cursor-pointer backdrop-blur-md border ${
-                            activePhoto.favorited 
-                              ? "bg-red-500 border-red-500 text-white" 
-                              : "bg-zinc-800 border-zinc-700 text-zinc-300"
-                          }`}
-                        >
-                          <Heart size={16} className={activePhoto.favorited ? "fill-current" : ""} />
-                        </button>
+                        {(() => {
+                          const isPhotoFav = sessionRole === 'bride' 
+                            ? (activePhoto.selected_by_bride !== undefined ? activePhoto.selected_by_bride : activePhoto.favorited)
+                            : (activePhoto.selected_by_groom !== undefined ? activePhoto.selected_by_groom : activePhoto.favorited);
+                          return (
+                            <button
+                              onClick={() => togglePhotoFavorite(activePhoto.id)}
+                              className={`w-9 h-9 rounded-full flex items-center justify-center transition-transform hover:scale-110 cursor-pointer backdrop-blur-md border ${
+                                isPhotoFav 
+                                  ? "bg-red-500 border-red-500 text-white" 
+                                  : "bg-zinc-800 border-zinc-700 text-zinc-300"
+                              }`}
+                            >
+                              <Heart size={16} className={isPhotoFav ? "fill-current" : ""} />
+                            </button>
+                          );
+                        })()}
                       </div>
 
                       <h3 className="text-xl font-light text-white tracking-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
