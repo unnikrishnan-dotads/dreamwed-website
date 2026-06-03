@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- State Constants ---
     const whatsappBase = 'https://wa.me/919995412955';
-    const API_BASE = 'http://localhost:3000';
+    const API_BASE = localStorage.getItem("dreamwed_api_base") || 
+                     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                        ? 'http://localhost:3000' 
+                        : window.location.origin);
     let isAdminMode = false;
     let customBullets = [];
 
@@ -1968,16 +1971,33 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 stay_charges: "Excluded"
             };
 
-            // Generate and alert simulated SMS OTP code
-            generatedOtpCode = String(Math.floor(Math.random() * 900000) + 100000);
-            alert(`💬 Twilio SMS Gateway Simulator:\nOTP code sent to +91 ${phone} is: [ ${generatedOtpCode} ]`);
-
-            // Shift views
-            if (bookingStepFields) bookingStepFields.style.display = 'none';
-            if (bookingStepOtp) bookingStepOtp.style.display = 'block';
-
-            // Start countdown
-            startOtpResendTimer();
+            // Call Real Backend Twilio OTP Sender
+            fetch(`${API_BASE}/api/otp/send`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.simulated) {
+                        generatedOtpCode = data.otp;
+                        alert(`💬 Twilio SMS Gateway Simulator:\nOTP code sent to +91 ${phone} is: [ ${generatedOtpCode} ]`);
+                    } else {
+                        generatedOtpCode = 'REAL';
+                    }
+                    // Shift views
+                    if (bookingStepFields) bookingStepFields.style.display = 'none';
+                    if (bookingStepOtp) bookingStepOtp.style.display = 'block';
+                    startOtpResendTimer();
+                } else {
+                    alert('❌ Failed to send OTP verification code. Please verify your phone number and try again.');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('❌ Server connection failed. Please ensure the backend is running.');
+            });
         });
     }
 
@@ -1985,10 +2005,30 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
         customerOtpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const enteredOtp = document.getElementById('custOtp').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
 
-            if (enteredOtp !== generatedOtpCode) {
-                alert('❌ Invalid OTP verification code! Please check your SMS simulator prompt and enter again.');
-                return;
+            if (generatedOtpCode === 'REAL') {
+                try {
+                    const res = await fetch(`${API_BASE}/api/otp/verify`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, otp: enteredOtp })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        alert('❌ Invalid OTP verification code. Please check your messages and try again.');
+                        return;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('❌ Connection to server failed during verification.');
+                    return;
+                }
+            } else {
+                if (enteredOtp !== generatedOtpCode) {
+                    alert('❌ Invalid OTP verification code! Please check your SMS simulator prompt and enter again.');
+                    return;
+                }
             }
 
             // Clear resend timer
@@ -2083,9 +2123,29 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     if (btnResendOtp) {
         btnResendOtp.addEventListener('click', () => {
             const phone = document.getElementById('custPhone').value.trim();
-            generatedOtpCode = String(Math.floor(Math.random() * 900000) + 100000);
-            alert(`💬 Twilio SMS Gateway Simulator:\nOTP code resent to +91 ${phone} is: [ ${generatedOtpCode} ]`);
-            startOtpResendTimer();
+            fetch(`${API_BASE}/api/otp/send`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.simulated) {
+                        generatedOtpCode = data.otp;
+                        alert(`💬 Twilio SMS Gateway Simulator:\nOTP code resent to +91 ${phone} is: [ ${generatedOtpCode} ]`);
+                    } else {
+                        generatedOtpCode = 'REAL';
+                    }
+                    startOtpResendTimer();
+                } else {
+                    alert('❌ Failed to resend OTP.');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('❌ Connection failed while resending OTP.');
+            });
         });
     }
 

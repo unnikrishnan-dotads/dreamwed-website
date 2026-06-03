@@ -1394,8 +1394,26 @@ const ClientPortal = () => {
         return;
       }
 
-      const code = String(Math.floor(1000 + Math.random() * 9000));
-      setGeneratedOtp(code);
+      // Call Backend Send OTP API
+      const response = await fetch(`${API_BASE}/api/otp/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, digits: 4 })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        setStatus("error");
+        setErrorMessage("Failed to send verification OTP via Twilio SMS Gateway.");
+        return;
+      }
+
+      if (data.simulated) {
+        setGeneratedOtp(data.otp);
+        alert(`💬 Twilio SMS Gateway Simulator:\nOTP code sent to +91 ${phone} is: [ ${data.otp} ]`);
+      } else {
+        setGeneratedOtp("REAL");
+      }
+
       setOtpSent(true);
       setOtpCode(["", "", "", ""]);
       setStatus("idle");
@@ -1412,7 +1430,7 @@ const ClientPortal = () => {
     }
   };
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     if (e) e.preventDefault();
     const entered = otpCode.join("");
     if (entered.length < 4) {
@@ -1420,10 +1438,47 @@ const ClientPortal = () => {
       return;
     }
 
-    if (entered === generatedOtp || entered === "1234") {
-      handleLookup(null, usernameOrEmail);
+    if (generatedOtp === "REAL") {
+      try {
+        const bookingsRes = await fetch(`${API_BASE}/api/bookings`).catch(() => null);
+        let bookings = [];
+        if (bookingsRes && bookingsRes.ok) {
+          bookings = await bookingsRes.json();
+        } else {
+          bookings = JSON.parse(localStorage.getItem("dreamwed_bookings") || "[]");
+        }
+        
+        const query = usernameOrEmail.trim();
+        let phone = query.replace(/\D/g, "");
+        if (phone.length < 10) {
+          const match = bookings.find(b => 
+            b.customer_email?.toLowerCase() === query.toLowerCase() ||
+            b.customer_name?.toLowerCase().includes(query.toLowerCase())
+          );
+          if (match) phone = match.customer_phone;
+        }
+
+        const res = await fetch(`${API_BASE}/api/otp/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, otp: entered })
+        });
+        const verifyData = await res.json();
+        if (res.ok && verifyData.success) {
+          handleLookup(null, usernameOrEmail);
+        } else {
+          setVerificationError("❌ Incorrect OTP verification code.");
+        }
+      } catch (err) {
+        console.error(err);
+        setVerificationError("❌ Server connection error during OTP verification.");
+      }
     } else {
-      setVerificationError("❌ Invalid verification code. Please check and try again.");
+      if (entered === generatedOtp || entered === "1234") {
+        handleLookup(null, usernameOrEmail);
+      } else {
+        setVerificationError("❌ Invalid verification code. Please check and try again.");
+      }
     }
   };
 
