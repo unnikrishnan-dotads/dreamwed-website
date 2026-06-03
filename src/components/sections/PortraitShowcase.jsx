@@ -31,7 +31,7 @@ const galleryImages = [
     src: portrait3,
     title: "Whispered Promises",
     style: "Minimalist Cinematic",
-    desc: "A beautiful, bright composition against a pristine white wall, focusing on natural smiles and a relaxed, contemporary wedding vibe.",
+    desc: "A warm, candid embrace set against a traditional Kerala heritage home, celebrating authentic love and natural smiles in a lush garden.",
     camera: "Sony Alpha A7R V | 35mm f/1.4"
   },
   {
