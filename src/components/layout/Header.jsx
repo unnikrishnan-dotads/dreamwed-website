@@ -43,7 +43,7 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Packages", path: "http://localhost:8080/packages.html", isExternal: true },
+    { name: "Packages", path: "/packages.html", isExternal: true },
     { name: "AI Photo Search ✨", path: "/ai-search" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
