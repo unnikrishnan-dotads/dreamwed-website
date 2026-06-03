@@ -62,17 +62,22 @@ const Hero = () => {
           <h1 className="text-[22px] sm:text-[42px] md:text-[64px] font-serif italic font-light -mt-2 sm:-mt-4 mb-8">
             Photography in Trivandrum
           </h1>
-          <p className="text-[16px] sm:text-[18px] md:text-[22px] mb-12 text-white/90 max-w-2xl mx-auto font-light tracking-wide leading-relaxed">
+          <p className="text-[16px] sm:text-[18px] md:text-[22px] mb-6 text-white/90 max-w-2xl mx-auto font-light tracking-wide leading-relaxed">
             Capturing timeless love stories with elegance, emotion, and cinematic artistry. 
             Your special day, preserved forever.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <Button 
-              onClick={() => setIsModalOpen(true)} 
-              className="w-full sm:w-auto px-12 bg-gradient-to-r from-amber-500 via-[#d1a852] to-[#b4975a] text-white border-0 shadow-[0_0_30px_rgba(209,168,82,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 rounded-full font-bold uppercase tracking-wider text-[12px] flex items-center justify-center py-4 gap-2"
+          <div className="flex justify-center mb-12">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 hover:border-white/20 text-[10px] font-bold uppercase tracking-[2px] text-zinc-300 hover:text-white transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95"
             >
-              <FaPlay className="animate-pulse" /> Play Prewedding Film
-            </Button>
+              <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+                <FaPlay size={8} className="ml-0.5 text-white" />
+              </span>
+              Play Prewedding Video
+            </button>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Button to="/services" variant="secondary" className="w-full sm:w-auto px-12">
               View Packages
             </Button>
