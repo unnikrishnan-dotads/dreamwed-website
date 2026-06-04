@@ -1,0 +1,3084 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "customer_number": "whatsapp:+919995412955",
+      "name": null,
+      "wedding_date": null,
+      "venue": "talk in malayalam",
+      "package_interested": null,
+      "status": "chatting",
+      "availability_checked": 0,
+      "owner_confirmed": null,
+      "created_at": "2026-05-28T07:12:44.691Z",
+      "updated_at": "2026-06-01 04:55:01"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Hey",
+      "created_at": "2026-05-28T07:12:44.692Z"
+    },
+    {
+      "id": 2,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Yey",
+      "created_at": "2026-05-28T07:13:20.392Z"
+    },
+    {
+      "id": 3,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Hey",
+      "created_at": "2026-05-28T07:17:54.143Z"
+    },
+    {
+      "id": 4,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "...",
+      "created_at": "2026-05-28T07:18:10.730Z"
+    },
+    {
+      "id": 5,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Hey",
+      "created_at": "2026-05-28T07:32:22.249Z"
+    },
+    {
+      "id": 6,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "Hey there! 👋\n\nI'm Dreamwed Assistant, your guide to capturing those unforgettable moments! ✨\n\nCongratulations on your upcoming event! So excited you reached out to us. 💛\n\nCould you please tell me a bit about your wedding or event? Like the date and the venue/place? 😊",
+      "created_at": "2026-05-28T07:32:24.806Z"
+    },
+    {
+      "id": 7,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Hey",
+      "created_at": "2026-05-28T07:35:12.218Z"
+    },
+    {
+      "id": 8,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "Hey again! 😊\n\nJust checking in to see if you received my last message.\n\nI'd love to know your wedding date and venue so I can help you better. What are your plans? 📅📍",
+      "created_at": "2026-05-28T07:35:14.687Z"
+    },
+    {
+      "id": 9,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Ik",
+      "created_at": "2026-05-28T07:35:24.276Z"
+    },
+    {
+      "id": 10,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "Got it! 😊\n\nTo help me recommend the perfect package for you, could you please share your wedding date and venue? This helps me check our availability and tailor our options for you. 📅📍",
+      "created_at": "2026-05-28T07:35:26.376Z"
+    },
+    {
+      "id": 11,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Can u talk in malayalam",
+      "created_at": "2026-05-28T07:35:41.884Z"
+    },
+    {
+      "id": 12,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "user",
+      "message": "Hey",
+      "created_at": "2026-05-28 07:39:08"
+    },
+    {
+      "id": 13,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "[REMINDER] Hi! 😊 Just checking in — did you get a chance to discuss with family about your wedding photography? We're here if you have any questions! 💛",
+      "created_at": "2026-05-29 04:30:01"
+    },
+    {
+      "id": 14,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "[REMINDER] Good day! 🌟 We still have your enquiry with us. Your wedding day deserves the best memories — that's exactly what we create at Dreamwed Stories 💛\n\nShall we take the next step?",
+      "created_at": "2026-05-30 04:35:01"
+    },
+    {
+      "id": 15,
+      "customer_number": "whatsapp:+919995412955",
+      "role": "assistant",
+      "message": "[REMINDER] Hi! 🔔 Just a gentle reminder — *your date may still be open* but we're getting more enquiries for that period!\n\nWe'd love to block it for you before it fills up 🙏 Just say the word!",
+      "created_at": "2026-06-01 04:55:01"
+    }
+  ],
+  "reminders": [
+    {
+      "id": 1,
+      "customer_number": "whatsapp:+919995412955",
+      "reminder_type": "follow_up_6h",
+      "scheduled_at": "2026-05-28T13:32:24.808Z",
+      "sent": 1,
+      "created_at": "2026-05-28T07:32:24.808Z"
+    },
+    {
+      "id": 2,
+      "customer_number": "whatsapp:+919995412955",
+      "reminder_type": "follow_up_1d",
+      "scheduled_at": "2026-05-29T07:32:24.821Z",
+      "sent": 1,
+      "created_at": "2026-05-28T07:32:24.821Z"
+    },
+    {
+      "id": 3,
+      "customer_number": "whatsapp:+919995412955",
+      "reminder_type": "follow_up_3d",
+      "scheduled_at": "2026-05-31T07:32:24.830Z",
+      "sent": 1,
+      "created_at": "2026-05-28T07:32:24.830Z"
+    },
+    {
+      "id": 4,
+      "customer_number": "whatsapp:+919995412955",
+      "reminder_type": "follow_up_7d",
+      "scheduled_at": "2026-06-04T07:32:24.830Z",
+      "sent": 0,
+      "created_at": "2026-05-28T07:32:24.830Z"
+    }
+  ],
+  "bookings": [
+    {
+      "id": 9,
+      "customer_name": "Dreamwed Dreamwed",
+      "customer_phone": "9995412955",
+      "customer_email": "dreamwedweddingstories@gmail.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "both",
+      "coverage_side": "",
+      "event_date": "6/3/2026",
+      "event_venue": "gokulam katt",
+      "package_name": "Bride & Groom Package 1",
+      "package_price": 110000,
+      "add_ons": [],
+      "total_price": 110000,
+      "advance_paid": 0,
+      "balance_amount": 110000,
+      "invoice_number": "DW-2026-009",
+      "invoice_date": "2026-06-03",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Bride & Groom Package 1)",
+          "amount": 0,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "6/3/2026",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 110000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride730",
+      "groom_password": "groom479",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "695575",
+      "created_at": "2026-06-03 16:44:22",
+      "updated_at": "2026-06-03 16:47:49"
+    },
+    {
+      "id": 8,
+      "customer_name": "Test Bride & Groom",
+      "customer_phone": "9995412955",
+      "customer_email": "test@dreamwed.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "single",
+      "coverage_side": "",
+      "event_date": "2026-12-25",
+      "event_venue": "Lulu Convention Center, Trivandrum",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [],
+      "total_price": 180000,
+      "advance_paid": 5000,
+      "balance_amount": 175000,
+      "invoice_number": "DW-2026-008",
+      "invoice_date": "2026-06-03",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 5000,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-25",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 175000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride941",
+      "groom_password": "groom116",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "",
+      "created_at": "2026-06-03 16:43:14",
+      "updated_at": "2026-06-03 16:43:14"
+    },
+    {
+      "id": 7,
+      "customer_name": "JUnit Test Couple",
+      "customer_phone": "9000000001",
+      "customer_email": "junit@dreamwed.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "single",
+      "coverage_side": "",
+      "event_date": "2026-12-25",
+      "event_venue": "JUnit Suite",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [],
+      "total_price": 180000,
+      "advance_paid": 5000,
+      "balance_amount": -5000,
+      "invoice_number": "DW-2026-007",
+      "invoice_date": "2026-06-03",
+      "status": "pending",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 5000,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-25",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": -5000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride641",
+      "groom_password": "groom682",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "",
+      "created_at": "2026-06-03 14:25:52",
+      "updated_at": "2026-06-03 14:25:52"
+    },
+    {
+      "id": 6,
+      "customer_name": "Test Bride & Groom",
+      "customer_phone": "9995412955",
+      "customer_email": "test@dreamwed.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "single",
+      "coverage_side": "",
+      "event_date": "2026-12-25",
+      "event_venue": "Lulu Convention Center, Trivandrum",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [],
+      "total_price": 180000,
+      "advance_paid": 5000,
+      "balance_amount": 175000,
+      "invoice_number": "DW-2026-006",
+      "invoice_date": "2026-06-03",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 5000,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-25",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 175000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride481",
+      "groom_password": "groom245",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "",
+      "created_at": "2026-06-03 12:30:55",
+      "updated_at": "2026-06-03 12:30:55"
+    },
+    {
+      "id": 5,
+      "customer_name": "Test Bride & Groom",
+      "customer_phone": "9995412955",
+      "customer_email": "test@dreamwed.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "single",
+      "coverage_side": "",
+      "event_date": "2026-12-25",
+      "event_venue": "Lulu Convention Center, Trivandrum",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [],
+      "total_price": 180000,
+      "advance_paid": 5000,
+      "balance_amount": 175000,
+      "invoice_number": "DW-2026-005",
+      "invoice_date": "2026-06-03",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 5000,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-25",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 175000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride939",
+      "groom_password": "groom343",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "",
+      "created_at": "2026-06-03 12:30:34",
+      "updated_at": "2026-06-03 16:48:30"
+    },
+    {
+      "id": 3,
+      "customer_name": "Adarsh & Anjali",
+      "customer_phone": "9042544997",
+      "customer_email": "adarsh.anjali@gmail.com",
+      "event_date": "2026-12-18",
+      "event_venue": "Taj Green Cove, Kovalam",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [
+        "Pre-wedding Cinematic Video (Offer Price - 9999/-)",
+        "Drone Coverage Upgrade"
+      ],
+      "total_price": 189999,
+      "advance_paid": 50000,
+      "balance_amount": 139999,
+      "invoice_number": "DW-2026-003",
+      "invoice_date": "2026-05-28",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 50000,
+          "date": "2026-05-28",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-18",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 139999,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "created_at": "2026-05-28 18:26:08",
+      "updated_at": "2026-05-28 18:26:08"
+    },
+    {
+      "id": 4,
+      "customer_name": "Rahul & Sneha",
+      "customer_phone": "9895412895",
+      "customer_email": "rahul.sneha@gmail.com",
+      "event_date": "2026-11-20",
+      "event_venue": "The Leela Raviz, Kovalam",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [
+        "Pre-wedding Cinematic Video (Offer Price - 9999/-)",
+        "Drone Coverage Upgrade"
+      ],
+      "total_price": 189999,
+      "advance_paid": 50000,
+      "balance_amount": 139999,
+      "invoice_number": "DW-2026-004",
+      "invoice_date": "2026-05-28",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 50000,
+          "date": "2026-05-28",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-11-20",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 139999,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "created_at": "2026-05-28 18:26:08",
+      "updated_at": "2026-05-28 18:26:08"
+    },
+    {
+      "id": 2,
+      "customer_name": "Rahul & Sneha",
+      "customer_phone": "9895412895",
+      "customer_email": "rahul.sneha@gmail.com",
+      "event_date": "2026-11-20",
+      "event_venue": "The Leela Raviz, Kovalam",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [
+        "Pre-wedding Cinematic Video (Offer Price - 9999/-)",
+        "Drone Coverage Upgrade"
+      ],
+      "total_price": 189999,
+      "advance_paid": 50000,
+      "balance_amount": 139999,
+      "invoice_number": "DW-2026-002",
+      "invoice_date": "2026-05-28",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 50000,
+          "date": "2026-05-28",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-11-20",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 139999,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "created_at": "2026-05-28 18:14:52",
+      "updated_at": "2026-05-28 18:14:52"
+    },
+    {
+      "id": 10,
+      "customer_name": "Test Bride & Groom",
+      "customer_phone": "9995412955",
+      "customer_email": "test@dreamwed.com",
+      "customer_name_2": "",
+      "customer_phone_2": "",
+      "customer_email_2": "",
+      "coverage_type": "single",
+      "coverage_side": "",
+      "event_date": "2026-12-25",
+      "event_venue": "Lulu Convention Center, Trivandrum",
+      "package_name": "Elite Signature Package",
+      "package_price": 180000,
+      "add_ons": [],
+      "total_price": 180000,
+      "advance_paid": 5000,
+      "balance_amount": 175000,
+      "invoice_number": "DW-2026-010",
+      "invoice_date": "2026-06-03",
+      "status": "confirmed",
+      "payment_milestones": [
+        {
+          "label": "Advance - Wedding Photography (Elite Signature Package)",
+          "amount": 5000,
+          "date": "2026-06-03",
+          "status": "Paid"
+        },
+        {
+          "label": "Second Payment (Event Day)",
+          "amount": 0,
+          "date": "2026-12-25",
+          "status": "Pending"
+        },
+        {
+          "label": "Final Payment (Before Delivery)",
+          "amount": 175000,
+          "date": "",
+          "status": "Pending"
+        }
+      ],
+      "bride_password": "bride424",
+      "groom_password": "groom716",
+      "bride_selections": [],
+      "groom_selections": [],
+      "selection_locked": false,
+      "drive_link": "https://drive.google.com/drive/folders/1A2B3C4D5E6F7G8H9I0J",
+      "travel_charges": "Excluded",
+      "stay_charges": "Excluded",
+      "coverage_scope": "both",
+      "pincode": "",
+      "created_at": "2026-06-03 16:57:58",
+      "updated_at": "2026-06-03 16:57:58"
+    }
+  ],
+  "projects": [
+    {
+      "id": 2,
+      "booking_id": 3,
+      "couple_name": "Adarsh & Anjali",
+      "wedding_date": "2026-12-18",
+      "current_step": 3,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-05-28 19:04:54"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": true,
+          "updated_at": "2026-05-30 13:14:48"
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://lh3.googleusercontent.com/d/1t9NpD7bufB-EotQGhan3UX_zw9oqpCNE=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 2,
+          "url": "https://lh3.googleusercontent.com/d/1Qf7tqN14Oct0GdG2dn-jNBy_RdNO4tRh=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://lh3.googleusercontent.com/d/1EJ9qWLLBqgT1woFFPduDimEDXBt-K5RS=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://lh3.googleusercontent.com/d/1bWyGkkkzScDh2lyyZt0mfL7S2kdWzchU=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://lh3.googleusercontent.com/d/1lGbiiMD_OfYnvmwxiUoWY7dMyQyfwoPE=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://lh3.googleusercontent.com/d/1zFfB97d4XoP3myOE-x1b_oMMMSEhB80q=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://lh3.googleusercontent.com/d/1uZuZolPRdMK8hy06eBPiVE6dyKxJrNhx=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://lh3.googleusercontent.com/d/13X0vKMrwNsd8hqH17tWOuJXWHWB9AQtV=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 9,
+          "url": "https://lh3.googleusercontent.com/d/1DxsNtf7R-QjhF6fJD89RBTVMKWcsC8Ny=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 10,
+          "url": "https://lh3.googleusercontent.com/d/1k8ACxII6YBE8vnqOqSkcNUCNGG4fUXWW=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 11,
+          "url": "https://lh3.googleusercontent.com/d/1ZKs-TSGeOIFbYUIrdUN1R56LS4hdgpRP=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 12,
+          "url": "https://lh3.googleusercontent.com/d/16QDF1yiEfzHPEK8BzWiVC7tXYlZ5bM0I=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 13,
+          "url": "https://lh3.googleusercontent.com/d/1WeRy5ZR7uFyaKtaj6ZN3fbKUygfy71kv=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 14,
+          "url": "https://lh3.googleusercontent.com/d/1BAi7_y-VFZfqNyexckiapK20MM4jSt8-=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 15,
+          "url": "https://lh3.googleusercontent.com/d/1VF2K-W_V8FJSvuCC6SkovThdCYK5jYzh=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 16,
+          "url": "https://lh3.googleusercontent.com/d/1v9mkEo5blAWqn4BKYmT1_Rnnq0-dg010=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 17,
+          "url": "https://lh3.googleusercontent.com/d/1xPyfZo1alyb3cJqVtoHebvkGiu1KDF5T=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 18,
+          "url": "https://lh3.googleusercontent.com/d/19t8TMYEIARcvZLPRzQvVq-JDK6nUsbIG=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 19,
+          "url": "https://lh3.googleusercontent.com/d/1k8M87k_OEcB1uC_XkwFfvcLis8N_HrHn=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 20,
+          "url": "https://lh3.googleusercontent.com/d/1XseKjmm9ubnJjN1gXn4nLr6pAQPcvV7h=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 21,
+          "url": "https://lh3.googleusercontent.com/d/1QciaF5twhWwHe2QY_xgt_QqmskyCpuq6=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 22,
+          "url": "https://lh3.googleusercontent.com/d/1pHJZ8dFmiT9hTFQ0mSFmfKXWkomsn3-T=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 23,
+          "url": "https://lh3.googleusercontent.com/d/1cn7sk0UOrMElNEq08sfkHES7N-6n3QMk=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 24,
+          "url": "https://lh3.googleusercontent.com/d/1OvlPuc2gb1IMmxrQcfkIDI6TV7Ir3moi=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 25,
+          "url": "https://lh3.googleusercontent.com/d/1DPHGq5pr6pPRKHzCUeUORem9ynD3qhiX=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 26,
+          "url": "https://lh3.googleusercontent.com/d/1Tif1c4twkQ5BUSlKP37rNqay14UQKhjx=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 27,
+          "url": "https://lh3.googleusercontent.com/d/1n-9yjufDs-gMrjJSCsaWb7mlPnn5SdW9=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 28,
+          "url": "https://lh3.googleusercontent.com/d/1gFCUFPoQieyPadm0s82wVUU4EiW9hIJD=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 29,
+          "url": "https://lh3.googleusercontent.com/d/1kPvKA2IuT2rNjXczCWcG1TbZsHDXlJw3=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 30,
+          "url": "https://lh3.googleusercontent.com/d/1-GNgkbp2pbugcxO-ko2TVTPXClWSylVZ=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 31,
+          "url": "https://lh3.googleusercontent.com/d/1nDFfg292VjNGGHxo0LgFh5QohIRZjCEc=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 32,
+          "url": "https://lh3.googleusercontent.com/d/1TtpfkFc7G-uEY67hdt4USaGy9znj3jhc=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 33,
+          "url": "https://lh3.googleusercontent.com/d/1YGh4t3TXSuEdvLLVoVJiXkrz7EQ3xxfe=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 34,
+          "url": "https://lh3.googleusercontent.com/d/1VrwHbCkwHX6R_HxWKw-9Ke_YE6J4ieCa=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 35,
+          "url": "https://lh3.googleusercontent.com/d/1dembDEXJ8AIK0qsTJnW9mWpA1e6DBww9=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 36,
+          "url": "https://lh3.googleusercontent.com/d/1IeNGSjCZAGAxhX5Yf3Pe1-Crl7Tec3Kr=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 37,
+          "url": "https://lh3.googleusercontent.com/d/1jnG7DRHoUt30bnng95Ub7jn0YHAomMfJ=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 38,
+          "url": "https://lh3.googleusercontent.com/d/1ynrBdlGGGPjR_ECCobBYPQHb-18IXxsH=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 39,
+          "url": "https://lh3.googleusercontent.com/d/1dlmiZDYdWEHBD5fDoW1IyPamZnqK7OZX=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 40,
+          "url": "https://lh3.googleusercontent.com/d/1RykbLoMQgEPniGdlyDUH7XaNg6y6YmB2=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 41,
+          "url": "https://lh3.googleusercontent.com/d/10VP83OBrMyvF8Blb0h5epru3h7JoNby2=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 42,
+          "url": "https://lh3.googleusercontent.com/d/1b8ROdNb2e7-_XI20pOcaPDfhX3yvdSeF=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 43,
+          "url": "https://lh3.googleusercontent.com/d/1Urj6pedy1_90ooujCfqz6BogQ8LRsOkK=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 44,
+          "url": "https://lh3.googleusercontent.com/d/14aUpXe_Jdz9AOQwV6lfbxgmo_hHrWY6L=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 45,
+          "url": "https://lh3.googleusercontent.com/d/1teMDDeMMhGaUY_uD9LCW1EcB808xpmWA=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 46,
+          "url": "https://lh3.googleusercontent.com/d/1GgUZGGtIXdq8ml5zqnbYKUxsvmEWo3uA=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 47,
+          "url": "https://lh3.googleusercontent.com/d/1sSnnkWTaD1W1BPqHdFIkSM0EVqDSxLFm=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 48,
+          "url": "https://lh3.googleusercontent.com/d/1DROjwHPw9wsJJepD6DPzgaAdc1a9f3we=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 49,
+          "url": "https://lh3.googleusercontent.com/d/10swvkhiQk0Y24LBCqb4pwSx2gkRGMO0e=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 50,
+          "url": "https://lh3.googleusercontent.com/d/1--VJ37MijVuZrIp30xClWNFKOEUkXOhw=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "/albums/1780120461186_JISMY_DEMO.pdf",
+        "album_status": "changes_requested",
+        "final_download_url": "",
+        "raw_photos_url": "https://drive.google.com/drive/folders/19mUd9IudALVI6Sa41Q2htmXkfJm0uSU4?usp=sharing",
+        "album_revision_details": {
+          "extra_photos_count": 0,
+          "specific_photos": "",
+          "revision_notes": "",
+          "uploaded_files": [
+            {
+              "name": "IMG_9451.jpg.jpeg",
+              "url": "https://dreamwedstories.co.in/uploads/IMG_9451.jpg.jpeg"
+            }
+          ]
+        }
+      },
+      "created_at": "2026-05-28 18:26:08",
+      "updated_at": "2026-05-30 13:34:33",
+      "deadline_date": "",
+      "invitation_url": "",
+      "reference_photos_url": "https://dreamwedstories.co.in/uploads/JISMY%20DEMO.pdf",
+      "song_list_url": "",
+      "wedding_letter_url": "https://dreamwedstories.co.in/uploads/wfonts.com.txt",
+      "wedding_letter_text": "Uploaded file: wfonts.com.txt"
+    },
+    {
+      "id": 3,
+      "booking_id": 4,
+      "couple_name": "Rahul & Sneha",
+      "wedding_date": "2026-11-20",
+      "current_step": 3,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-05-28 19:04:54"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": true,
+          "updated_at": "2026-05-30 13:18:43"
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://lh3.googleusercontent.com/d/1t9NpD7bufB-EotQGhan3UX_zw9oqpCNE=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 2,
+          "url": "https://lh3.googleusercontent.com/d/1Qf7tqN14Oct0GdG2dn-jNBy_RdNO4tRh=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://lh3.googleusercontent.com/d/1EJ9qWLLBqgT1woFFPduDimEDXBt-K5RS=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://lh3.googleusercontent.com/d/1bWyGkkkzScDh2lyyZt0mfL7S2kdWzchU=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://lh3.googleusercontent.com/d/1lGbiiMD_OfYnvmwxiUoWY7dMyQyfwoPE=w1000",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://lh3.googleusercontent.com/d/1zFfB97d4XoP3myOE-x1b_oMMMSEhB80q=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://lh3.googleusercontent.com/d/1uZuZolPRdMK8hy06eBPiVE6dyKxJrNhx=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://lh3.googleusercontent.com/d/13X0vKMrwNsd8hqH17tWOuJXWHWB9AQtV=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 9,
+          "url": "https://lh3.googleusercontent.com/d/1DxsNtf7R-QjhF6fJD89RBTVMKWcsC8Ny=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 10,
+          "url": "https://lh3.googleusercontent.com/d/1k8ACxII6YBE8vnqOqSkcNUCNGG4fUXWW=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 11,
+          "url": "https://lh3.googleusercontent.com/d/1ZKs-TSGeOIFbYUIrdUN1R56LS4hdgpRP=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 12,
+          "url": "https://lh3.googleusercontent.com/d/16QDF1yiEfzHPEK8BzWiVC7tXYlZ5bM0I=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 13,
+          "url": "https://lh3.googleusercontent.com/d/1WeRy5ZR7uFyaKtaj6ZN3fbKUygfy71kv=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 14,
+          "url": "https://lh3.googleusercontent.com/d/1BAi7_y-VFZfqNyexckiapK20MM4jSt8-=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 15,
+          "url": "https://lh3.googleusercontent.com/d/1VF2K-W_V8FJSvuCC6SkovThdCYK5jYzh=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 16,
+          "url": "https://lh3.googleusercontent.com/d/1v9mkEo5blAWqn4BKYmT1_Rnnq0-dg010=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 17,
+          "url": "https://lh3.googleusercontent.com/d/1xPyfZo1alyb3cJqVtoHebvkGiu1KDF5T=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 18,
+          "url": "https://lh3.googleusercontent.com/d/19t8TMYEIARcvZLPRzQvVq-JDK6nUsbIG=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 19,
+          "url": "https://lh3.googleusercontent.com/d/1k8M87k_OEcB1uC_XkwFfvcLis8N_HrHn=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 20,
+          "url": "https://lh3.googleusercontent.com/d/1XseKjmm9ubnJjN1gXn4nLr6pAQPcvV7h=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 21,
+          "url": "https://lh3.googleusercontent.com/d/1QciaF5twhWwHe2QY_xgt_QqmskyCpuq6=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 22,
+          "url": "https://lh3.googleusercontent.com/d/1pHJZ8dFmiT9hTFQ0mSFmfKXWkomsn3-T=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 23,
+          "url": "https://lh3.googleusercontent.com/d/1cn7sk0UOrMElNEq08sfkHES7N-6n3QMk=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 24,
+          "url": "https://lh3.googleusercontent.com/d/1OvlPuc2gb1IMmxrQcfkIDI6TV7Ir3moi=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 25,
+          "url": "https://lh3.googleusercontent.com/d/1DPHGq5pr6pPRKHzCUeUORem9ynD3qhiX=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 26,
+          "url": "https://lh3.googleusercontent.com/d/1Tif1c4twkQ5BUSlKP37rNqay14UQKhjx=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 27,
+          "url": "https://lh3.googleusercontent.com/d/1n-9yjufDs-gMrjJSCsaWb7mlPnn5SdW9=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 28,
+          "url": "https://lh3.googleusercontent.com/d/1gFCUFPoQieyPadm0s82wVUU4EiW9hIJD=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 29,
+          "url": "https://lh3.googleusercontent.com/d/1kPvKA2IuT2rNjXczCWcG1TbZsHDXlJw3=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 30,
+          "url": "https://lh3.googleusercontent.com/d/1-GNgkbp2pbugcxO-ko2TVTPXClWSylVZ=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 31,
+          "url": "https://lh3.googleusercontent.com/d/1nDFfg292VjNGGHxo0LgFh5QohIRZjCEc=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 32,
+          "url": "https://lh3.googleusercontent.com/d/1TtpfkFc7G-uEY67hdt4USaGy9znj3jhc=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 33,
+          "url": "https://lh3.googleusercontent.com/d/1YGh4t3TXSuEdvLLVoVJiXkrz7EQ3xxfe=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 34,
+          "url": "https://lh3.googleusercontent.com/d/1VrwHbCkwHX6R_HxWKw-9Ke_YE6J4ieCa=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 35,
+          "url": "https://lh3.googleusercontent.com/d/1dembDEXJ8AIK0qsTJnW9mWpA1e6DBww9=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 36,
+          "url": "https://lh3.googleusercontent.com/d/1IeNGSjCZAGAxhX5Yf3Pe1-Crl7Tec3Kr=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 37,
+          "url": "https://lh3.googleusercontent.com/d/1jnG7DRHoUt30bnng95Ub7jn0YHAomMfJ=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 38,
+          "url": "https://lh3.googleusercontent.com/d/1ynrBdlGGGPjR_ECCobBYPQHb-18IXxsH=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 39,
+          "url": "https://lh3.googleusercontent.com/d/1dlmiZDYdWEHBD5fDoW1IyPamZnqK7OZX=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 40,
+          "url": "https://lh3.googleusercontent.com/d/1RykbLoMQgEPniGdlyDUH7XaNg6y6YmB2=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 41,
+          "url": "https://lh3.googleusercontent.com/d/10VP83OBrMyvF8Blb0h5epru3h7JoNby2=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 42,
+          "url": "https://lh3.googleusercontent.com/d/1b8ROdNb2e7-_XI20pOcaPDfhX3yvdSeF=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 43,
+          "url": "https://lh3.googleusercontent.com/d/1Urj6pedy1_90ooujCfqz6BogQ8LRsOkK=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 44,
+          "url": "https://lh3.googleusercontent.com/d/14aUpXe_Jdz9AOQwV6lfbxgmo_hHrWY6L=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 45,
+          "url": "https://lh3.googleusercontent.com/d/1teMDDeMMhGaUY_uD9LCW1EcB808xpmWA=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 46,
+          "url": "https://lh3.googleusercontent.com/d/1GgUZGGtIXdq8ml5zqnbYKUxsvmEWo3uA=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 47,
+          "url": "https://lh3.googleusercontent.com/d/1sSnnkWTaD1W1BPqHdFIkSM0EVqDSxLFm=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 48,
+          "url": "https://lh3.googleusercontent.com/d/1DROjwHPw9wsJJepD6DPzgaAdc1a9f3we=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 49,
+          "url": "https://lh3.googleusercontent.com/d/10swvkhiQk0Y24LBCqb4pwSx2gkRGMO0e=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 50,
+          "url": "https://lh3.googleusercontent.com/d/1--VJ37MijVuZrIp30xClWNFKOEUkXOhw=w1000",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "raw_photos_url": "https://drive.google.com/drive/folders/19mUd9IudALVI6Sa41Q2htmXkfJm0uSU4?usp=sharing",
+        "wedding_reels": [
+          {
+            "title": "Rahul's Royal Entry",
+            "url": "https://youtube.com/shorts/12345",
+            "id": 101
+          },
+          {
+            "title": "Sneha's Bridal Dance",
+            "url": "https://youtube.com/shorts/67890",
+            "id": 102
+          }
+        ],
+        "video_highlight_url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "video_full_url": "https://www.youtube.com/embed/3tmd-ClpJxA"
+      },
+      "created_at": "2026-05-28 19:04:54",
+      "updated_at": "2026-05-30 13:41:32"
+    },
+    {
+      "id": 4,
+      "booking_id": 6,
+      "couple_name": "Test Bride & Groom",
+      "wedding_date": "2026-12-25",
+      "current_step": 1,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-06-03 12:30:55"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1507504038482-76210f52b6d1?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "https://dreamwedstories.co.in/draft-album.pdf",
+        "album_status": "pending",
+        "final_download_url": ""
+      },
+      "created_at": "2026-06-03 12:30:55",
+      "updated_at": "2026-06-03 12:30:55"
+    },
+    {
+      "id": 5,
+      "booking_id": 8,
+      "couple_name": "Test Bride & Groom",
+      "wedding_date": "2026-12-25",
+      "current_step": 1,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-06-03 16:43:14"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": "",
+          "selected_by_bride": true,
+          "selected_by_groom": true
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1507504038482-76210f52b6d1?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "https://dreamwedstories.co.in/draft-album.pdf",
+        "album_status": "pending",
+        "final_download_url": ""
+      },
+      "created_at": "2026-06-03 16:43:14",
+      "updated_at": "2026-06-03 16:43:14"
+    },
+    {
+      "id": 6,
+      "booking_id": 9,
+      "couple_name": "Dreamwed Dreamwed",
+      "wedding_date": "6/3/2026",
+      "current_step": 3,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-06-03 16:44:41"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": true,
+          "updated_at": "2026-06-03T16:45:23.355Z"
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": "",
+          "selected_by_bride": true,
+          "selected_by_groom": true
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": "",
+          "selected_by_bride": true,
+          "selected_by_groom": true
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": "",
+          "selected_by_bride": false,
+          "selected_by_groom": true
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1507504038482-76210f52b6d1?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "https://dreamwedstories.co.in/draft-album.pdf",
+        "album_status": "pending",
+        "final_download_url": ""
+      },
+      "created_at": "2026-06-03 16:44:41",
+      "updated_at": "2026-06-03 16:45:23",
+      "selection_locked": true
+    },
+    {
+      "id": 7,
+      "booking_id": 5,
+      "couple_name": "Test Bride & Groom",
+      "wedding_date": "2026-12-25",
+      "current_step": 1,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-06-03 16:48:30"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1507504038482-76210f52b6d1?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "https://dreamwedstories.co.in/draft-album.pdf",
+        "album_status": "pending",
+        "final_download_url": ""
+      },
+      "created_at": "2026-06-03 16:48:30",
+      "updated_at": "2026-06-03 16:48:30"
+    },
+    {
+      "id": 8,
+      "booking_id": 10,
+      "couple_name": "Test Bride & Groom",
+      "wedding_date": "2026-12-25",
+      "current_step": 1,
+      "timeline_steps": [
+        {
+          "name": "Photos Uploaded",
+          "completed": true,
+          "updated_at": "2026-06-03 16:57:58"
+        },
+        {
+          "name": "Client Selected Photos",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Video Editing Completed",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Album Design Pending Approval",
+          "completed": false,
+          "updated_at": null
+        },
+        {
+          "name": "Final Delivery Completed",
+          "completed": false,
+          "updated_at": null
+        }
+      ],
+      "package_details": {
+        "photography": "Traditional + Candid (4-Camera coverage)",
+        "video": "Cinematic Pre-Wedding Video + Teaser Reel + Highlight Film",
+        "album": "One 80-Page Premium Couture Leather Layflat Album",
+        "edited_photos": "120 color-corrected high-res photos included",
+        "delivery_items": "Premium Signature bag, custom photo calendar & USB drive"
+      },
+      "gallery_images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600",
+          "favorited": true,
+          "categories": [
+            "album"
+          ],
+          "comment": "",
+          "selected_by_bride": true,
+          "selected_by_groom": true
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1507504038482-76210f52b6d1?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=600",
+          "favorited": false,
+          "categories": [],
+          "comment": ""
+        }
+      ],
+      "deliveries": {
+        "video_teaser_url": "https://www.youtube.com/embed/S9-SrdnKsMs",
+        "video_status": "pending",
+        "album_pdf_url": "https://dreamwedstories.co.in/draft-album.pdf",
+        "album_status": "pending",
+        "final_download_url": ""
+      },
+      "created_at": "2026-06-03 16:57:58",
+      "updated_at": "2026-06-03 16:57:58"
+    }
+  ],
+  "project_chats": [
+    {
+      "id": 1,
+      "project_id": 2,
+      "channel": "client-admin",
+      "messages": [
+        {
+          "id": 1,
+          "sender": "admin",
+          "text": "hh",
+          "timestamp": "2026-05-28 18:54:57"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "project_id": 1,
+      "channel": "client-editor",
+      "messages": [
+        {
+          "id": 1,
+          "sender": "editor",
+          "text": "ANY CORRECTION",
+          "timestamp": "2026-05-29 04:41:00"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "project_id": 2,
+      "channel": "client-designer",
+      "messages": [
+        {
+          "id": 1,
+          "sender": "designer",
+          "text": "ethenthilum photo mattano",
+          "timestamp": "2026-05-29 06:37:16"
+        },
+        {
+          "id": 2,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 05:33:48"
+        },
+        {
+          "id": 3,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 05:35:51"
+        },
+        {
+          "id": 4,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 05:54:21"
+        },
+        {
+          "id": 5,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 06:35:36"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "project_id": 1,
+      "channel": "client-designer",
+      "messages": [
+        {
+          "id": 1,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 05:13:30"
+        },
+        {
+          "id": 2,
+          "sender": "designer",
+          "text": "🔔 I have uploaded a new layflat album layout draft (JISMY DEMO.pdf)! Please check your \"Album Design selections\" tab to review the blueprint pages. Let me know if you would like any changes!",
+          "timestamp": "2026-05-30 05:22:02"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "project_id": 3,
+      "channel": "client-designer",
+      "messages": [
+        {
+          "id": 1,
+          "sender": "client",
+          "text": "📝 We'd like to request changes to the album layout.  Please review our suggestions below.\n\n📤 Uploaded Additional Photos:\n- 📷 IMG_9451.jpg.jpeg: https://dreamwedstories.co.in/uploads/IMG_9451.jpg.jpeg\n\nOur designer will contact you to discuss the revisions.",
+          "timestamp": "2026-05-30 07:16:33"
+        },
+        {
+          "id": 2,
+          "sender": "client",
+          "text": "📝 We'd like to request changes to the album layout.  Please review our suggestions below.\n\n📤 Uploaded Additional Photos:\n- 📷 IMG_9451.jpg.jpeg: https://dreamwedstories.co.in/uploads/IMG_9451.jpg.jpeg\n\nOur designer will contact you to discuss the revisions.",
+          "timestamp": "2026-05-30 07:21:07"
+        }
+      ]
+    }
+  ],
+  "activity_logs": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-05-28 18:14:52"
+    },
+    {
+      "id": 2,
+      "project_id": 2,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-05-28 18:26:08"
+    },
+    {
+      "id": 3,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 18:40:36"
+    },
+    {
+      "id": 4,
+      "project_id": 1,
+      "user": "Client",
+      "action": "Locked photo selection folders and submitted to Album Designer",
+      "timestamp": "2026-05-28 18:40:37"
+    },
+    {
+      "id": 5,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Sent message in channel admin",
+      "timestamp": "2026-05-28 18:54:57"
+    },
+    {
+      "id": 6,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Client Selected Photos",
+      "timestamp": "2026-05-28 18:55:06"
+    },
+    {
+      "id": 7,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 18:55:06"
+    },
+    {
+      "id": 8,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 18:55:08"
+    },
+    {
+      "id": 9,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Client Selected Photos",
+      "timestamp": "2026-05-28 18:55:09"
+    },
+    {
+      "id": 10,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Photos Uploaded",
+      "timestamp": "2026-05-28 18:55:09"
+    },
+    {
+      "id": 11,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Client Selected Photos",
+      "timestamp": "2026-05-28 18:55:10"
+    },
+    {
+      "id": 12,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Photos Uploaded",
+      "timestamp": "2026-05-28 18:55:10"
+    },
+    {
+      "id": 13,
+      "project_id": 3,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-05-28 19:04:54"
+    },
+    {
+      "id": 14,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 19:05:35"
+    },
+    {
+      "id": 15,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection folders and submitted to Album Designer",
+      "timestamp": "2026-05-28 19:05:35"
+    },
+    {
+      "id": 16,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 19:30:37"
+    },
+    {
+      "id": 17,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection folders and submitted to Album Designer",
+      "timestamp": "2026-05-28 19:30:37"
+    },
+    {
+      "id": 18,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 19:32:35"
+    },
+    {
+      "id": 19,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection folders and submitted to Album Designer",
+      "timestamp": "2026-05-28 19:32:35"
+    },
+    {
+      "id": 20,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-28 19:35:30"
+    },
+    {
+      "id": 21,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection folders and submitted to Album Designer",
+      "timestamp": "2026-05-28 19:35:30"
+    },
+    {
+      "id": 22,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 04:40:30"
+    },
+    {
+      "id": 23,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 04:40:39"
+    },
+    {
+      "id": 24,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 04:40:47"
+    },
+    {
+      "id": 25,
+      "project_id": 1,
+      "user": "Editor",
+      "action": "Sent message in channel editor",
+      "timestamp": "2026-05-29 04:41:00"
+    },
+    {
+      "id": 26,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 04:42:01"
+    },
+    {
+      "id": 27,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 05:02:24"
+    },
+    {
+      "id": 28,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 05:07:10"
+    },
+    {
+      "id": 29,
+      "project_id": 1,
+      "user": "Team",
+      "timestamp": "2026-05-29 05:07:10"
+    },
+    {
+      "id": 30,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 05:09:31"
+    },
+    {
+      "id": 31,
+      "project_id": 1,
+      "user": "Team",
+      "timestamp": "2026-05-29 05:09:31"
+    },
+    {
+      "id": 32,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-29 06:04:20"
+    },
+    {
+      "id": 33,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-29 06:04:20"
+    },
+    {
+      "id": 34,
+      "project_id": 1,
+      "user": "System",
+      "action": "Sent automatic WhatsApp reminder: \"photo selection\"",
+      "timestamp": "2026-05-29 06:25:11"
+    },
+    {
+      "id": 35,
+      "project_id": 2,
+      "user": "System",
+      "action": "Sent automatic WhatsApp reminder: \"photo selection\"",
+      "timestamp": "2026-05-29 06:26:17"
+    },
+    {
+      "id": 36,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-29 06:35:22"
+    },
+    {
+      "id": 37,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-29 06:37:16"
+    },
+    {
+      "id": 38,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 04:39:56"
+    },
+    {
+      "id": 39,
+      "project_id": 2,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 04:39:56"
+    },
+    {
+      "id": 40,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 04:46:08"
+    },
+    {
+      "id": 41,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 04:46:23"
+    },
+    {
+      "id": 42,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 04:51:08"
+    },
+    {
+      "id": 43,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 04:54:17"
+    },
+    {
+      "id": 44,
+      "project_id": 1,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 04:54:22"
+    },
+    {
+      "id": 45,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:06:39"
+    },
+    {
+      "id": 46,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:13:30"
+    },
+    {
+      "id": 47,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 05:13:30"
+    },
+    {
+      "id": 48,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 05:18:00"
+    },
+    {
+      "id": 49,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 05:18:00"
+    },
+    {
+      "id": 50,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:22:02"
+    },
+    {
+      "id": 51,
+      "project_id": 1,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 05:22:02"
+    },
+    {
+      "id": 52,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 05:22:34"
+    },
+    {
+      "id": 53,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 05:22:34"
+    },
+    {
+      "id": 54,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 05:22:40"
+    },
+    {
+      "id": 55,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 05:22:40"
+    },
+    {
+      "id": 56,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:33:48"
+    },
+    {
+      "id": 57,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 05:33:48"
+    },
+    {
+      "id": 58,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:35:51"
+    },
+    {
+      "id": 59,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 05:35:51"
+    },
+    {
+      "id": 60,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 05:54:21"
+    },
+    {
+      "id": 61,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 05:54:21"
+    },
+    {
+      "id": 62,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Uploaded wedding planning files / invitation references",
+      "timestamp": "2026-05-30 06:28:59"
+    },
+    {
+      "id": 63,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Uploaded new album layout draft: JISMY DEMO.pdf",
+      "timestamp": "2026-05-30 06:35:36"
+    },
+    {
+      "id": 64,
+      "project_id": 2,
+      "user": "Designer",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 06:35:36"
+    },
+    {
+      "id": 65,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 06:36:43"
+    },
+    {
+      "id": 66,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 06:36:43"
+    },
+    {
+      "id": 67,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 06:42:05"
+    },
+    {
+      "id": 68,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 06:42:05"
+    },
+    {
+      "id": 69,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 06:56:31"
+    },
+    {
+      "id": 70,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 06:56:31"
+    },
+    {
+      "id": 71,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 07:16:33"
+    },
+    {
+      "id": 72,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 07:16:33"
+    },
+    {
+      "id": 73,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:18:56"
+    },
+    {
+      "id": 74,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:18:56"
+    },
+    {
+      "id": 75,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:20:42"
+    },
+    {
+      "id": 76,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:20:42"
+    },
+    {
+      "id": 77,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 07:21:07"
+    },
+    {
+      "id": 78,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Sent message in channel designer",
+      "timestamp": "2026-05-30 07:21:07"
+    },
+    {
+      "id": 79,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:28:25"
+    },
+    {
+      "id": 80,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:28:25"
+    },
+    {
+      "id": 81,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:29:22"
+    },
+    {
+      "id": 82,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:29:22"
+    },
+    {
+      "id": 83,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:29:26"
+    },
+    {
+      "id": 84,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:29:26"
+    },
+    {
+      "id": 85,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:34:39"
+    },
+    {
+      "id": 86,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:34:39"
+    },
+    {
+      "id": 87,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 07:34:46"
+    },
+    {
+      "id": 88,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 07:34:46"
+    },
+    {
+      "id": 89,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:07:34"
+    },
+    {
+      "id": 90,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:07:34"
+    },
+    {
+      "id": 91,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:11:22"
+    },
+    {
+      "id": 92,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:11:22"
+    },
+    {
+      "id": 93,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:11:33"
+    },
+    {
+      "id": 94,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:11:33"
+    },
+    {
+      "id": 95,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:11:54"
+    },
+    {
+      "id": 96,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:11:54"
+    },
+    {
+      "id": 97,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:12:00"
+    },
+    {
+      "id": 98,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:12:00"
+    },
+    {
+      "id": 99,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:12:07"
+    },
+    {
+      "id": 100,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:12:07"
+    },
+    {
+      "id": 101,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:12:19"
+    },
+    {
+      "id": 102,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:12:19"
+    },
+    {
+      "id": 103,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:12:25"
+    },
+    {
+      "id": 104,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:12:25"
+    },
+    {
+      "id": 105,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:12:31"
+    },
+    {
+      "id": 106,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:12:31"
+    },
+    {
+      "id": 107,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Uploaded wedding letter file: wfonts.com.txt",
+      "timestamp": "2026-05-30 08:13:41"
+    },
+    {
+      "id": 108,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:13:53"
+    },
+    {
+      "id": 109,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:13:53"
+    },
+    {
+      "id": 110,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:14:58"
+    },
+    {
+      "id": 111,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:14:58"
+    },
+    {
+      "id": 112,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:15:58"
+    },
+    {
+      "id": 113,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:15:58"
+    },
+    {
+      "id": 114,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:18:51"
+    },
+    {
+      "id": 115,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:18:51"
+    },
+    {
+      "id": 116,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:18:55"
+    },
+    {
+      "id": 117,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:18:55"
+    },
+    {
+      "id": 118,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 08:19:10"
+    },
+    {
+      "id": 119,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 08:19:10"
+    },
+    {
+      "id": 120,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 13:14:48"
+    },
+    {
+      "id": 121,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 13:14:48"
+    },
+    {
+      "id": 122,
+      "project_id": 3,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-05-30 13:18:43"
+    },
+    {
+      "id": 123,
+      "project_id": 3,
+      "user": "Client",
+      "action": "Locked photo selection and submitted to Album Designer",
+      "timestamp": "2026-05-30 13:18:43"
+    },
+    {
+      "id": 124,
+      "project_id": 2,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 13:34:33"
+    },
+    {
+      "id": 125,
+      "project_id": 3,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 13:41:19"
+    },
+    {
+      "id": 126,
+      "project_id": 3,
+      "user": "Admin",
+      "action": "Uploaded project draft deliverables / links",
+      "timestamp": "2026-05-30 13:41:32"
+    },
+    {
+      "id": 127,
+      "project_id": 4,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-06-03 12:30:55"
+    },
+    {
+      "id": 128,
+      "project_id": 5,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-06-03 16:43:14"
+    },
+    {
+      "id": 129,
+      "project_id": 6,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-06-03 16:44:41"
+    },
+    {
+      "id": 130,
+      "project_id": 6,
+      "user": "Admin",
+      "action": "Moved timeline to stage: Video Editing Completed",
+      "timestamp": "2026-06-03 16:45:23"
+    },
+    {
+      "id": 131,
+      "project_id": 3,
+      "user": "System",
+      "action": "Sent automatic WhatsApp reminder: \"photo selection\"",
+      "timestamp": "2026-06-03 16:45:56"
+    },
+    {
+      "id": 132,
+      "project_id": 7,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-06-03 16:48:30"
+    },
+    {
+      "id": 133,
+      "project_id": 8,
+      "user": "System",
+      "action": "Project Workspace created and pre-filled with photo gallery",
+      "timestamp": "2026-06-03 16:57:58"
+    }
+  ],
+  "staff_users": [
+    {
+      "id": 1,
+      "username": "designer",
+      "password": "design123",
+      "role": "designer",
+      "display_name": "Lead Album Designer",
+      "assigned_projects": [
+        1,
+        2,
+        3
+      ],
+      "created_at": "2026-05-30 00:00:00"
+    },
+    {
+      "id": 2,
+      "username": "editor",
+      "password": "edit123",
+      "role": "editor",
+      "display_name": "Lead Video Editor",
+      "assigned_projects": [
+        1,
+        2,
+        3
+      ],
+      "created_at": "2026-05-30 00:00:00"
+    }
+  ]
+}

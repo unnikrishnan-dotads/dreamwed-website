@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dreamwed Stories — Admin Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #e5e5e5; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* TOP BAR */
+    .topbar { background: #161616; border-bottom: 1px solid #2a2a2a; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-dot { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .logo h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .logo span { font-size: 11px; color: #666; margin-left: 4px; font-weight: 400; }
+    
+    /* View Switcher Slider */
+    .view-switcher { display: flex; gap: 4px; background: #1e1e1e; padding: 4px; border-radius: 8px; border: 1px solid #2a2a2a; margin-left: 24px; }
+    .view-btn { background: transparent; color: #888; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+    .view-btn.active { background: #b4975a; color: #000; }
+
+    .stats { display: flex; gap: 24px; align-items: center; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 18px; font-weight: 700; color: #fff; }
+    .stat-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* MAIN LAYOUT */
+    .main { display: flex; flex: 1; overflow: hidden; }
+
+    /* LEFT PANEL — CUSTOMER LIST */
+    .sidebar { width: 320px; background: #141414; border-right: 1px solid #222; display: flex; flex-direction: column; overflow: hidden; }
+    .sidebar-header { padding: 16px; border-bottom: 1px solid #222; }
+    .search { width: 100%; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 8px; padding: 8px 12px; color: #e5e5e5; font-size: 13px; outline: none; }
+    .search::placeholder { color: #555; }
+    .filter-tabs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .filter-tab { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid #2a2a2a; background: transparent; color: #888; cursor: pointer; transition: all 0.2s; }
+    .filter-tab.active { background: #b4975a; border-color: #b4975a; color: #000; }
+
+    .customer-list { flex: 1; overflow-y: auto; }
+    .customer-list::-webkit-scrollbar { width: 4px; }
+    .customer-list::-webkit-scrollbar-track { background: transparent; }
+    .customer-list::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+    .customer-item { padding: 14px 16px; border-bottom: 1px solid #1e1e1e; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 12px; }
+    .customer-item:hover { background: #1a1a1a; }
+    .customer-item.active { background: #1a251c; border-left: 3px solid #22c55e; }
+    .customer-item.active-booking { background: #262118; border-left: 3px solid #b4975a; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+    .customer-info { flex: 1; min-width: 0; }
+    .customer-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .customer-preview { font-size: 11px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .customer-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .customer-time { font-size: 10px; color: #555; }
+
+    /* STATUS BADGES */
+    .badge { padding: 2px 8px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .badge-new { background: #1a3a5c; color: #60a5fa; }
+    .badge-chatting { background: #1a3a1a; color: #4ade80; }
+    .badge-hot_lead { background: #3a1a00; color: #fb923c; }
+    .badge-awaiting_availability { background: #2a1a3a; color: #c084fc; }
+    .badge-booked { background: #14532d; color: #86efac; }
+    .badge-lost { background: #1a1a1a; color: #6b7280; }
+    
+    .badge-pending { background: #1a3a5c; color: #60a5fa; }
+    .badge-confirmed { background: #234e23; color: #86efac; border: 1px solid #2e7d32; }
+    .badge-cancelled { background: #2c1a1a; color: #f87171; }
+
+    /* RIGHT PANEL — CHAT VIEW */
+    .chat-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .chat-header { padding: 16px 24px; background: #141414; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between; }
+    .chat-header-info { display: flex; align-items: center; gap: 12px; }
+    .chat-header-details h2 { font-size: 15px; font-weight: 600; color: #fff; }
+    .chat-header-details p { font-size: 12px; color: #666; margin-top: 2px; }
+    .chat-actions { display: flex; gap: 8px; }
+    .action-btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+    .btn-booked { background: #166534; color: #86efac; }
+    .btn-booked:hover { background: #15803d; }
+    .btn-lost { background: #2a1a1a; color: #f87171; }
+    .btn-lost:hover { background: #3a1a1a; }
+    .btn-save { background: #b4975a; color: #000; }
+    .btn-save:hover { background: #c5a86b; }
+
+    .chat-messages { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+    .msg { max-width: 70%; display: flex; flex-direction: column; gap: 3px; }
+    .msg.user { align-self: flex-start; }
+    .msg.assistant { align-self: flex-end; }
+    .msg-bubble { padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.5; }
+    .msg.user .msg-bubble { background: #1e1e1e; color: #e5e5e5; border-bottom-left-radius: 4px; }
+    .msg.assistant .msg-bubble { background: #1e3f20; color: #d1fae5; border-bottom-right-radius: 4px; }
+    .msg-time { font-size: 10px; color: #555; padding: 0 4px; }
+    .msg.assistant .msg-time { text-align: right; }
+
+    .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #444; gap: 12px; }
+    .empty-state svg { opacity: 0.3; }
+    .empty-state p { font-size: 14px; }
+
+    /* DETAIL CARDS */
+    .detail-panel { width: 240px; background: #141414; border-left: 1px solid #222; padding: 20px; overflow-y: auto; }
+    .detail-panel h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #555; margin-bottom: 16px; }
+    .detail-card { background: #1a1a1a; border: 1px solid #252525; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .detail-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .detail-value { font-size: 13px; color: #e5e5e5; font-weight: 500; }
+    .detail-value.empty { color: #444; font-style: italic; font-weight: 400; }
+
+    /* REFRESH */
+    .refresh-btn { background: #1e1e1e; border: 1px solid #2a2a2a; color: #888; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+    .refresh-btn:hover { color: #fff; border-color: #444; }
+
+    /* MODAL OVERLAY STYLES */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+    .modal-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 20px; width: 500px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .modal-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 16px; border-bottom: 1px solid #2a2a2a; padding-bottom: 10px; }
+    .modal-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .modal-form-grid .full-span { grid-column: span 2; }
+    .modal-label { display: block; font-size: 10px; color: #666; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+    .modal-input { width: 100%; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+    .btn-cancel { background: #2a2a2a; color: #aaa; }
+    .btn-cancel:hover { background: #333; }
+
+    /* INVOICE VIEWER OVERLAY */
+    .invoice-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; color: #000; z-index: 10000; overflow-y: auto; display: none; padding: 40px 0; }
+    .invoice-container { width: 800px; margin: 0 auto; background: #fff; padding: 20px; font-family: 'Inter', sans-serif; position: relative; }
+    
+    /* Elegant Custom Invoice Design matching images */
+    .invoice-brand { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eaeaea; padding-bottom: 24px; margin-bottom: 30px; }
+    .brand-logo-circle { width: 42px; height: 42px; border: 1.5px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; font-family: 'Inter', sans-serif; color: #000; }
+    .brand-text-name { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #000; margin-left: 10px; }
+    
+    .invoice-header-title { text-align: center; margin: 20px 0 35px 0; }
+    .invoice-header-title h2 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: #000; }
+
+    .invoice-meta-section { display: flex; justify-content: space-between; margin-bottom: 40px; font-size: 13px; line-height: 1.7; }
+    .invoice-to { width: 50%; }
+    .invoice-to h3 { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .invoice-to-name { font-size: 18px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .invoice-to-details { color: #444; font-size: 12px; }
+
+    .invoice-details-right { text-align: right; width: 45%; font-size: 12px; }
+    .invoice-details-right table { width: 100%; border-collapse: collapse; }
+    .invoice-details-right td { padding: 3px 0; vertical-align: top; }
+    .invoice-details-right td.lbl { text-align: right; color: #666; font-weight: 500; padding-right: 12px; }
+    .invoice-details-right td.val { text-align: right; font-weight: 700; color: #000; width: 130px; }
+
+    .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 12px; }
+    .invoice-table th { background: #b69675; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 12px 16px; text-align: left; }
+    .invoice-table th.amount-col { text-align: right; }
+    .invoice-table td { padding: 16px; border-bottom: 1.5px solid #ac8462; color: #333; }
+    .invoice-table td.amount-col { text-align: right; font-weight: 600; color: #000; }
+    
+    .invoice-summary { display: flex; justify-content: flex-end; margin-bottom: 60px; font-size: 13px; }
+    .invoice-summary-table { width: 320px; border-collapse: collapse; }
+    .invoice-summary-table td { padding: 6px 0; text-align: right; }
+    .invoice-summary-table td.lbl { color: #666; font-weight: 500; }
+    .invoice-summary-table td.val { font-weight: 700; color: #000; width: 120px; }
+    .invoice-summary-table tr.total-payable-row td { border-top: 1.5px solid #000; padding-top: 12px; font-size: 15px; font-weight: 800; color: #000; }
+    .invoice-summary-table tr.total-payable-row td.val { font-size: 17px; }
+
+    .invoice-footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #eaeaea; padding-top: 30px; margin-top: 40px; font-size: 11px; }
+    .payment-instructions { color: #555; line-height: 1.6; }
+    .payment-instructions strong { color: #000; font-size: 12px; display: block; margin-bottom: 4px; }
+    
+    .signature-thankyou { text-align: right; font-family: 'Playfair Display', serif; font-size: 26px; font-style: italic; font-weight: 400; color: #000; margin-bottom: 10px; }
+
+    /* Float close control bar in modal */
+    .invoice-control-bar { background: #161616; padding: 12px 24px; position: fixed; top: 0; left: 0; width: 100vw; display: flex; justify-content: center; gap: 16px; border-bottom: 1px solid #2a2a2a; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10001; }
+    
+    /* WORKFLOW GRID DESIGNS */
+    .workflow-grid { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 20px; height: 100%; overflow: hidden; padding: 10px 0; }
+    .workflow-card { background: #141414; border: 1px solid #222; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
+    .workflow-card-title { font-size: 12px; font-weight: 700; color: #b4975a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
+    .workflow-scroll { flex: 1; overflow-y: auto; }
+    .workflow-scroll::-webkit-scrollbar { width: 3px; }
+    .workflow-scroll::-webkit-scrollbar-thumb { background: #333; }
+    
+    /* Interactive Timeline Steps */
+    .timeline-step-admin { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; background: #181818; border: 1px solid #222; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
+    .timeline-step-admin:hover { background: #222; }
+    .timeline-step-admin.completed { border-color: #2e7d3230; background: #142315; }
+    .timeline-circle-indicator { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #666; display: flex; align-items: center; justify-content: center; font-size: 10px; color: transparent; font-weight: 800; shrink: 0; }
+    .timeline-step-admin.completed .timeline-circle-indicator { border-color: #22c55e; background: #22c55e; color: #000; }
+    
+    /* Photo Selection Grid */
+    .photo-grid-designer { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+    .photo-item-designer { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #222; aspect-ratio: 1; background: #181818; group: hover; cursor: pointer; }
+    .photo-item-designer img { width: 100%; height: 100%; object-fit: cover; transition: scale 0.3s; }
+    .photo-item-designer:hover img { scale: 1.05; }
+    .photo-badge-fav { position: absolute; top: 4px; right: 4px; background: #ff4444; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
+    .photo-badge-cat { position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.8); color: #b4975a; font-size: 8px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; border: 0.5px solid #b4975a80; }
+    
+    /* Chat Console tab button style */
+    .chat-sub-tabs { display: flex; gap: 4px; background: #1e1e1e; padding: 3px; border-radius: 6px; border: 1px solid #2a2a2a; margin-bottom: 12px; }
+    .chat-sub-btn { background: transparent; color: #888; font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; border: none; cursor: pointer; flex: 1; text-align: center; }
+    .chat-sub-btn.active { background: #b4975a; color: #000; }
+    
+    /* Activity Audit lists */
+    .audit-item { padding: 8px 12px; border-radius: 8px; background: #181818; border-left: 2.5px solid #b4975a; margin-bottom: 8px; font-size: 11px; line-height: 1.4; }
+    
+    @media print {
+      body * { display: none !important; }
+      .invoice-overlay, .invoice-overlay * { display: block !important; }
+      .invoice-overlay { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: auto !important; padding: 0 !important; margin: 0 !important; background: #fff !important; color: #000 !important; }
+      .invoice-container { width: 100% !important; margin: 0 !important; padding: 10px !important; box-shadow: none !important; }
+      .no-print { display: none !important; }
+      .invoice-table th { background: #b69675 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <h1>Dreamwed Stories <span>Admin Workspace</span></h1>
+    
+    <div class="view-switcher">
+      <button class="view-btn active" id="btn-chats-view" onclick="showTab('chats')">💬 WhatsApp Bot</button>
+      <button class="view-btn" id="btn-bookings-view" onclick="showTab('bookings')">📋 Bookings</button>
+      <button class="view-btn" id="btn-projects-view" onclick="showTab('projects')">⚙️ Workflow & Projects</button>
+    </div>
+  </div>
+  
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="totalCount">—</div><div class="stat-label">Total Contacts</div></div>
+    <div class="stat"><div class="stat-num" id="hotCount" style="color:#fb923c">—</div><div class="stat-label">Hot Leads</div></div>
+    <div class="stat"><div class="stat-num" id="bookedCount" style="color:#4ade80">—</div><div class="stat-label">Booked AI</div></div>
+  </div>
+  
+  <button class="refresh-btn" id="main-refresh-btn" onclick="triggerRefresh()">↻ Refresh Console</button>
+</div>
+
+<!-- 1. CHATS VIEW CONTAINER -->
+<div class="main" id="chats-view">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <input class="search" type="text" placeholder="🔍 Search customer..." id="searchInput" oninput="filterChats()"/>
+      <div class="filter-tabs">
+        <div class="filter-tab active" onclick="setFilter('all', this)">All</div>
+        <div class="filter-tab" onclick="setFilter('hot_lead', this)">🔥 Hot</div>
+        <div class="filter-tab" onclick="setFilter('chatting', this)">💬 Chatting</div>
+        <div class="filter-tab" onclick="setFilter('awaiting_availability', this)">⏳ Waiting</div>
+        <div class="filter-tab" onclick="setFilter('booked', this)">✅ Booked</div>
+      </div>
+    </div>
+    <div class="customer-list" id="customerList"></div>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div class="chat-panel">
+    <div class="chat-header" id="chatHeader" style="display:none">
+      <div class="chat-header-info">
+        <div class="avatar" id="headerAvatar"></div>
+        <div class="chat-header-details">
+          <h2 id="headerName"></h2>
+          <p id="headerSub"></p>
+        </div>
+      </div>
+      <div class="chat-actions">
+        <button class="action-btn btn-booked" onclick="updateStatus('booked')">✅ Mark Booked</button>
+        <button class="action-btn btn-lost" onclick="updateStatus('lost')">❌ Mark Lost</button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="empty-state">
+        <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        <p>Select a customer to view chat logs</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="detail-panel" id="detailPanel" style="display:none">
+    <h3>Customer Details</h3>
+    <div class="detail-card"><div class="detail-label">Name</div><div class="detail-value" id="d-name">—</div></div>
+    <div class="detail-card"><div class="detail-label">Phone</div><div class="detail-value" id="d-phone">—</div></div>
+    <div class="detail-card"><div class="detail-label">Wedding Date</div><div class="detail-value" id="d-date">—</div></div>
+    <div class="detail-card"><div class="detail-label">Venue</div><div class="detail-value" id="d-venue">—</div></div>
+    <div class="detail-card"><div class="detail-label">Package Interest</div><div class="detail-value" id="d-package">—</div></div>
+    <div class="detail-card"><div class="detail-label">Status</div><div class="detail-value" id="d-status">—</div></div>
+    <div class="detail-card"><div class="detail-label">Messages</div><div class="detail-value" id="d-msgs">—</div></div>
+    <div class="detail-card"><div class="detail-label">First Contact</div><div class="detail-value" id="d-created">—</div></div>
+  </div>
+</div>
+
+<!-- 2. BOOKINGS VIEW CONTAINER -->
+<div class="main" id="bookings-view" style="display: none;">
+  <!-- SIDEBAR — BOOKING LIST -->
+  <div class="sidebar" style="width: 340px;">
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="font-size:14px; font-weight:600; color:#fff;">Wedding Bookings</h2>
+      <button onclick="openNewBookingModal()" style="background:#b4975a; color:#000; border:none; padding: 5px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+ New Order</button>
+    </div>
+    <div class="customer-list" id="bookingList">
+      <!-- Bookings dynamically rendered here -->
+    </div>
+  </div>
+
+  <!-- EDIT & MILESTONES WORKSPACE -->
+  <div class="chat-panel" id="bookingDetailsWorkspace" style="display: none; padding: 24px; overflow-y: auto;">
+    <div style="background: #141414; border: 1px solid #222; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+      
+      <!-- Workspace Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:1px solid #222; padding-bottom:16px;">
+        <div>
+          <h2 id="b-title" style="font-size:20px; font-weight:600; color:#fff;">Rahul & Priya</h2>
+          <p id="b-subtitle" style="font-size:12px; color:#666; margin-top:2px;">Booking logged via website</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="action-btn btn-booked" id="confirm-booking-btn" onclick="apiConfirmBooking()">Confirm Booking</button>
+          <button class="action-btn" style="background:#b4975a; color:#000;" onclick="openInvoiceTemplate()">📄 Generate Invoice</button>
+        </div>
+      </div>
+      
+      <!-- Form Details -->
+      <form id="booking-details-form" onsubmit="event.preventDefault(); saveBookingDetails();" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+        <div>
+          <label class="modal-label">Bride & Groom Names</label>
+          <input type="text" id="edit-b-name" class="search" style="background:#1c1c1c;" required/>
+        </div>
+        <div>
+          <label class="modal-label">WhatsApp Contact Phone</label>
+          <input type="text" id="edit-b-phone" class="search" style="background:#1c1c1c;" required/>
+        </div>
+        <div>
+          <label class="modal-label">Email Address</label>
+          <input type="email" id="edit-b-email" class="search" style="background:#1c1c1c;"/>
+        </div>
+        <div>
+          <label class="modal-label">Wedding/Event Date</label>
+          <input type="date" id="edit-b-date" class="search" style="background:#1c1c1c;" required/>
+        </div>
+        <div>
+          <label class="modal-label">Event Venue & Details</label>
+          <input type="text" id="edit-b-venue" class="search" style="background:#1c1c1c;" required/>
+        </div>
+        <div>
+          <label class="modal-label">Selected Package</label>
+          <select id="edit-b-package" class="search" style="background:#1c1c1c; height: 38px; color: #fff; cursor: pointer;">
+            <option value="Bride & Groom Pack 01">Bride & Groom Pack 01 (₹49,999)</option>
+            <option value="Bride & Groom Pack 02">Bride & Groom Pack 02 (₹99,999)</option>
+            <option value="Bride & Groom Pack 03">Bride & Groom Pack 03 (₹1,10,000)</option>
+            <option value="Classic Package">Classic Package (₹34,999)</option>
+            <option value="Custom Package">Custom Package</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">Package Base Price (₹)</label>
+          <input type="number" id="edit-b-package-price" class="search" style="background:#1c1c1c;" oninput="recalculateTotals()"/>
+        </div>
+        <div>
+          <label class="modal-label">Booking Advance Paid (₹)</label>
+          <input type="number" id="edit-b-advance" class="search" style="background:#1c1c1c;" oninput="recalculateTotals()"/>
+        </div>
+
+        <!-- Milestones list -->
+        <div style="grid-column: span 2; border-top: 1px solid #222; padding-top: 20px; margin-top: 10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size: 13px; font-weight:600; color:#fff;">Invoice Itemized Stages / Payment Milestones</h3>
+            <button type="button" onclick="addMilestoneRow()" style="background:#222; color:#b4975a; border: 1px solid #b4975a40; padding: 4px 10px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer; transition: all 0.2s;">+ Add Stage</button>
+          </div>
+          
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px;" id="milestones-table">
+            <thead>
+              <tr style="border-bottom:1px solid #222; text-align:left; color:#555;">
+                <th style="padding: 6px 0; font-weight:500;">Product / Service Stage Details</th>
+                <th style="padding: 6px 8px; font-weight:500; width: 120px;">Amount (₹)</th>
+                <th style="padding: 6px 8px; font-weight:500; width: 130px;">Expected Date</th>
+                <th style="padding: 6px 8px; font-weight:500; width: 100px;">Status</th>
+                <th style="padding: 6px 0; font-weight:500; width: 40px; text-align:right;"></th>
+              </tr>
+            </thead>
+            <tbody id="milestones-body">
+              <!-- Milestones loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Live Totals Banner -->
+        <div style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; background: #1a231b; border: 1px solid #2e7d3230; padding: 14px 20px; border-radius: 10px; margin-top: 12px;">
+          <div style="font-size: 12px; color: #aaa;">
+            <strong>Pricing Calculation:</strong> Base/Total: ₹<span id="summary-total">0</span> | Paid: ₹<span id="summary-paid">0</span>
+          </div>
+          <div style="font-size: 13px; color: #fb923c; font-weight: 700;">
+            Remaining Payable Balance: ₹<span id="summary-balance">0</span>
+          </div>
+        </div>
+
+        <!-- Invoice Details -->
+        <div style="grid-column: span 2; border-top: 1px solid #222; padding-top: 20px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="modal-label">Invoice Number</label>
+            <input type="text" id="edit-b-inv-number" class="search" style="background:#1c1c1c;" required/>
+          </div>
+          <div>
+            <label class="modal-label">Invoice Date</label>
+            <input type="date" id="edit-b-inv-date" class="search" style="background:#1c1c1c;" required/>
+          </div>
+        </div>
+
+        <!-- Save Button -->
+        <div style="grid-column: span 2; display:flex; justify-content:flex-end; gap:12px; margin-top:20px; border-top:1px solid #222; padding-top:20px;">
+          <button type="submit" class="action-btn btn-save" style="background:#22c55e; color:#000;">💾 Save Booking Details</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+
+  <div class="empty-state" id="bookingEmptyState" style="flex: 1;">
+    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    <p>Select a booking order from the sidebar to review, manage payment stages, and generate invoice</p>
+  </div>
+</div>
+
+<!-- 3. PROJECTS WORKFLOW VIEW CONTAINER -->
+<div class="main" id="projects-view" style="display: none;">
+  <!-- SIDEBAR — ACTIVE PROJECTS -->
+  <div class="sidebar" style="width: 320px;">
+    <div class="sidebar-header">
+      <h2 style="font-size: 14px; font-weight:600; color:#fff;">Active Wedding Projects</h2>
+      <p style="font-size: 10px; color:#555; margin-top: 4px; text-transform:uppercase; letter-spacing:0.05em;">Linked from Booking Orders</p>
+    </div>
+    <div class="customer-list" id="projectList">
+      <!-- Projects dynamically populated here -->
+    </div>
+  </div>
+
+  <!-- UBER-DETAILED WORKFLOW WORKSPACE -->
+  <div class="chat-panel" id="projectDetailsWorkspace" style="display: none; padding: 20px; overflow-y: auto;">
+    
+    <!-- Project Main Summary -->
+    <div style="background: #141414; border:1px solid #222; border-radius:16px; padding: 18px; margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <h2 id="proj-couple-title" style="font-size:18px; font-weight:600; color:#fff;">Rahul & Priya's Wedding</h2>
+        <p id="proj-sub-title" style="font-size:11px; color:#666; margin-top:3px;">Wedding Date: 05-12-2026 • Status: Photos Uploaded</p>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="action-btn" style="background:#2a2a2a; color:#fff; border:1px solid #333;" onclick="closeProjectWorkspace()">✕ Return to Board</button>
+        <button class="action-btn" style="background:#2a2a2a; color:#fff; border:1px solid #333;" onclick="showTab('bookings')">🔗 View Booking / Invoice</button>
+      </div>
+    </div>
+
+    <!-- Triple Column Grid Platform -->
+    <div class="workflow-grid">
+      
+      <!-- COLUMN 1: PROGRESS TIMELINE & SPECIFICATIONS -->
+      <div class="workflow-card">
+        <div class="workflow-card-title">📈 Visual Timeline Progress</div>
+        <div class="workflow-scroll" style="margin-bottom: 16px;">
+          <!-- 5 Steps List with tick controls -->
+          <div id="timeline-indicator-list">
+            <!-- Render timeline list -->
+          </div>
+        </div>
+
+        <div class="workflow-card-title">👥 Client & Booking Details</div>
+        <div class="workflow-scroll" style="margin-bottom: 16px; background:#1c1c1c; padding:12px; border-radius:8px; border:1px solid #222; font-size:11px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between;"><span style="color:#666;">Name:</span> <strong id="proj-client-name" style="color:#fff;">—</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#666;">Phone:</span> <span id="proj-client-phone" style="color:#aaa;">—</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#666;">Email:</span> <span id="proj-client-email" style="color:#aaa;">—</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#666;">Venue:</span> <span id="proj-client-venue" style="color:#aaa;">—</span></div>
+            <div style="margin-top:4px; padding-top:4px; border-top:1px solid #282828;">
+              <span style="color:#b4975a; font-weight:bold; font-size:9px; text-transform:uppercase;">Package:</span>
+              <p id="proj-client-package" style="color:#bbb; font-size:10px; line-height:1.4; margin-top:2px; margin-bottom:0; font-weight:300;">—</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-card-title">📖 Deliverables & Links</div>
+        <div class="workflow-scroll">
+          <form id="project-deliverables-form" onsubmit="event.preventDefault(); saveProjectDeliverables();" style="display:flex; flex-direction:column; gap:10px;">
+            <div>
+              <label class="modal-label" style="font-size:9px;">Video Teaser Draft Link</label>
+              <input type="text" id="proj-teaser-url" class="search" style="background:#1c1c1c; padding:6px; font-size:11px;"/>
+            </div>
+            <div>
+              <label class="modal-label" style="font-size:9px;">Album Design PDF Link</label>
+              <input type="text" id="proj-album-pdf" class="search" style="background:#1c1c1c; padding:6px; font-size:11px;"/>
+            </div>
+              <input type="text" id="proj-final-url" class="search" style="background:#1c1c1c; padding:6px; font-size:11px;"/>
+            </div>
+            <div>
+              <label class="modal-label" style="font-size:9px;">Full Photos & Files Link (Drive)</label>
+              <input type="text" id="proj-files-url" class="search" style="background:#1c1c1c; padding:6px; font-size:11px;"/>
+            </div>
+            <div>
+              <label class="modal-label" style="font-size:9px;">Work Deadline Date</label>
+              <input type="date" id="proj-deadline-date" class="search" style="background:#1c1c1c; padding:6px; font-size:11px; color:#fff;"/>
+            </div>
+            <button type="submit" class="action-btn btn-save" style="width:100%; padding:8px 0; font-size:11px; margin-top:6px;">Update Deliverables</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: MULTI-CHANNEL TEAM CHAT MATRIX -->
+      <div class="workflow-card">
+        <div class="workflow-card-title">
+          <span>💬 Centralized Chat Rooms</span>
+          <span id="active-chat-channel-indicator" style="color:#aaa; text-transform:none; font-size:11px;">Client ↔ Designer</span>
+        </div>
+        
+        <!-- Tab selector for channels -->
+        <div class="chat-sub-tabs">
+          <button class="chat-sub-btn active" id="c-btn-admin" onclick="switchChatChannel('client-admin')">Admin</button>
+          <button class="chat-sub-btn" id="c-btn-editor" onclick="switchChatChannel('client-editor')">Editor</button>
+          <button class="chat-sub-btn" id="c-btn-designer" onclick="switchChatChannel('client-designer')">Designer</button>
+          <button class="chat-sub-btn" id="c-btn-team" onclick="switchChatChannel('admin-team')" style="background:#2a1a1a; color:#f87171;">👥 Team Internal</button>
+        </div>
+
+        <!-- Chat Feed logs -->
+        <div class="workflow-scroll" id="projectChatFeed" style="padding: 10px; background:#101010; border-radius:8px; border:1px solid #1c1c1c; display:flex; flex-direction:column; gap:10px;">
+          <!-- Chat logs -->
+        </div>
+
+        <!-- Chat input -->
+        <form onsubmit="event.preventDefault(); sendProjectChatMessage();" style="display:flex; gap:8px; margin-top:12px;">
+          <input type="text" id="proj-chat-input" class="search" placeholder="Type message..." style="flex:1; background:#1c1c1c; font-size:12px; padding:8px;" required/>
+          <button type="submit" class="action-btn" style="background:#b4975a; color:#000; padding:6px 14px;">Send</button>
+        </form>
+      </div>
+
+      <!-- COLUMN 3: PHOTO SELECTION GALLERY & AUDIT LOGS -->
+      <div class="workflow-card">
+        <div class="workflow-card-title">
+          <span>📸 Smart Designer View</span>
+          <span id="gallery-counter-indicator" style="color:#aaa; text-transform:none; font-size:11px;">0 selected</span>
+        </div>
+        
+        <!-- Category selector buttons -->
+        <div style="display:flex; gap:4px; margin-bottom:12px;">
+          <button class="chat-sub-btn active" style="font-size:9px;" id="cat-btn-all" onclick="filterDesignerGallery('all')">All</button>
+          <button class="chat-sub-btn" style="font-size:9px;" id="cat-btn-album" onclick="filterDesignerGallery('album')">📖 Album</button>
+          <button class="chat-sub-btn" style="font-size:9px;" id="cat-btn-reel" onclick="filterDesignerGallery('reel')">🎥 Reels</button>
+          <button class="chat-sub-btn" style="font-size:9px;" id="cat-btn-fav" onclick="filterDesignerGallery('fav')">❤️ Favs</button>
+        </div>
+
+        <!-- Grid of photos showing comments & client favorited markers -->
+        <div class="workflow-scroll" style="max-height: 240px; margin-bottom: 16px;">
+          <div class="photo-grid-designer" id="designerPhotoGrid">
+            <!-- Thumbnails -->
+          </div>
+        </div>
+
+        <div id="proj-wedding-letter-card" style="display:none; margin-bottom: 16px;">
+          <div class="workflow-card-title">📜 Client Wedding Letter & Story</div>
+          <div class="workflow-scroll" style="max-height: 120px; background:#1c1c1c; padding:12px; border-radius:8px; border:1px solid #222; font-size:11px; overflow-y:auto;">
+            <div id="proj-letter-link-container" style="margin-bottom:6px;">
+              <a id="proj-letter-link" href="#" target="_blank" style="color:#b4975a; font-weight:bold; text-decoration:none;">📂 View Wedding Letter File ↗</a>
+            </div>
+            <div id="proj-letter-text" style="color:#aaa; line-height:1.4; white-space:pre-wrap;">No text notes provided.</div>
+          </div>
+        </div>
+
+        <div class="workflow-card-title">🔔 Automation & Activity Logs</div>
+        <div class="workflow-scroll">
+          <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
+            <button onclick="triggerWhatsAppReminder('photo_selection')" style="background:#234e23; color:#86efac; border:1px solid #2e7d32; font-size:9px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;">📲 WhatsApp Nudge: Selection</button>
+            <button onclick="triggerWhatsAppReminder('album_approval')" style="background:#234e23; color:#86efac; border:1px solid #2e7d32; font-size:9px; font-weight:700; padding:4px 8px; border-radius:4px; cursor:pointer;">📲 WhatsApp Nudge: Album</button>
+          </div>
+          <div id="projectActivityLogs">
+            <!-- Activity log listing -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="empty-state" id="projectEmptyState" style="flex:1; padding: 24px; display:flex; flex-direction:column; overflow-y:auto; justify-content:flex-start; align-items:stretch; background:#111; max-height:100%;">
+    <div style="text-align:center; padding: 40px 20px; color:#444;">
+      <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="opacity:0.3; margin-bottom:12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <p style="font-size:14px;">Select an active wedding project to check timeline stages, view photo retouches, or speak with client support</p>
+    </div>
+  </div>
+</div>
+
+<!-- NEW BOOKING MODAL -->
+<div class="modal-overlay" id="newBookingModal" style="display:none;">
+  <div class="modal-card">
+    <div class="modal-title">Log New Wedding Booking Order</div>
+    <form onsubmit="event.preventDefault(); submitNewBooking();">
+      <div class="modal-form-grid">
+        <div class="full-span">
+          <label class="modal-label">Bride & Groom Names</label>
+          <input type="text" id="new-b-name" class="modal-input" placeholder="e.g. Rahul & Priya" required/>
+        </div>
+        <div>
+          <label class="modal-label">WhatsApp Contact Phone</label>
+          <input type="text" id="new-b-phone" class="modal-input" placeholder="e.g. +91 99001 22334" required/>
+        </div>
+        <div>
+          <label class="modal-label">Email Address</label>
+          <input type="email" id="new-b-email" class="modal-input" placeholder="priya@example.com"/>
+        </div>
+        <div>
+          <label class="modal-label">Wedding/Event Date</label>
+          <input type="date" id="new-b-date" class="modal-input" required/>
+        </div>
+        <div>
+          <label class="modal-label">Event Venue / City</label>
+          <input type="text" id="new-b-venue" class="modal-input" placeholder="Trivandrum" required/>
+        </div>
+        <div class="full-span">
+          <label class="modal-label">Package Selection</label>
+          <select id="new-b-package" class="modal-input" style="height: 36px; cursor:pointer;" onchange="autoFillNewBookingPrice()">
+            <option value="Bride & Groom Pack 01">Bride & Groom Pack 01 (₹49,999)</option>
+            <option value="Bride & Groom Pack 02">Bride & Groom Pack 02 (₹99,999)</option>
+            <option value="Bride & Groom Pack 03">Bride & Groom Pack 03 (₹1,10,000)</option>
+            <option value="Classic Package">Classic Package (₹34,999)</option>
+            <option value="Custom Package">Custom Package</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">Package Price (₹)</label>
+          <input type="number" id="new-b-price" class="modal-input" value="49999" required/>
+        </div>
+        <div>
+          <label class="modal-label">Advance Paid (₹)</label>
+          <input type="number" id="new-b-advance" class="modal-input" value="5000" required/>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="action-btn btn-cancel" onclick="closeNewBookingModal()">Cancel</button>
+        <button type="submit" class="action-btn btn-save" style="background:#b4975a; color:#000;">Add Booking</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- STUNNING A4 INVOICE OVERLAY (PRINT VIEW) -->
+<div class="invoice-overlay" id="invoiceModal">
+  <!-- CONTROL BAR (Floating on screen, hidden during printing) -->
+  <div class="invoice-control-bar no-print">
+    <button class="action-btn" style="background:#222; color:#fff; border:1px solid #333;" onclick="closeInvoiceTemplate()">✕ Close Preview</button>
+    <button class="action-btn" style="background:#b4975a; color:#000;" onclick="window.print()">🖨️ Print / Save as A4 PDF</button>
+  </div>
+
+  <div class="invoice-container">
+    <!-- Brand / Logo row exactly styled like images -->
+    <div class="invoice-brand">
+      <div style="display: flex; align-items: center;">
+        <div class="brand-logo-circle">DW</div>
+        <div class="brand-text-name">Dreamwed Stories</div>
+      </div>
+      <div style="font-size: 11px; text-align: right; color: #555; line-height: 1.5;">
+        dreamwedstories.co.in<br/>
+        +91 98954 12895
+      </div>
+    </div>
+
+    <!-- Centered bold Invoice header -->
+    <div class="invoice-header-title">
+      <h2>Invoice</h2>
+    </div>
+
+    <!-- Meta Details / Billing Information split -->
+    <div class="invoice-meta-section">
+      <div class="invoice-to">
+        <h3>Invoice To:</h3>
+        <div class="invoice-to-name" id="inv-to-name">Manu Murugan</div>
+        <div class="invoice-to-details">
+          <div id="inv-to-venue">Krishna Kripa house, Neyyattinkara, Trivandrum</div>
+          <div id="inv-to-phone">Ph: +91 70161 72929</div>
+          <div id="inv-to-email">manu@example.com</div>
+        </div>
+      </div>
+
+      <div class="invoice-details-right">
+        <table>
+          <tr>
+            <td class="lbl">Issued:</td>
+            <td class="val" id="inv-date">30-03-2025</td>
+          </tr>
+          <tr>
+            <td class="lbl">Invoice:</td>
+            <td class="val" id="inv-number">OL11</td>
+          </tr>
+          <tr>
+            <td class="lbl">Due:</td>
+            <td class="val" id="inv-due">On Receipt</td>
+          </tr>
+          <tr>
+            <td class="lbl">Package Price:</td>
+            <td class="val" id="inv-package-price">₹ 59,999/-</td>
+          </tr>
+          <tr>
+            <td class="lbl">Element:</td>
+            <td class="val" id="inv-package-name">Classic Package</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Products / Milestone items table styled like images -->
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Product / Service</th>
+          <th class="amount-col" style="width: 140px;">Price</th>
+          <th style="width: 150px; padding-left: 20px;">Date</th>
+          <th class="amount-col" style="width: 140px;">Total</th>
+        </tr>
+      </thead>
+      <tbody id="invoice-items-body">
+        <!-- Render payment milestones here -->
+      </tbody>
+    </table>
+
+    <!-- Right-aligned financial summaries -->
+    <div class="invoice-summary">
+      <table class="invoice-summary-table">
+        <tr>
+          <td class="lbl">Subtotal:</td>
+          <td class="val" id="inv-subtotal">₹ 5,000/-</td>
+        </tr>
+        <tr>
+          <td class="lbl">Tax (0%):</td>
+          <td class="val">₹ 0/-</td>
+        </tr>
+        <tr>
+          <td class="lbl">Total:</td>
+          <td class="val" id="inv-total">₹ 5,000/-</td>
+        </tr>
+        <tr class="total-payable-row">
+          <td class="lbl">Total Payable Amount:</td>
+          <td class="val" id="inv-balance">₹ 54,999/-</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Print Footer matching exact image -->
+    <div class="invoice-footer">
+      <div class="payment-instructions">
+        <strong>Send Payments To:</strong>
+        Dreamwed Stories<br/>
+        UPI: dreamwedstories@okaxis<br/>
+        GPay / PhonePe: +91 98954 12895
+      </div>
+      <div>
+        <div class="signature-thankyou">Thank You!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let allChats = [];
+  let allBookings = [];
+  let allProjects = [];
+  let activeFilter = 'all';
+  let activeNumber = null;
+  let activeBookingId = null;
+  let activeProjectId = null;
+  let activeChatChannel = 'client-admin';
+  let activeDesignerGalleryFilter = 'all';
+  let currentTab = 'chats';
+
+  const AVATAR_COLORS = ['#b4975a','#22c55e','#3b82f6','#a855f7','#ef4444','#f59e0b','#06b6d4'];
+
+  function getColor(str) {
+    let hash = 0;
+    for (let c of str) hash = c.charCodeAt(0) + ((hash << 5) - hash);
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  }
+
+  function getInitial(customer) {
+    if (customer.name) return customer.name[0].toUpperCase();
+    return customer.customer_number.replace(/\D/g,'').slice(-4,-3) || '?';
+  }
+
+  function timeAgo(dateStr) {
+    if (!dateStr) return '';
+    const normalizedDate = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
+    const diff = (Date.now() - new Date(normalizedDate).getTime()) / 1000;
+    if (isNaN(diff)) return 'some time ago';
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return Math.floor(diff/86400) + 'd ago';
+  }
+
+  function formatTime(dateStr) {
+    if (!dateStr) return '';
+    const normalizedDate = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
+    return new Date(normalizedDate).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function formatDateString(dateStr) {
+    if (!dateStr) return '—';
+    try {
+      return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+    } catch(e) {
+      return dateStr;
+    }
+  }
+
+  function formatCurrency(num) {
+    return Number(num).toLocaleString('en-IN', { style: 'decimal', maximumFractionDigits: 0 });
+  }
+
+  // TAB NAV LOGIC
+  function showTab(tabName) {
+    currentTab = tabName;
+    const chatsBtn = document.getElementById('btn-chats-view');
+    const bookingsBtn = document.getElementById('btn-bookings-view');
+    const projectsBtn = document.getElementById('btn-projects-view');
+    
+    document.getElementById('chats-view').style.display = 'none';
+    document.getElementById('bookings-view').style.display = 'none';
+    document.getElementById('projects-view').style.display = 'none';
+    
+    chatsBtn.classList.remove('active');
+    bookingsBtn.classList.remove('active');
+    projectsBtn.classList.remove('active');
+    
+    if (tabName === 'chats') {
+      document.getElementById('chats-view').style.display = 'flex';
+      chatsBtn.classList.add('active');
+      loadChats();
+    } else if (tabName === 'bookings') {
+      document.getElementById('bookings-view').style.display = 'flex';
+      bookingsBtn.classList.add('active');
+      loadBookings();
+    } else {
+      document.getElementById('projects-view').style.display = 'flex';
+      projectsBtn.classList.add('active');
+      loadProjects();
+    }
+  }
+
+  function triggerRefresh() {
+    if (currentTab === 'chats') {
+      loadChats();
+    } else if (currentTab === 'bookings') {
+      loadBookings();
+    } else {
+      loadProjects();
+    }
+  }
+
+  // WHATSAPP CHATS MONITOR
+  async function loadChats() {
+    const res = await fetch('/api/chats');
+    allChats = await res.json();
+    renderList();
+    updateStats();
+  }
+
+  function updateStats() {
+    document.getElementById('totalCount').textContent = allChats.length;
+    document.getElementById('hotCount').textContent = allChats.filter(c => c.status === 'hot_lead').length;
+    document.getElementById('bookedCount').textContent = allChats.filter(c => c.status === 'booked').length;
+  }
+
+  function setFilter(filter, el) {
+    activeFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    renderList();
+  }
+
+  function filterChats() { renderList(); }
+
+  function renderList() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = allChats;
+    if (activeFilter !== 'all') filtered = filtered.filter(c => c.status === activeFilter);
+    if (query) filtered = filtered.filter(c =>
+      (c.name||'').toLowerCase().includes(query) ||
+      c.customer_number.includes(query) ||
+      (c.venue||'').toLowerCase().includes(query)
+    );
+
+    const container = document.getElementById('customerList');
+    container.innerHTML = filtered.map(c => `
+      <div class="customer-item ${c.customer_number === activeNumber ? 'active' : ''}" onclick="openChat('${c.customer_number}')">
+        <div class="avatar" style="background:${getColor(c.customer_number)}20;color:${getColor(c.customer_number)}">${getInitial(c)}</div>
+        <div class="customer-info">
+          <div class="customer-name">${c.name || c.customer_number.replace('whatsapp:','')}</div>
+          <div class="customer-preview">${c.last_message ? c.last_message.substring(0,45)+'...' : 'No messages'}</div>
+        </div>
+        <div class="customer-meta">
+          <div class="customer-time">${timeAgo(c.updated_at)}</div>
+          <span class="badge badge-${c.status}">${c.status.replace('_',' ')}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function openChat(number) {
+    activeNumber = number;
+    renderList();
+
+    const res = await fetch(`/api/chats/${encodeURIComponent(number.replace('whatsapp:','').replace('+',''))}`);
+    const data = await res.json();
+    const { customer, messages } = data;
+
+    // Show header
+    const header = document.getElementById('chatHeader');
+    header.style.display = 'flex';
+    const color = getColor(number);
+    document.getElementById('headerAvatar').style.cssText = `background:${color}20;color:${color}`;
+    document.getElementById('headerAvatar').textContent = getInitial(customer);
+    document.getElementById('headerName').textContent = customer.name || number.replace('whatsapp:+91','');
+    document.getElementById('headerSub').textContent = `${customer.wedding_date || 'Date unknown'} • ${customer.venue || 'Venue unknown'} • ${customer.message_count||messages.length} messages`;
+
+    // Render messages
+    const msgContainer = document.getElementById('chatMessages');
+    msgContainer.innerHTML = messages.map(m => {
+      const isReminder = m.message.startsWith('[REMINDER]');
+      const text = m.message.replace('[REMINDER] ','');
+      return `
+        <div class="msg ${m.role}">
+          <div class="msg-bubble" style="${isReminder ? 'opacity:0.6;border:1px dashed #333;' : ''}">${text.replace(/\n/g,'<br/>')}</div>
+          <div class="msg-time">${isReminder ? '⏰ reminder • ' : ''}${formatTime(m.created_at)}</div>
+        </div>
+      `;
+    }).join('');
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    // Show detail panel
+    document.getElementById('detailPanel').style.display = 'block';
+    document.getElementById('d-name').textContent = customer.name || '—';
+    document.getElementById('d-name').className = `detail-value ${!customer.name ? 'empty' : ''}`;
+    document.getElementById('d-phone').textContent = number.replace('whatsapp:','');
+    document.getElementById('d-date').textContent = customer.wedding_date || '—';
+    document.getElementById('d-date').className = `detail-value ${!customer.wedding_date ? 'empty' : ''}`;
+    document.getElementById('d-venue').textContent = customer.venue || '—';
+    document.getElementById('d-venue').className = `detail-value ${!customer.venue ? 'empty' : ''}`;
+    document.getElementById('d-package').textContent = customer.package_interested || '—';
+    document.getElementById('d-status').textContent = customer.status;
+    document.getElementById('d-msgs').textContent = messages.length + ' messages';
+    document.getElementById('d-created').textContent = new Date(customer.created_at.includes('T') ? customer.created_at : customer.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('en-IN');
+  }
+
+  async function updateStatus(status) {
+    if (!activeNumber) return;
+    await fetch(`/api/chats/${encodeURIComponent(activeNumber.replace('whatsapp:','').replace('+',''))}/status`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    await loadChats();
+    if (activeNumber) openChat(activeNumber);
+  }
+
+  // WEDDING BOOKINGS LOGIC
+  async function loadBookings() {
+    const res = await fetch('/api/bookings');
+    allBookings = await res.json();
+    renderBookingList();
+  }
+
+  function renderBookingList() {
+    const container = document.getElementById('bookingList');
+    if (allBookings.length === 0) {
+      container.innerHTML = '<div style="padding:20px;text-align:center;color:#444;font-size:12px;">No active bookings logged</div>';
+      return;
+    }
+    
+    container.innerHTML = allBookings.map(b => `
+      <div class="customer-item ${b.id === activeBookingId ? 'active-booking' : ''}" onclick="openBooking(${b.id})">
+        <div class="avatar" style="background:#b4975a20; color:#b4975a; border: 1px solid #b4975a20;">💍</div>
+        <div class="customer-info">
+          <div class="customer-name">${b.customer_name}</div>
+          <div class="customer-preview" style="color: #888;">${b.package_name} • ₹${formatCurrency(b.total_price)}</div>
+        </div>
+        <div class="customer-meta">
+          <div class="customer-time">${b.event_date ? formatDateString(b.event_date) : 'No date'}</div>
+          <span class="badge badge-${b.status}">${b.status}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openBooking(id) {
+    activeBookingId = id;
+    renderBookingList();
+    
+    const booking = allBookings.find(b => b.id === Number(id));
+    if (!booking) return;
+    
+    document.getElementById('bookingEmptyState').style.display = 'none';
+    document.getElementById('bookingDetailsWorkspace').style.display = 'block';
+    
+    // Header
+    document.getElementById('b-title').textContent = booking.customer_name;
+    document.getElementById('b-subtitle').textContent = `Invoice No: ${booking.invoice_number} • Date Logged: ${formatDateString(booking.created_at)}`;
+    
+    // Status Btn toggle
+    const confirmBtn = document.getElementById('confirm-booking-btn');
+    if (booking.status === 'confirmed') {
+      confirmBtn.style.display = 'none';
+    } else {
+      confirmBtn.style.display = 'block';
+      confirmBtn.textContent = 'Confirm Booking';
+    }
+    
+    // Form fields
+    document.getElementById('edit-b-name').value = booking.customer_name;
+    document.getElementById('edit-b-phone').value = booking.customer_phone;
+    document.getElementById('edit-b-email').value = booking.customer_email || '';
+    document.getElementById('edit-b-date').value = booking.event_date;
+    document.getElementById('edit-b-venue').value = booking.event_venue;
+    document.getElementById('edit-b-package').value = booking.package_name;
+    document.getElementById('edit-b-package-price').value = booking.package_price;
+    document.getElementById('edit-b-advance').value = booking.advance_paid;
+    document.getElementById('edit-b-inv-number').value = booking.invoice_number;
+    document.getElementById('edit-b-inv-date').value = booking.invoice_date || '';
+    
+    // Milestones Render
+    renderMilestonesTable(booking.payment_milestones);
+    recalculateTotals();
+  }
+
+  // MILESTONE ROWS MANAGER
+  function renderMilestonesTable(milestones = []) {
+    const tbody = document.getElementById('milestones-body');
+    tbody.innerHTML = '';
+    
+    milestones.forEach((m, idx) => {
+      addMilestoneRow(m.label, m.amount, m.date, m.status);
+    });
+  }
+
+  function addMilestoneRow(label = '', amount = 0, date = '', status = 'Pending') {
+    const tbody = document.getElementById('milestones-body');
+    const tr = document.createElement('tr');
+    tr.className = 'milestone-row';
+    tr.style.borderBottom = '1px solid #1c1c1c';
+    
+    tr.innerHTML = `
+      <td style="padding: 6px 0;"><input type="text" class="search m-label" style="background:#1c1c1c; padding:6px; font-size:12px;" value="${label}" required placeholder="Stage Description"/></td>
+      <td style="padding: 6px 8px;"><input type="number" class="search m-amount" style="background:#1c1c1c; padding:6px; font-size:12px;" value="${amount}" oninput="recalculateTotals()" required/></td>
+      <td style="padding: 6px 8px;"><input type="date" class="search m-date" style="background:#1c1c1c; padding:6px; font-size:12px;" value="${date}"/></td>
+      <td style="padding: 6px 8px;">
+        <select class="search m-status" style="background:#1c1c1c; padding:6px; font-size:11px; height:28px; color:#fff; font-weight:600;">
+          <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option value="Paid" ${status === 'Paid' ? 'selected' : ''}>Paid</option>
+        </select>
+      </td>
+      <td style="padding: 6px 0; text-align:right;"><button type="button" onclick="this.closest('tr').remove(); recalculateTotals();" style="background:transparent; border:none; color:#ff4444; font-size:16px; cursor:pointer;">✕</button></td>
+    `;
+    
+    tbody.appendChild(tr);
+  }
+
+  function recalculateTotals() {
+    const pkgPrice = Number(document.getElementById('edit-b-package-price').value) || 0;
+    const advancePaid = Number(document.getElementById('edit-b-advance').value) || 0;
+    
+    // Milestone rows sum
+    let milestoneSum = 0;
+    document.querySelectorAll('.milestone-row').forEach(row => {
+      milestoneSum += Number(row.querySelector('.m-amount').value) || 0;
+    });
+    
+    const totalPrice = Math.max(pkgPrice, milestoneSum);
+    const balance = totalPrice - advancePaid;
+    
+    document.getElementById('summary-total').textContent = formatCurrency(totalPrice);
+    document.getElementById('summary-paid').textContent = formatCurrency(advancePaid);
+    document.getElementById('summary-balance').textContent = formatCurrency(balance);
+  }
+
+  // SAVE & CONFIRM BOOKINGS API
+  async function saveBookingDetails() {
+    if (!activeBookingId) return;
+    
+    const pkgPrice = Number(document.getElementById('edit-b-package-price').value) || 0;
+    const advancePaid = Number(document.getElementById('edit-b-advance').value) || 0;
+    
+    let milestoneSum = 0;
+    const payment_milestones = [];
+    document.querySelectorAll('.milestone-row').forEach(row => {
+      const amt = Number(row.querySelector('.m-amount').value) || 0;
+      milestoneSum += amt;
+      payment_milestones.push({
+        label: row.querySelector('.m-label').value,
+        amount: amt,
+        date: row.querySelector('.m-date').value,
+        status: row.querySelector('.m-status').value
+      });
+    });
+    
+    const totalPrice = Math.max(pkgPrice, milestoneSum);
+    
+    const payload = {
+      customer_name: document.getElementById('edit-b-name').value,
+      customer_phone: document.getElementById('edit-b-phone').value,
+      customer_email: document.getElementById('edit-b-email').value,
+      event_date: document.getElementById('edit-b-date').value,
+      event_venue: document.getElementById('edit-b-venue').value,
+      package_name: document.getElementById('edit-b-package').value,
+      package_price: pkgPrice,
+      total_price: totalPrice,
+      advance_paid: advancePaid,
+      invoice_number: document.getElementById('edit-b-inv-number').value,
+      invoice_date: document.getElementById('edit-b-inv-date').value,
+      payment_milestones
+    };
+    
+    const res = await fetch(`/api/bookings/${activeBookingId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    if (res.ok) {
+      alert('💾 Booking details updated successfully!');
+      await loadBookings();
+      openBooking(activeBookingId);
+    }
+  }
+
+  async function apiConfirmBooking() {
+    if (!activeBookingId) return;
+    
+    const res = await fetch(`/api/bookings/${activeBookingId}/confirm`, {
+      method: 'POST'
+    });
+    
+    if (res.ok) {
+      alert('💍 Booking Confirmed! Invoice is now ready.');
+      await loadBookings();
+      openBooking(activeBookingId);
+      
+      // Auto instantiate project workspace when booking is confirmed!
+      await loadProjects();
+    }
+  }
+
+  // LOG NEW BOOKING
+  function openNewBookingModal() {
+    document.getElementById('new-b-date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('newBookingModal').style.display = 'flex';
+  }
+  function closeNewBookingModal() {
+    document.getElementById('newBookingModal').style.display = 'none';
+  }
+  function autoFillNewBookingPrice() {
+    const pkg = document.getElementById('new-b-package').value;
+    const priceInput = document.getElementById('new-b-price');
+    if (pkg === 'Bride & Groom Pack 01') priceInput.value = 49999;
+    else if (pkg === 'Bride & Groom Pack 02') priceInput.value = 99999;
+    else if (pkg === 'Bride & Groom Pack 03') priceInput.value = 110000;
+    else if (pkg === 'Classic Package') priceInput.value = 34999;
+  }
+  async function submitNewBooking() {
+    const payload = {
+      customer_name: document.getElementById('new-b-name').value,
+      customer_phone: document.getElementById('new-b-phone').value,
+      customer_email: document.getElementById('new-b-email').value,
+      event_date: document.getElementById('new-b-date').value,
+      event_venue: document.getElementById('new-b-venue').value,
+      package_name: document.getElementById('new-b-package').value,
+      package_price: Number(document.getElementById('new-b-price').value),
+      total_price: Number(document.getElementById('new-b-price').value),
+      advance_paid: Number(document.getElementById('new-b-advance').value),
+      status: 'pending'
+    };
+    
+    const res = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    if (res.ok) {
+      closeNewBookingModal();
+      const created = await res.json();
+      activeBookingId = created.id;
+      await loadBookings();
+      openBooking(created.id);
+    }
+  }
+
+  // INVOICE PREVIEW MODAL RENDERING
+  function openInvoiceTemplate() {
+    if (!activeBookingId) return;
+    
+    const booking = allBookings.find(b => b.id === Number(activeBookingId));
+    if (!booking) return;
+    
+    document.getElementById('inv-to-name').textContent = booking.customer_name;
+    document.getElementById('inv-to-venue').textContent = booking.event_venue;
+    document.getElementById('inv-to-phone').textContent = `Ph: ${booking.customer_phone}`;
+    document.getElementById('inv-to-email').textContent = booking.customer_email || '—';
+    
+    document.getElementById('inv-date').textContent = formatDateString(booking.invoice_date || booking.created_at.split(' ')[0]);
+    document.getElementById('inv-number').textContent = booking.invoice_number;
+    document.getElementById('inv-due').textContent = 'On Receipt';
+    document.getElementById('inv-package-price').textContent = `₹ ${formatCurrency(booking.package_price)}/-`;
+    document.getElementById('inv-package-name').textContent = booking.package_name;
+    
+    const itemsTbody = document.getElementById('invoice-items-body');
+    itemsTbody.innerHTML = '';
+    
+    let subtotalSum = 0;
+    
+    booking.payment_milestones.forEach((m, index) => {
+      subtotalSum += Number(m.amount) || 0;
+      
+      itemsTbody.innerHTML += `
+        <tr>
+          <td>
+            <div style="font-weight: 700; color: #000; margin-bottom: 2px;">${m.label}</div>
+            <div style="font-size: 10px; color: #666; font-style: italic;">Stage ${index + 1} (${m.status})</div>
+          </td>
+          <td class="amount-col">₹ ${formatCurrency(m.amount)}</td>
+          <td style="padding-left: 20px;">${m.date ? formatDateString(m.date) : 'TBD'}</td>
+          <td class="amount-col">₹ ${formatCurrency(m.amount)}</td>
+        </tr>
+      `;
+    });
+    
+    const balance = booking.total_price - booking.advance_paid;
+    
+    document.getElementById('inv-subtotal').textContent = `₹ ${formatCurrency(subtotalSum)}/-`;
+    document.getElementById('inv-total').textContent = `₹ ${formatCurrency(subtotalSum)}/-`;
+    document.getElementById('inv-balance').textContent = `₹ ${formatCurrency(balance)}/-`;
+    
+    document.getElementById('invoiceModal').style.display = 'block';
+  }
+
+  function closeInvoiceTemplate() {
+    document.getElementById('invoiceModal').style.display = 'none';
+  }
+
+  // ==========================================
+  // 3. WEDDING PROJECTS & WORKFLOW MANAGEMENT
+  // ==========================================
+  async function loadProjects() {
+    const res = await fetch('/api/projects');
+    allProjects = await res.json();
+    renderProjectList();
+    if (!activeProjectId) {
+      renderGlobalProgressBoard();
+    }
+  }
+
+  function renderProjectList() {
+    const container = document.getElementById('projectList');
+    if (allProjects.length === 0) {
+      container.innerHTML = '<div style="padding:20px;text-align:center;color:#444;font-size:12px;">No active projects available</div>';
+      return;
+    }
+    
+    container.innerHTML = allProjects.map(p => {
+      const activeStep = p.timeline_steps[p.current_step - 1]?.name || 'Pending';
+      const pct = Math.round((p.current_step / p.timeline_steps.length) * 100);
+      return `
+        <div class="customer-item ${p.id === activeProjectId ? 'active-booking' : ''}" onclick="openProject(${p.id})">
+          <div class="avatar" style="background:#b4975a20; color:#b4975a; border: 1.5px solid #b4975a20;">⚙️</div>
+          <div class="customer-info">
+            <div class="customer-name">${p.couple_name}</div>
+            <div class="customer-preview" style="color:#b4975a; font-weight:600;">${activeStep} • ${pct}%</div>
+            <div style="width:100%; height:3px; background:#222; border-radius:3px; margin-top:6px; overflow:hidden;">
+              <div style="width:${pct}%; height:100%; background:#b4975a; border-radius:3px;"></div>
+            </div>
+          </div>
+          <div class="customer-meta">
+            <div class="customer-time">${p.wedding_date ? formatDateString(p.wedding_date) : 'No date'}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function openProject(id) {
+    activeProjectId = id;
+    renderProjectList();
+
+    const res = await fetch(`/api/projects/${id}`);
+    const project = await res.json();
+
+    // Fetch booking info
+    let booking = null;
+    try {
+      const bookingRes = await fetch(`/api/bookings/${project.booking_id}`);
+      if (bookingRes.ok) {
+        booking = await bookingRes.json();
+      }
+    } catch (e) {
+      console.error("Error fetching booking details:", e);
+    }
+
+    // Populate Client details
+    if (booking) {
+      document.getElementById('proj-client-name').textContent = booking.customer_name || '—';
+      document.getElementById('proj-client-phone').textContent = `+91 ${booking.customer_phone}` || '—';
+      document.getElementById('proj-client-email').textContent = booking.customer_email || '—';
+      document.getElementById('proj-client-venue').textContent = booking.event_venue || '—';
+      document.getElementById('proj-client-package').textContent = `${booking.package_name} (₹${booking.total_price.toLocaleString('en-IN')})`;
+    } else {
+      document.getElementById('proj-client-name').textContent = project.couple_name || '—';
+      document.getElementById('proj-client-phone').textContent = '—';
+      document.getElementById('proj-client-email').textContent = '—';
+      document.getElementById('proj-client-venue').textContent = project.event_venue || '—';
+      document.getElementById('proj-client-package').textContent = '—';
+    }
+
+    // Populate Wedding Letter card
+    const letterCard = document.getElementById('proj-wedding-letter-card');
+    if (project.wedding_letter_url || project.wedding_letter_text) {
+      letterCard.style.display = 'block';
+      if (project.wedding_letter_url) {
+        document.getElementById('proj-letter-link-container').style.display = 'block';
+        document.getElementById('proj-letter-link').href = project.wedding_letter_url;
+      } else {
+        document.getElementById('proj-letter-link-container').style.display = 'none';
+      }
+      document.getElementById('proj-letter-text').textContent = project.wedding_letter_text || 'No text notes provided.';
+    } else {
+      letterCard.style.display = 'none';
+    }
+    
+    document.getElementById('projectEmptyState').style.display = 'none';
+    document.getElementById('projectDetailsWorkspace').style.display = 'block';
+    
+    // Summary
+    document.getElementById('proj-couple-title').textContent = `${project.couple_name}'s Wedding Workspace`;
+    const stepName = project.timeline_steps[project.current_step - 1]?.name || 'Pending';
+    document.getElementById('proj-sub-title').textContent = `Wedding Date: ${formatDateString(project.wedding_date)} • Active Stage: ${stepName} • Linked Booking: #${project.booking_id}`;
+
+    // Timeline controller list
+    renderTimelineIndicators(project);
+
+    // Deliverables Form
+    document.getElementById('proj-teaser-url').value = project.deliveries.video_teaser_url || '';
+    document.getElementById('proj-album-pdf').value = project.deliveries.album_pdf_url || '';
+    document.getElementById('proj-final-url').value = project.deliveries.final_download_url || '';
+    document.getElementById('proj-files-url').value = project.deliveries.raw_photos_url || '';
+    document.getElementById('proj-deadline-date').value = project.deadline_date || '';
+
+    // Load Chat feeds
+    loadProjectChatLogs();
+
+    // Render photo Retoucher select grid
+    renderDesignerGalleryGrid(project);
+    
+    // Load activities
+    loadProjectActivityAudits();
+  }
+
+  // TIMELINE INDICATION
+  function renderTimelineIndicators(project) {
+    const list = document.getElementById('timeline-indicator-list');
+    list.innerHTML = project.timeline_steps.map((step, index) => {
+      const stepIdx = index + 1;
+      const isCompleted = step.completed || stepIdx <= project.current_step;
+      return `
+        <div class="timeline-step-admin ${isCompleted ? 'completed' : ''}" onclick="toggleTimelineStep(${stepIdx})">
+          <div class="timeline-circle-indicator">${isCompleted ? '✓' : ''}</div>
+          <div style="flex:1;">
+            <div style="font-size:12px; font-weight:600; color:${isCompleted ? '#fff' : '#888'};">${step.name}</div>
+            <div style="font-size:9px; color:#555; margin-top:2px;">${isCompleted ? 'Completed on: ' + formatDateString(step.updated_at || project.updated_at) : 'Awaiting progress'}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function toggleTimelineStep(stepIdx) {
+    if (!activeProjectId) return;
+    
+    const project = allProjects.find(p => p.id === Number(activeProjectId));
+    if (!project) return;
+    
+    // Toggle completed state on server
+    const steps = [...project.timeline_steps];
+    steps.forEach((step, idx) => {
+      if (idx + 1 <= stepIdx) {
+        step.completed = true;
+        step.updated_at = step.updated_at || new Date().toISOString().replace('T', ' ').substring(0, 19);
+      } else {
+        step.completed = false;
+        step.updated_at = null;
+      }
+    });
+
+    const payload = {
+      current_step: stepIdx,
+      timeline_steps: steps
+    };
+
+    const res = await fetch(`/api/projects/${activeProjectId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      await loadProjects();
+      openProject(activeProjectId);
+    }
+  }
+
+  async function saveProjectDeliverables() {
+    if (!activeProjectId) return;
+    
+    const project = allProjects.find(p => p.id === Number(activeProjectId));
+    const currentDeliveries = project ? project.deliveries : {};
+
+    const payload = {
+      deadline_date: document.getElementById('proj-deadline-date').value,
+      deliveries: {
+        video_teaser_url: document.getElementById('proj-teaser-url').value,
+        video_status: currentDeliveries.video_status || 'pending',
+        album_pdf_url: document.getElementById('proj-album-pdf').value,
+        album_status: currentDeliveries.album_status || 'pending',
+        final_download_url: document.getElementById('proj-final-url').value,
+        raw_photos_url: document.getElementById('proj-files-url').value
+      }
+    };
+
+    const res = await fetch(`/api/projects/${activeProjectId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert('⚙️ Deliverables draft and links updated successfully!');
+      await loadProjects();
+      openProject(activeProjectId);
+    }
+  }
+
+  // SMART PHOTO DESIGNER GRID
+  function renderDesignerGalleryGrid(project) {
+    const grid = document.getElementById('designerPhotoGrid');
+    const counter = document.getElementById('gallery-counter-indicator');
+    
+    let filteredPhotos = project.gallery_images || [];
+    if (activeDesignerGalleryFilter === 'album') {
+      filteredPhotos = filteredPhotos.filter(img => img.categories && img.categories.includes('album'));
+    } else if (activeDesignerGalleryFilter === 'reel') {
+      filteredPhotos = filteredPhotos.filter(img => img.categories && img.categories.includes('reel'));
+    } else if (activeDesignerGalleryFilter === 'fav') {
+      filteredPhotos = filteredPhotos.filter(img => img.favorited);
+    }
+
+    // Update Counters
+    const albumCount = (project.gallery_images || []).filter(img => img.categories && img.categories.includes('album')).length;
+    const reelCount = (project.gallery_images || []).filter(img => img.categories && img.categories.includes('reel')).length;
+    const favCount = (project.gallery_images || []).filter(img => img.favorited).length;
+    counter.textContent = `${albumCount} Album | ${reelCount} Reels | ${favCount} Favs`;
+
+    if (filteredPhotos.length === 0) {
+      grid.innerHTML = '<div style="grid-column:span 2; padding:20px; text-align:center; color:#555; font-size:11px;">No photos in this folder</div>';
+      return;
+    }
+
+    grid.innerHTML = filteredPhotos.map(img => {
+      const hasCats = img.categories && img.categories.length > 0;
+      return `
+        <div class="photo-item-designer" onclick="showDesignerPhotoZoom('${img.url}', '${img.comment || 'No comments'}', ${img.favorited}, '${img.categories ? img.categories.join(', ') : 'None'}')">
+          <img src="${img.url}"/>
+          ${img.favorited ? '<div class="photo-badge-fav">❤️</div>' : ''}
+          ${hasCats ? `<div class="photo-badge-cat">${img.categories.join(' & ')}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filterDesignerGallery(cat) {
+    activeDesignerGalleryFilter = cat;
+    document.querySelectorAll('.chat-sub-tabs select, .chat-sub-btn').forEach(btn => {
+      if (btn.id && btn.id.startsWith('cat-btn-')) {
+        btn.classList.remove('active');
+      }
+    });
+    const activeBtn = document.getElementById(`cat-btn-${cat}`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const project = allProjects.find(p => p.id === Number(activeProjectId));
+    if (project) renderDesignerGalleryGrid(project);
+  }
+
+  function showDesignerPhotoZoom(url, comment, isFav, folders) {
+    alert(`🔍 Retouch / Design Details:\n\n📂 Category: ${folders.toUpperCase()}\n❤️ Favorite: ${isFav ? 'YES' : 'NO'}\n💬 Instructions: "${comment}"`);
+  }
+
+  // REAL-TIME PROJECTS CHAT ROOMS
+  async function loadProjectChatLogs() {
+    if (!activeProjectId) return;
+    
+    const res = await fetch(`/api/projects/${activeProjectId}/chats/${activeChatChannel}`);
+    const messages = await res.json();
+    
+    const feed = document.getElementById('projectChatFeed');
+    if (messages.length === 0) {
+      feed.innerHTML = '<div style="padding:20px; text-align:center; color:#555; font-size:11px;">No messages in this workspace channel</div>';
+      return;
+    }
+
+    feed.innerHTML = messages.map(m => {
+      const isClient = m.sender === 'client';
+      const senderLabel = isClient ? 'Client' : m.sender.toUpperCase();
+      return `
+        <div style="margin-bottom:8px; display:flex; flex-direction:column; align-items:${isClient ? 'flex-start' : 'flex-end'};">
+          <div style="font-size:9px; color:#555; margin-bottom:2px;">${senderLabel} • ${formatTime(m.timestamp)}</div>
+          <div style="background:${isClient ? '#1e1e1e' : '#b4975a20'}; color:${isClient ? '#fff' : '#b4975a'}; padding:8px 12px; border-radius:8px; font-size:12px; max-width:85%; border:${isClient ? '1px solid #222' : '1px solid #b4975a20'}">${m.text}</div>
+        </div>
+      `;
+    }).join('');
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  async function sendProjectChatMessage() {
+    if (!activeProjectId) return;
+    const input = document.getElementById('proj-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Determine sender based on channel
+    let sender = 'admin';
+    if (activeChatChannel === 'client-designer') sender = 'designer';
+    else if (activeChatChannel === 'client-editor') sender = 'editor';
+
+    const res = await fetch(`/api/projects/${activeProjectId}/chats/${activeChatChannel}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sender, text })
+    });
+
+    if (res.ok) {
+      input.value = '';
+      await loadProjectChatLogs();
+      await loadProjectActivityAudits();
+    }
+  }
+
+  function switchChatChannel(chan) {
+    activeChatChannel = chan;
+    document.querySelectorAll('.chat-sub-btn').forEach(btn => {
+      if (btn.id && btn.id.startsWith('c-btn-')) {
+        btn.classList.remove('active');
+      }
+    });
+    
+    const activeMap = {
+      'client-admin': 'c-btn-admin',
+      'client-editor': 'c-btn-editor',
+      'client-designer': 'c-btn-designer',
+      'admin-team': 'c-btn-team'
+    };
+    
+    const activeBtn = document.getElementById(activeMap[chan]);
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    document.getElementById('active-chat-channel-indicator').textContent = chan.replace('client-', 'Client ↔ ').replace('admin-team', 'Admin ↔ Team');
+    loadProjectChatLogs();
+  }
+
+  // AUDIT LOGS & AUTOMATED reminders
+  async function loadProjectActivityAudits() {
+    if (!activeProjectId) return;
+    const res = await fetch(`/api/projects/${activeProjectId}/logs`);
+    const logs = await res.json();
+    
+    const container = document.getElementById('projectActivityLogs');
+    if (logs.length === 0) {
+      container.innerHTML = '<div style="padding:10px 0; text-align:center; color:#444; font-size:11px;">No activity logs logged</div>';
+      return;
+    }
+
+    container.innerHTML = logs.reverse().slice(0, 15).map(l => `
+      <div class="audit-item">
+        <strong style="color:#fff;">${l.user}</strong>: ${l.action}
+        <div style="font-size:8px; color:#555; margin-top:2px;">${formatTime(l.timestamp)}</div>
+      </div>
+    `).join('');
+  }
+
+  async function triggerWhatsAppReminder(type) {
+    if (!activeProjectId) return;
+    
+    const res = await fetch(`/api/projects/${activeProjectId}/whatsapp-reminder`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type })
+    });
+    
+    if (res.ok) {
+      alert(`📲 WhatsApp Automated Remineder Nudge fired successfully! Logged in activity stream.`);
+      loadProjectActivityAudits();
+    }
+  }
+
+  function renderGlobalProgressBoard() {
+    const container = document.getElementById('projectEmptyState');
+    if (!container) return;
+
+    if (allProjects.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center; padding: 40px 20px; color:#444;">
+          <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="opacity:0.3; margin-bottom:12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <p style="font-size:14px;">Select an active wedding project to check timeline stages, view photo retouches, or speak with client support</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Compute metrics
+    let totalPct = 0;
+    allProjects.forEach(p => {
+      totalPct += Math.round((p.current_step / p.timeline_steps.length) * 100);
+    });
+    const avgPct = Math.round(totalPct / allProjects.length) || 0;
+
+    container.innerHTML = `
+      <!-- Dynamic Header -->
+      <div style="background: #141414; border:1px solid #222; border-radius:16px; padding: 20px; margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h2 style="font-size:18px; font-weight:600; color:#fff; display:flex; align-items:center; gap:8px;">
+            <span>⚙️ Global Work Progress Board</span>
+          </h2>
+          <p style="font-size:11px; color:#666; margin-top:3px;">Real-time pipeline tracking and status matrix across all active wedding projects</p>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="text-align:right;">
+            <div style="font-size:10px; color:#555; text-transform:uppercase; font-weight:700;">Active Projects</div>
+            <div style="font-size:18px; font-weight:700; color:#b4975a;">${allProjects.length}</div>
+          </div>
+          <div style="width:1px; background:#222;"></div>
+          <div style="text-align:right;">
+            <div style="font-size:10px; color:#555; text-transform:uppercase; font-weight:700;">Avg Progress</div>
+            <div style="font-size:18px; font-weight:700; color:#22c55e;">${avgPct}%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matrix Table Card -->
+      <div style="background: #141414; border:1px solid #222; border-radius:16px; padding: 20px; flex: 1; display:flex; flex-direction:column; overflow:hidden;">
+        <h3 style="font-size:13px; font-weight:600; color:#fff; margin-bottom:16px; display:flex; align-items:center; gap:6px;">
+          <span>📋 Pipeline Matrix</span>
+        </h3>
+        
+        <div style="flex:1; overflow-y:auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size:12px; min-width:800px;">
+            <thead>
+              <tr style="border-bottom: 1px solid #222; text-align:left; color:#555;">
+                <th style="padding:12px 8px; font-weight:600; width:180px;">Couple / Wedding</th>
+                <th style="padding:12px 8px; font-weight:600; width:110px;">Date</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:center; width:100px;">1. Photos Up</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:center; width:100px;">2. Selection</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:center; width:100px;">3. Video Ed</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:center; width:100px;">4. Album App</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:center; width:100px;">5. Delivered</th>
+                <th style="padding:12px 8px; font-weight:600; width:120px;">Overall Completion</th>
+                <th style="padding:12px 8px; font-weight:600; text-align:right; width:140px;">Workspace Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              \${allProjects.map(p => {
+                const pct = Math.round((p.current_step / p.timeline_steps.length) * 100);
+                
+                // Helper to render state indicator
+                const renderStepCell = (stepIdx) => {
+                  const step = p.timeline_steps[stepIdx];
+                  const isCompleted = step && (step.completed || (stepIdx + 1) <= p.current_step);
+                  if (isCompleted) {
+                    return \`
+                      <td style="padding:12px 8px; text-align:center;">
+                        <div style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:#2e7d3230; border:1px solid #2e7d32; color:#4ade80; font-size:10px; font-weight:bold;" title="\${step ? step.name : ''}: Completed">✓</div>
+                      </td>
+                    \`;
+                  } else {
+                    return \`
+                      <td style="padding:12px 8px; text-align:center;">
+                        <div style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:#1c1c1c; border:1px solid #333; color:#555; font-size:10px;" title="\${step ? step.name : ''}: Pending"></div>
+                      </td>
+                    \`;
+                  }
+                };
+
+                return \`
+                  <tr class="project-matrix-row" style="border-bottom:1px solid #1c1c1c; transition: background 0.2s;" onmouseover="this.style.background='#1c1c1c'" onmouseout="this.style.background='transparent'">
+                    <td style="padding:12px 8px; font-weight:600; color:#fff;">\${p.couple_name}</td>
+                    <td style="padding:12px 8px; color:#aaa;">\${p.wedding_date ? formatDateString(p.wedding_date) : '—'}</td>
+                    \${renderStepCell(0)}
+                    \${renderStepCell(1)}
+                    \${renderStepCell(2)}
+                    \${renderStepCell(3)}
+                    \${renderStepCell(4)}
+                    <td style="padding:12px 8px;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-weight:600; color:#b4975a; min-width:32px;">\${pct}%</span>
+                        <div style="flex:1; height:4px; background:#222; border-radius:2px; overflow:hidden;">
+                          <div style="width:\${pct}%; height:100%; background:#b4975a; border-radius:2px;"></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="padding:12px 8px; text-align:right;">
+                      <button class="action-btn" style="background:#b4975a; color:#000; padding:6px 12px; font-size:11px; border-radius:6px; font-weight:700; border:none; cursor:pointer; display:inline-flex;" onclick="openProject(\${p.id})">Open Workspace</button>
+                    </td>
+                  </tr>
+                \`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  function closeProjectWorkspace() {
+    activeProjectId = null;
+    renderProjectList();
+    renderGlobalProgressBoard();
+    document.getElementById('projectDetailsWorkspace').style.display = 'none';
+    document.getElementById('projectEmptyState').style.display = 'flex';
+  }
+
+  // INITIAL LOAD
+  loadChats();
+  setInterval(() => {
+    if (currentTab === 'chats') {
+      loadChats();
+    } else if (currentTab === 'bookings') {
+      loadBookings();
+    } else {
+      if (activeProjectId) {
+        loadProjectChatLogs();
+        loadProjectActivityAudits();
+      }
+    }
+  }, 15000);
+</script>
+</body>
+</html>
