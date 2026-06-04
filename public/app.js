@@ -1880,7 +1880,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                               `💖 DOUBLE MATCH AGREED LIST: ${matches.length} shared prints locked!\n\n` +
                               `Please proceed with layout binding. Thank you!`;
                 }
-                window.open(`https://wa.me/919995412955?text=${encodeURIComponent(message)}`, '_blank');
+                console.log('Photo selections locked. WhatsApp redirect disabled per user preference.');
             }
         });
     }
@@ -2101,7 +2101,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             if (savedBooking.package_interest.includes('49999') || savedBooking.package_interest.includes('Prewedding') || savedBooking.price_quoted === '49999' || savedBooking.price_quoted === '110000') {
                 targetWhatsApp = '7356297265';
             }
-            window.open(`https://wa.me/91${targetWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
+            console.log('Registration complete. WhatsApp redirect disabled per user preference.');
 
             // Force immediate Admin fetch refresh if active
             fetchBookings();
