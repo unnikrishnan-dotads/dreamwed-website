@@ -141,6 +141,7 @@ const Header = () => {
             onMouseLeave={() => setIsLoginOpen(false)}
           >
             <button 
+              onClick={() => setIsLoginOpen(!isLoginOpen)}
               className={`
                 text-sm
                 font-medium
