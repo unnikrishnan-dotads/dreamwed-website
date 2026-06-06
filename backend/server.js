@@ -122,7 +122,7 @@ const otpStore = new Map();
 // Real Twilio OTP SMS & WhatsApp Sender Routes
 app.post('/api/otp/send', async (req, res) => {
   try {
-    const { phone, digits } = req.body;
+    const { phone, email, digits } = req.body;
     if (!phone) return res.status(400).json({ error: 'Phone number is required' });
 
     const length = parseInt(digits) === 4 ? 4 : 6;
@@ -143,10 +143,61 @@ app.post('/api/otp/send', async (req, res) => {
     const messageText = `Your Dreamwed Stories OTP is ${otp}. Valid for 10 minutes.`;
     let smsSuccess = false;
     let whatsappSuccess = false;
+    let emailSuccess = false;
+
     let smsErrorMsg = null;
     let whatsappErrorMsg = null;
+    let emailErrorMsg = null;
 
-    // Initialize Twilio Client
+    // 1. Try Email OTP via Nodemailer
+    if (email) {
+      try {
+        const nodemailer = require('nodemailer');
+        
+        // Use Gmail SMTP if environment variables exist
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS
+            }
+          });
+
+          await transporter.sendMail({
+            from: `"Dreamwed Stories" <${process.env.EMAIL_USER}>`,
+            to: email.trim(),
+            subject: `🔐 Dreamwed Stories Verification Code: ${otp}`,
+            text: `Hello,\n\nYour verification code for Dreamwed Stories booking is: ${otp}\n\nThis code is valid for 10 minutes.\n\nThank you,\nDreamwed Stories Team`,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px;">
+                <h2 style="color: #d1a153; text-align: center; margin-bottom: 5px;">Dreamwed Stories</h2>
+                <p style="text-align: center; color: #888; font-size: 14px; margin-top: 0;">Wedding Photography Booking Portal</p>
+                <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 20px 0;" />
+                <p>Hello,</p>
+                <p>Your verification code for completing your wedding package booking request is:</p>
+                <div style="background-color: #f9f9f9; border: 1px dashed #d1a153; padding: 15px; text-align: center; font-size: 26px; font-weight: bold; letter-spacing: 5px; color: #333; border-radius: 6px; margin: 25px 0;">
+                  ${otp}
+                </div>
+                <p style="color: #666; font-size: 12px; text-align: center; margin-top: 30px;">This code is valid for 10 minutes. Please enter this code on the booking page to finalize your reservation.</p>
+              </div>
+            `
+          });
+
+          console.log(`[Email OTP] Successfully sent code ${otp} to ${email}`);
+          emailSuccess = true;
+        } else {
+          emailErrorMsg = "Gmail SMTP credentials (EMAIL_USER/EMAIL_PASS) not configured in environment variables";
+        }
+      } catch (err) {
+        console.error(`[Email OTP] Failed to send email to ${email}:`, err.message);
+        emailErrorMsg = err.message;
+      }
+    } else {
+      emailErrorMsg = "No email address provided in request body";
+    }
+
+    // 2. Try Twilio SMS & WhatsApp
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     
@@ -154,7 +205,7 @@ app.post('/api/otp/send', async (req, res) => {
       const twilio = require('twilio');
       const client = twilio(accountSid, authToken);
 
-      // 1. Try Twilio SMS
+      // Try Twilio SMS
       try {
         const fromSms = process.env.TWILIO_SMS_NUMBER || (process.env.TWILIO_WHATSAPP_NUMBER ? process.env.TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', '') : null);
         if (fromSms) {
@@ -173,7 +224,7 @@ app.post('/api/otp/send', async (req, res) => {
         smsErrorMsg = err.message;
       }
 
-      // 2. Try Twilio WhatsApp
+      // Try Twilio WhatsApp
       try {
         let fromWhatsapp = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886';
         if (!fromWhatsapp.startsWith('whatsapp:')) {
@@ -200,14 +251,15 @@ app.post('/api/otp/send', async (req, res) => {
       whatsappErrorMsg = "Twilio credentials missing or invalid in backend env";
     }
 
-    // Fallback: If Twilio is not set up or both calls fail, use simulated mode
-    if (!smsSuccess && !whatsappSuccess) {
-      console.log(`\n⚠️ [SIMULATED SMS GATEWAY] Twilio credentials missing or failed. OTP for ${phone} is: [ ${otp} ]\n`);
+    // Fallback: If Twilio is not set up and Email is not set up / fails, use simulated mode
+    if (!emailSuccess && !smsSuccess && !whatsappSuccess) {
+      console.log(`\n⚠️ [SIMULATED SMS/EMAIL GATEWAY] Both Twilio and Email services unavailable. OTP: [ ${otp} ]\n`);
       return res.json({ 
         success: true, 
         simulated: true, 
         otp,
         errors: {
+          email: emailErrorMsg,
           sms: smsErrorMsg,
           whatsapp: whatsappErrorMsg
         }

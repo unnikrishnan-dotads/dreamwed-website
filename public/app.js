@@ -1979,16 +1979,17 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             fetch(`${API_BASE}/api/otp/send`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone })
+                body: JSON.stringify({ phone, email })
             })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
                     if (data.simulated) {
                         generatedOtpCode = data.otp;
-                        alert(`📱 OTP Verification\n\nYour booking verification code is:\n\n🔐 ${generatedOtpCode}\n\nPlease enter this code on the next screen.`);
+                        alert(`📧 OTP Verification Fallback\n\nWe couldn't deliver the email (requires EMAIL_USER / EMAIL_PASS in Render dashboard env).\n\nYour temporary code is:\n\n🔐 ${generatedOtpCode}\n\nPlease enter it to proceed.`);
                     } else {
                         generatedOtpCode = 'REAL';
+                        alert(`📧 Verification Code Sent!\n\nWe have sent a 6-digit verification code to your email: ${email}\n\nPlease check your inbox (and spam folder) and enter it on the next screen.`);
                     }
                     if (bookingStepFields) bookingStepFields.style.display = 'none';
                     if (bookingStepOtp) bookingStepOtp.style.display = 'block';
