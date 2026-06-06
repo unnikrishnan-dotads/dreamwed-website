@@ -1972,28 +1972,34 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 stay_charges: "Excluded"
             };
 
-            // Send OTP — try Supabase first, fall back to local simulated OTP
+            // Send OTP via Render backend (Twilio SMS + WhatsApp)
             const sendBtn = customerBookingForm.querySelector('[type="submit"]');
             if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP…'; }
 
-            dwSendOtp(phone)
-            .then(e164 => {
-                generatedOtpCode = 'SUPABASE'; // real Supabase/Twilio OTP
-                pendingPhone = e164;
-                if (bookingStepFields) bookingStepFields.style.display = 'none';
-                if (bookingStepOtp) bookingStepOtp.style.display = 'block';
-                startOtpResendTimer();
+            fetch(`${API_BASE}/api/otp/send`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.simulated) {
+                        generatedOtpCode = data.otp;
+                        alert(`📱 OTP Verification\n\nYour booking verification code is:\n\n🔐 ${generatedOtpCode}\n\nPlease enter this code on the next screen.`);
+                    } else {
+                        generatedOtpCode = 'REAL';
+                    }
+                    if (bookingStepFields) bookingStepFields.style.display = 'none';
+                    if (bookingStepOtp) bookingStepOtp.style.display = 'block';
+                    startOtpResendTimer();
+                } else {
+                    alert('❌ Failed to send OTP. Please try again.');
+                }
             })
             .catch(err => {
-                // Supabase SMS unavailable — fall back to local simulated OTP
-                console.warn('Supabase OTP unavailable, using local fallback:', err.message);
-                const localOtp = String(Math.floor(100000 + Math.random() * 900000));
-                generatedOtpCode = localOtp;
-                pendingPhone = '+91' + phone.replace(/\D/g, '').slice(-10);
-                alert(`📱 OTP Verification\n\nYour booking verification code is:\n\n🔐 ${localOtp}\n\nPlease enter this code on the next screen.`);
-                if (bookingStepFields) bookingStepFields.style.display = 'none';
-                if (bookingStepOtp) bookingStepOtp.style.display = 'block';
-                startOtpResendTimer();
+                console.error('OTP send error:', err);
+                alert('❌ Could not reach the server. Please try again in a moment.');
             })
             .finally(() => {
                 if (sendBtn) { sendBtn.disabled = false; sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send OTP <i class="fa-solid fa-arrow-right"></i>'; }
@@ -2007,19 +2013,28 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             const enteredOtp = document.getElementById('custOtp').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
 
-            if (generatedOtpCode === 'SUPABASE') {
-                // Verify via Supabase phone OTP
+            if (generatedOtpCode === 'REAL') {
+                // Verify via Render backend (Twilio)
                 try {
-                    await dwVerifyOtp(pendingPhone, enteredOtp);
+                    const res = await fetch(`${API_BASE}/api/otp/verify`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, otp: enteredOtp })
+                    });
+                    const data = await res.json();
+                    if (!res.ok || !data.success) {
+                        alert('❌ Invalid OTP code. Please check your SMS/WhatsApp and try again.');
+                        return;
+                    }
                 } catch (err) {
-                    console.error('Supabase OTP verify error:', err);
-                    alert('❌ Invalid OTP code. Please check your SMS and try again.\n\nError: ' + err.message);
+                    console.error(err);
+                    alert('❌ Connection to server failed during verification.');
                     return;
                 }
             } else {
-                // Simulated OTP fallback (dev/test mode)
+                // Simulated OTP (backend returned otp in response)
                 if (enteredOtp !== generatedOtpCode) {
-                    alert('❌ Invalid OTP verification code! Please check your SMS and enter again.');
+                    alert('❌ Invalid OTP code! Please check and enter again.');
                     return;
                 }
             }
