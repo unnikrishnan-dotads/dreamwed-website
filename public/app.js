@@ -1592,12 +1592,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                     border-radius: 16px;
                     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
                 `;
-                const container = customerDashboardSection.querySelector('.container');
-                if (container) {
-                    container.appendChild(placeholder);
-                } else {
-                    customerDashboardSection.appendChild(placeholder);
-                }
+                customerDashboardSection.appendChild(placeholder);
             }
             placeholder.style.display = 'block';
             placeholder.innerHTML = `
@@ -1885,7 +1880,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                               `💖 DOUBLE MATCH AGREED LIST: ${matches.length} shared prints locked!\n\n` +
                               `Please proceed with layout binding. Thank you!`;
                 }
-                console.log('Photo selections locked. WhatsApp redirect disabled per user preference.');
+                window.open(`https://wa.me/919995412955?text=${encodeURIComponent(message)}`, '_blank');
             }
         });
     }
@@ -1910,14 +1905,6 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     const customerOtpForm = document.getElementById('customerOtpForm');
     const bookingStepFields = document.getElementById('bookingStepFields');
     const bookingStepOtp = document.getElementById('bookingStepOtp');
-    const bookingStepPassword = document.getElementById('bookingStepPassword');
-    const customerPasswordForm = document.getElementById('customerPasswordForm');
-    const bookingBridePassGroup = document.getElementById('bookingBridePassGroup');
-    const bookingGroomPassGroup = document.getElementById('bookingGroomPassGroup');
-    const custBridePassword = document.getElementById('custBridePassword');
-    const custGroomPassword = document.getElementById('custGroomPassword');
-    const btnToggleBridePassword = document.getElementById('btnToggleBridePassword');
-    const btnToggleGroomPassword = document.getElementById('btnToggleGroomPassword');
     const customerBookingModal = document.getElementById('customerBookingModal');
 
     let pendingBookingObject = null;
@@ -1985,22 +1972,28 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 stay_charges: "Excluded"
             };
 
-            // Send OTP via Supabase Phone Auth (backed by Twilio SMS)
+            // Send OTP — try Supabase first, fall back to local simulated OTP
             const sendBtn = customerBookingForm.querySelector('[type="submit"]');
             if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP…'; }
 
             dwSendOtp(phone)
             .then(e164 => {
-                generatedOtpCode = 'SUPABASE'; // mark as real Supabase OTP
+                generatedOtpCode = 'SUPABASE'; // real Supabase/Twilio OTP
                 pendingPhone = e164;
-                // Shift views
                 if (bookingStepFields) bookingStepFields.style.display = 'none';
                 if (bookingStepOtp) bookingStepOtp.style.display = 'block';
                 startOtpResendTimer();
             })
             .catch(err => {
-                console.error('Supabase OTP send error:', err);
-                alert('❌ Failed to send OTP: ' + err.message + '\n\nPlease verify your phone number and try again.');
+                // Supabase SMS unavailable — fall back to local simulated OTP
+                console.warn('Supabase OTP unavailable, using local fallback:', err.message);
+                const localOtp = String(Math.floor(100000 + Math.random() * 900000));
+                generatedOtpCode = localOtp;
+                pendingPhone = '+91' + phone.replace(/\D/g, '').slice(-10);
+                alert(`📱 OTP Verification\n\nYour booking verification code is:\n\n🔐 ${localOtp}\n\nPlease enter this code on the next screen.`);
+                if (bookingStepFields) bookingStepFields.style.display = 'none';
+                if (bookingStepOtp) bookingStepOtp.style.display = 'block';
+                startOtpResendTimer();
             })
             .finally(() => {
                 if (sendBtn) { sendBtn.disabled = false; sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send OTP <i class="fa-solid fa-arrow-right"></i>'; }
@@ -2034,61 +2027,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             // Clear resend timer
             clearInterval(otpCountdownInterval);
 
-            // Hide OTP step, display Password Step
-            if (bookingStepOtp) bookingStepOtp.style.display = 'none';
-            if (bookingStepPassword) bookingStepPassword.style.display = 'block';
-
-            // Show appropriate password fields
-            const scope = pendingBookingObject.coverage_scope || 'both';
-            if (scope === 'both') {
-                if (bookingBridePassGroup) bookingBridePassGroup.style.display = 'block';
-                if (bookingGroomPassGroup) bookingGroomPassGroup.style.display = 'block';
-                if (custBridePassword) custBridePassword.setAttribute('required', 'true');
-                if (custGroomPassword) custGroomPassword.setAttribute('required', 'true');
-            } else if (scope === 'bride') {
-                if (bookingBridePassGroup) bookingBridePassGroup.style.display = 'block';
-                if (bookingGroomPassGroup) bookingGroomPassGroup.style.display = 'none';
-                if (custBridePassword) custBridePassword.setAttribute('required', 'true');
-                if (custGroomPassword) custGroomPassword.removeAttribute('required');
-                if (custGroomPassword) custGroomPassword.value = '';
-            } else {
-                // 'groom'
-                if (bookingBridePassGroup) bookingBridePassGroup.style.display = 'none';
-                if (bookingGroomPassGroup) bookingGroomPassGroup.style.display = 'block';
-                if (custBridePassword) custBridePassword.removeAttribute('required');
-                if (custGroomPassword) custGroomPassword.setAttribute('required', 'true');
-                if (custBridePassword) custBridePassword.value = '';
-            }
-        });
-    }
-
-    if (customerPasswordForm) {
-        customerPasswordForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const scope = pendingBookingObject.coverage_scope || 'both';
-            let bridePass = '';
-            let groomPass = '';
-
-            if (scope === 'both' || scope === 'bride') {
-                bridePass = document.getElementById('custBridePassword').value.trim();
-                if (bridePass.length < 6) {
-                    alert('❌ Bride password must be at least 6 characters.');
-                    return;
-                }
-            }
-            if (scope === 'both' || scope === 'groom') {
-                groomPass = document.getElementById('custGroomPassword').value.trim();
-                if (groomPass.length < 6) {
-                    alert('❌ Groom password must be at least 6 characters.');
-                    return;
-                }
-            }
-
-            pendingBookingObject.bride_password = bridePass;
-            pendingBookingObject.groom_password = groomPass;
-
-            // Successfully Verified & password created! Add to database
+            // Successfully Verified! Add to database
             const savedBooking = await apiSaveBooking(pendingBookingObject);
             if (!savedBooking) {
                 alert('❌ Backend database error. Please verify the Express backend is running on port 3000.');
@@ -2125,44 +2064,40 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                   `${passwordAlertMsg}\n\n` +
                   `You have been automatically logged in to your Wedding Hub workspace!`);
 
+            // WhatsApp booking confirm GPay prompt
+            const includesPrewedding = (parseInt(savedBooking.price_quoted) === 49999 || parseInt(savedBooking.price_quoted) === 99999 || parseInt(savedBooking.price_quoted) === 110000);
+            const surpriseBonusText = includesPrewedding ? `🎁 SURPRISE BONUS: Free Save the Date Photoshoot (worth ₹9,999/-) included!\n` : '';
+
+            const message = `Hi Unni! I have successfully completed registration on your website and locked in my Package slot booking!\n\n` +
+                            `👤 Name: ${savedBooking.name}\n` +
+                            `📞 Phone: ${savedBooking.phone}\n` +
+                            `📍 Pincode: ${savedBooking.pincode}\n` +
+                            `🏠 Address: ${savedBooking.address || ''}\n` +
+                            `📦 Plan: ${savedBooking.package_interest}\n` +
+                            `💰 Quote: ₹${parseInt(savedBooking.price_quoted).toLocaleString()}/- Net\n` +
+                            surpriseBonusText + `\n` +
+                            `Please guide me with the ₹5,000/- advance slot GPay address to approve my Digital Invoice!`;
+            
             // Close modal
             if (customerBookingModal) customerBookingModal.style.display = 'none';
             
             // Reset forms
             customerBookingForm.reset();
             customerOtpForm.reset();
-            customerPasswordForm.reset();
             if (bookingStepFields) bookingStepFields.style.display = 'block';
             if (bookingStepOtp) bookingStepOtp.style.display = 'none';
-            if (bookingStepPassword) bookingStepPassword.style.display = 'none';
 
             // Load and display Selection Dashboard on packages.html immediately
             loadCustomerDashboard();
 
+            let targetWhatsApp = '9995412955';
+            if (savedBooking.package_interest.includes('49999') || savedBooking.package_interest.includes('Prewedding') || savedBooking.price_quoted === '49999' || savedBooking.price_quoted === '110000') {
+                targetWhatsApp = '7356297265';
+            }
+            window.open(`https://wa.me/91${targetWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
+
             // Force immediate Admin fetch refresh if active
             fetchBookings();
-        });
-    }
-
-    if (btnToggleBridePassword && custBridePassword) {
-        btnToggleBridePassword.addEventListener('click', () => {
-            const isPassword = custBridePassword.getAttribute('type') === 'password';
-            custBridePassword.setAttribute('type', isPassword ? 'text' : 'password');
-            const icon = btnToggleBridePassword.querySelector('i');
-            if (icon) {
-                icon.className = isPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
-            }
-        });
-    }
-
-    if (btnToggleGroomPassword && custGroomPassword) {
-        btnToggleGroomPassword.addEventListener('click', () => {
-            const isPassword = custGroomPassword.getAttribute('type') === 'password';
-            custGroomPassword.setAttribute('type', isPassword ? 'text' : 'password');
-            const icon = btnToggleGroomPassword.querySelector('i');
-            if (icon) {
-                icon.className = isPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
-            }
         });
     }
 
