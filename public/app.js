@@ -1906,6 +1906,17 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     const bookingStepFields = document.getElementById('bookingStepFields');
     const bookingStepOtp = document.getElementById('bookingStepOtp');
     const customerBookingModal = document.getElementById('customerBookingModal');
+    
+    // Step 3 Password Bindings
+    const bookingStepPassword = document.getElementById('bookingStepPassword');
+    const customerPasswordForm = document.getElementById('customerPasswordForm');
+    const bookingBridePassGroup = document.getElementById('bookingBridePassGroup');
+    const bookingGroomPassGroup = document.getElementById('bookingGroomPassGroup');
+    const custBridePasswordInput = document.getElementById('custBridePassword');
+    const custGroomPasswordInput = document.getElementById('custGroomPassword');
+    const btnToggleBridePassword = document.getElementById('btnToggleBridePassword');
+    const btnToggleGroomPassword = document.getElementById('btnToggleGroomPassword');
+    const btnBackFromPassword = document.getElementById('btnBackFromPassword');
 
     let pendingBookingObject = null;
     let generatedOtpCode = null;
@@ -1929,14 +1940,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             if (secondsLeft <= 0) {
                 clearInterval(otpCountdownInterval);
                 timerSpan.style.display = 'none';
-                resendBtn.style.display = 'inline-block';
-            } else {
-                timerSpan.textContent = `Resend OTP in ${secondsLeft}s`;
-            }
-        }, 1000);
-    }
-
-    if (customerBookingForm) {
+        if (customerBookingForm) {
         customerBookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -1949,7 +1953,16 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             const planPrice = currentSelectedPrice || "39999";
             const coverageScope = document.getElementById('custCoverageScope').value; // 'both', 'bride', 'groom'
 
-            // Store pending state
+            // Confirm payment step
+            const paymentConfirm = confirm(
+                `💳 SLOT BOOKING CONFIRMATION\n\n` +
+                `To lock in this discounted package date, a booking advance of ₹5,000/- is required.\n\n` +
+                `Click OK to proceed to creating your Wedding Hub account password.`
+            );
+
+            if (!paymentConfirm) return;
+
+            // Store details in pending object
             pendingBookingObject = {
                 id: `INV-2026-${String(Math.floor(Math.random() * 900) + 100)}`,
                 name: name,
@@ -1962,8 +1975,8 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 status: 'pending',
                 date: new Date().toLocaleDateString(),
                 coverage_scope: coverageScope,
-                bride_password: (coverageScope === 'both' || coverageScope === 'bride') ? `bride${String(Math.floor(Math.random() * 900) + 100)}` : '',
-                groom_password: (coverageScope === 'both' || coverageScope === 'groom') ? `groom${String(Math.floor(Math.random() * 900) + 100)}` : '',
+                bride_password: '',
+                groom_password: '',
                 bride_selections: [],
                 groom_selections: [],
                 selection_locked: false,
@@ -1972,28 +1985,72 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 stay_charges: "Excluded"
             };
 
-            // Save booking directly without OTP verification
-            const submitBtn = customerBookingForm.querySelector('[type="submit"]');
-            if (submitBtn) { 
-                submitBtn.disabled = true; 
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Booking Package & Logging In…'; 
+            // Switch to Step 3: Password creation screen
+            if (bookingStepFields) bookingStepFields.style.display = 'none';
+            if (bookingStepPassword) bookingStepPassword.style.display = 'block';
+
+            // Reset password input values
+            if (custBridePasswordInput) custBridePasswordInput.value = '';
+            if (custGroomPasswordInput) custGroomPasswordInput.value = '';
+
+            // Toggle input groups based on coverage scope
+            if (bookingBridePassGroup) {
+                bookingBridePassGroup.style.display = (coverageScope === 'both' || coverageScope === 'bride') ? 'block' : 'none';
+            }
+            if (bookingGroomPassGroup) {
+                bookingGroomPassGroup.style.display = (coverageScope === 'both' || coverageScope === 'groom') ? 'block' : 'none';
+            }
+        });
+    }
+
+    if (customerPasswordForm) {
+        customerPasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!pendingBookingObject) {
+                alert('❌ Session error. Please fill out your details again.');
+                if (bookingStepPassword) bookingStepPassword.style.display = 'none';
+                if (bookingStepFields) bookingStepFields.style.display = 'block';
+                return;
             }
 
-            apiSaveBooking(pendingBookingObject)
-            .then(savedBooking => {
+            const scope = pendingBookingObject.coverage_scope;
+            let bridePass = '';
+            let groomPass = '';
+
+            // Retrieve and validate passwords based on role scope
+            if (scope === 'both' || scope === 'bride') {
+                bridePass = custBridePasswordInput.value.trim();
+                if (bridePass.length < 6) {
+                    alert('👰 Bride password must be at least 6 characters.');
+                    return;
+                }
+            }
+
+            if (scope === 'both' || scope === 'groom') {
+                groomPass = custGroomPasswordInput.value.trim();
+                if (groomPass.length < 6) {
+                    alert('🤵 Groom password must be at least 6 characters.');
+                    return;
+                }
+            }
+
+            // Assign passwords to pending booking object
+            pendingBookingObject.bride_password = bridePass;
+            pendingBookingObject.groom_password = groomPass;
+
+            // Submit booking details with custom passwords to database
+            const submitBtn = customerPasswordForm.querySelector('[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Finalizing Booking…';
+            }
+
+            try {
+                const savedBooking = await apiSaveBooking(pendingBookingObject);
                 if (!savedBooking) {
                     alert('❌ Backend database error. Please verify the Express backend is running.');
                     return;
-                }
-
-                let passwordAlertMsg = '';
-                if (savedBooking.coverage_scope === 'both') {
-                    passwordAlertMsg = `👰 BRIDE PASSWORD: ${savedBooking.bride_password}\n` +
-                                       `🤵 GROOM PASSWORD: ${savedBooking.groom_password}`;
-                } else if (savedBooking.coverage_scope === 'bride') {
-                    passwordAlertMsg = `👰 BRIDE PASSWORD: ${savedBooking.bride_password}`;
-                } else {
-                    passwordAlertMsg = `🤵 GROOM PASSWORD: ${savedBooking.groom_password}`;
                 }
 
                 // Auto login!
@@ -2011,10 +2068,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 localStorage.setItem("dreamwed_logged_role", savedBooking.coverage_scope === 'groom' ? 'groom' : 'bride');
                 sessionStorage.setItem("dreamwed_auto_login_phone", savedBooking.phone);
 
-                alert(`🎉 REGISTRATION COMPLETED SUCCESSFULLY!\n\n` +
-                      `🔓 Access Passwords Assigned:\n` +
-                      `${passwordAlertMsg}\n\n` +
-                      `You have been automatically logged in to your Wedding Hub workspace!`);
+                alert(`🎉 REGISTRATION & BOOKING COMPLETED SUCCESSFULLY!\n\nWelcome to your Wedding Hub! You have been automatically logged in.`);
 
                 // WhatsApp booking confirm GPay prompt
                 const includesPrewedding = (parseInt(savedBooking.price_quoted) === 49999 || parseInt(savedBooking.price_quoted) === 99999 || parseInt(savedBooking.price_quoted) === 110000);
@@ -2029,15 +2083,15 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                                 `💰 Quote: ₹${parseInt(savedBooking.price_quoted).toLocaleString()}/- Net\n` +
                                 surpriseBonusText + `\n` +
                                 `Please guide me with the ₹5,000/- advance slot GPay address to approve my Digital Invoice!`;
-                
+
                 // Close modal
                 if (customerBookingModal) customerBookingModal.style.display = 'none';
-                
+
                 // Reset forms
                 customerBookingForm.reset();
-                if (customerOtpForm) customerOtpForm.reset();
+                customerPasswordForm.reset();
                 if (bookingStepFields) bookingStepFields.style.display = 'block';
-                if (bookingStepOtp) bookingStepOtp.style.display = 'none';
+                if (bookingStepPassword) bookingStepPassword.style.display = 'none';
 
                 // Load and display Selection Dashboard on packages.html immediately
                 loadCustomerDashboard();
@@ -2050,17 +2104,40 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
 
                 // Force immediate Admin fetch refresh if active
                 fetchBookings();
-            })
-            .catch(err => {
-                console.error("Booking submit error:", err);
-                alert("❌ Could not save your booking. Please try again.");
-            })
-            .finally(() => {
-                if (submitBtn) { 
-                    submitBtn.disabled = false; 
-                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Complete Booking <i class="fa-solid fa-arrow-right"></i>'; 
+            } catch (err) {
+                console.error("Booking save error:", err);
+                alert("❌ Could not complete booking. Please try again.");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Confirm & Complete Registration</span> <i class="fa-solid fa-circle-check"></i>';
                 }
-            });
+            }
+        });
+    }
+
+    // Step 3: Back Button Click
+    if (btnBackFromPassword) {
+        btnBackFromPassword.addEventListener('click', () => {
+            if (bookingStepPassword) bookingStepPassword.style.display = 'none';
+            if (bookingStepFields) bookingStepFields.style.display = 'block';
+        });
+    }
+
+    // Password visibility toggles for creation screen
+    if (btnToggleBridePassword && custBridePasswordInput) {
+        btnToggleBridePassword.addEventListener('click', () => {
+            const isPassword = custBridePasswordInput.getAttribute('type') === 'password';
+            custBridePasswordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            btnToggleBridePassword.querySelector('i').className = isPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+        });
+    }
+
+    if (btnToggleGroomPassword && custGroomPasswordInput) {
+        btnToggleGroomPassword.addEventListener('click', () => {
+            const isPassword = custGroomPasswordInput.getAttribute('type') === 'password';
+            custGroomPasswordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            btnToggleGroomPassword.querySelector('i').className = isPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
         });
     }
 
