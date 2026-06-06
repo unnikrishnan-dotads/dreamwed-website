@@ -143,6 +143,8 @@ app.post('/api/otp/send', async (req, res) => {
     const messageText = `Your Dreamwed Stories OTP is ${otp}. Valid for 10 minutes.`;
     let smsSuccess = false;
     let whatsappSuccess = false;
+    let smsErrorMsg = null;
+    let whatsappErrorMsg = null;
 
     // Initialize Twilio Client
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -163,9 +165,12 @@ app.post('/api/otp/send', async (req, res) => {
           });
           console.log(`[Twilio SMS] OTP ${otp} successfully sent to ${formattedPhone}`);
           smsSuccess = true;
+        } else {
+          smsErrorMsg = "No TWILIO_SMS_NUMBER or valid TWILIO_WHATSAPP_NUMBER configured";
         }
       } catch (err) {
         console.error(`[Twilio SMS] Failed to send SMS to ${formattedPhone}:`, err.message);
+        smsErrorMsg = err.message;
       }
 
       // 2. Try Twilio WhatsApp
@@ -180,13 +185,25 @@ app.post('/api/otp/send', async (req, res) => {
         whatsappSuccess = true;
       } catch (err) {
         console.error(`[Twilio WhatsApp] Failed to send WhatsApp to ${formattedPhone}:`, err.message);
+        whatsappErrorMsg = err.message;
       }
+    } else {
+      smsErrorMsg = "Twilio credentials missing or invalid in backend env";
+      whatsappErrorMsg = "Twilio credentials missing or invalid in backend env";
     }
 
     // Fallback: If Twilio is not set up or both calls fail, use simulated mode
     if (!smsSuccess && !whatsappSuccess) {
       console.log(`\n⚠️ [SIMULATED SMS GATEWAY] Twilio credentials missing or failed. OTP for ${phone} is: [ ${otp} ]\n`);
-      return res.json({ success: true, simulated: true, otp });
+      return res.json({ 
+        success: true, 
+        simulated: true, 
+        otp,
+        errors: {
+          sms: smsErrorMsg,
+          whatsapp: whatsappErrorMsg
+        }
+      });
     }
 
     res.json({ success: true, simulated: false });
