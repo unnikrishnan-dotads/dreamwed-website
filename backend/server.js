@@ -175,11 +175,19 @@ app.post('/api/otp/send', async (req, res) => {
 
       // 2. Try Twilio WhatsApp
       try {
-        const fromWhatsapp = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886';
+        let fromWhatsapp = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886';
+        if (!fromWhatsapp.startsWith('whatsapp:')) {
+          fromWhatsapp = `whatsapp:${fromWhatsapp}`;
+        }
+        let toWhatsapp = formattedPhone;
+        if (!toWhatsapp.startsWith('whatsapp:')) {
+          toWhatsapp = `whatsapp:${toWhatsapp}`;
+        }
+
         await client.messages.create({
           body: `Your Dreamwed Stories OTP code is: *${otp}* 🔑\n\nValid for 10 minutes. Please enter this code in the verification screen.`,
           from: fromWhatsapp,
-          to: `whatsapp:${formattedPhone}`
+          to: toWhatsapp
         });
         console.log(`[Twilio WhatsApp] OTP ${otp} successfully sent to ${formattedPhone}`);
         whatsappSuccess = true;
