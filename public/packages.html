@@ -795,227 +795,500 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
             <div class="container">
                 <div class="section-header">
                     <span class="section-subtitle">Your Available Offers</span>
-                    <h2>Compare Wedding Packages</h2>
-                    <p>Designed with perfect detail, visual matching, and zero hidden costs.</p>
-                </div>
-
-                <div class="packages-grid" id="packagesGrid">
-                    <!-- Standard Wedding + Reception Package -->
-                    <div class="package-card glass-card highlight-glow" id="pkgStandardCard" data-plan="Package 1 Single Side Bride or Groom" data-price="39999">
+                    <h2>Compare Wedding Package                    <!-- Package 1: Wedding Photography Package (₹39,999) -->
+                    <div class="package-card glass-card highlight-glow" id="pkgWeddingBasicCard" data-plan="Wedding Photography Package" data-price="39999">
                         <div class="package-glow"></div>
-                        <!-- Package Cover Image -->
                         <div class="package-cover-wrapper">
                             <span class="flyer-ribbon-tag">Limited Time Offer</span>
-                            <div class="flyer-brand-logo">
-                                <span class="dw-monogram">DW</span>
-                            </div>
-                            <img src="images/DSC00315-min.jpg" class="package-cover-img" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.5s ease;" alt="Cover">
-                            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, rgba(10, 11, 14, 0.95), transparent);"></div>
+                            <div class="flyer-brand-logo"><span class="dw-monogram">DW</span></div>
+                            <img src="images/DSC00315-min.jpg" class="package-cover-img" style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;" alt="Wedding Photography Package Cover">
+                            <div style="position:absolute;bottom:0;left:0;width:100%;height:60%;background:linear-gradient(to top,rgba(10,11,14,0.95),transparent);"></div>
                         </div>
                         <div class="package-header">
-                            <span class="package-badge alert-glow"><i class="fa-solid fa-fire animate-pulse"></i> Only 3 Slots Left at this Price!</span>
-                            <h3>PACKAGE 1 SINGLE SIDE BRIDE OR GROOM</h3>
-                            <p class="package-subtitle"><strong>Frame Package</strong> (Wedding + Reception Complete Coverage)</p>
-                            
-                            <!-- Card Countdown Timer -->
+                            <span class="package-badge alert-glow"><i class="fa-solid fa-fire animate-pulse"></i> Limited Time Offer</span>
+                            <h3>WEDDING PHOTOGRAPHY PACKAGE</h3>
+                            <p class="package-subtitle"><strong>1 Photographer + 1 Videographer</strong> — Wedding &amp; Reception Coverage</p>
+
                             <div class="card-urgency-timer-wrapper">
                                 <span class="timer-label"><i class="fa-regular fa-clock"></i> Offer Closes In:</span>
                                 <span class="card-countdown-timer" id="standardCardTimer">00d : 00h : 00m : 00s</span>
                             </div>
-                            
-                            <!-- Detailed pricing breakdown -->
-                            <div class="package-standard-pricing-split">
-                                <span>Wedding: <strong>₹40,000/-</strong></span>
-                                <span class="split-divider">|</span>
-                                <span>Reception: <strong>₹20,000/-</strong></span>
+
+                            <!-- Special Offer Promo Box -->
+                            <div class="premium-promo-card" style="margin-top:16px;border-color:rgba(46,204,113,0.35);background:rgba(46,204,113,0.04);">
+                                <!-- Slots Left Alert -->
+                                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                                    <div style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(46,204,113,0.5);background:rgba(46,204,113,0.1);color:#2ecc71;padding:5px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;border-radius:4px;">
+                                        <i class="fa-solid fa-fire" style="font-size:10px;"></i> Only 3 Slots Left!
+                                    </div>
+                                    <div style="font-size:9px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">
+                                        ⏳ <span id="specialOfferTimer">00d : 00h : 00m : 00s</span>
+                                    </div>
+                                </div>
+
+                                <!-- Slots Visual Counter -->
+                                <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.5);"></div>
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.5);"></div>
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.5);"></div>
+                                    <span style="font-size:9px;color:var(--text-muted);margin-left:6px;font-weight:600;">3 of 3 slots available</span>
+                                </div>
+
+                                <!-- Offer Content -->
+                                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(46,204,113,0.05);border:1px solid rgba(46,204,113,0.2);margin-bottom:10px;">
+                                    <i class="fa-solid fa-camera-retro" style="font-size:18px;color:#2ecc71;"></i>
+                                </div>
+
+                                <div style="font-size:9.5px;font-weight:800;color:#2ecc71;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">🎁 Special Offer — Next 3 Bookings Only</div>
+
+                                <div style="font-size:20px;font-weight:300;font-family:'Cormorant Garamond',serif;color:white;line-height:1.3;margin-bottom:8px;font-style:italic;">
+                                    FREE Pre-Wedding<br><span style="font-size:15px;color:#2ecc71;font-weight:400;">(Save The Date) Photography</span>
+                                </div>
+
+                                <div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">
+                                    Worth <s style="color:rgba(255,255,255,0.35);">₹12,000/-</s> —
+                                    <span style="color:#2ecc71;font-weight:800;">Yours at ₹0/-</span>
+                                    <div style="font-size:9.5px;color:var(--text-muted);font-weight:300;margin-top:3px;">Book this package &amp; get a beautiful Save The Date shoot absolutely free — for the next 3 bookings only!</div>
+                                </div>
+
+                                <div style="display:inline-block;border:1px solid rgba(46,204,113,0.4);color:#2ecc71;background:rgba(46,204,113,0.08);padding:6px 14px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">
+                                    🔥 Claim This Offer Now
+                                </div>
                             </div>
-                            
-                            <div class="package-price" style="margin-top: 12px;">
-                                <span class="original-price-struck" style="font-size: 16px; margin-right: 8px;">₹60,000/-</span>
+
+                            <div class="package-price" style="margin-top:16px;">
+                                <span class="original-price-struck" style="font-size:16px;margin-right:8px;">₹60,000/-</span>
                                 <span class="currency">Rs.</span>
                                 <span class="price-value">39,999</span>
                                 <span class="tax-tag">/- Net</span>
                             </div>
-                            
                             <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹20,001/- (33% OFF)</div>
-                            
-                            <!-- Above Inclusions Quick CTA -->
-                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top: 16px; box-shadow: var(--gold-glow);" data-plan="Package 1 Single Side Bride or Groom" data-price="39999">
-                                <span>Book Package 1 Now</span> <i class="fa-solid fa-arrow-right"></i>
+
+                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;box-shadow:var(--gold-glow);" data-plan="Wedding Photography Package" data-price="39999">
+                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
-                        
-                        <div class="package-event-sections" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; text-align: left; margin: 20px 0;">
-                            <!-- Wedding Sub-Section -->
+
+                        <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
                             <div class="package-event-section">
-                                <h4 class="event-section-title" style="font-size: 12px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-church"></i> Wedding Event Inclusions (₹40,000 Value)</h4>
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-camera-retro"></i> We Cover For You...</h4>
                                 <ul class="package-features">
-                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Photography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Videography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> 70 Pages Wedding Album</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Cinematic HD Video Highlights</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video Film</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Dynamic Instagram Reel</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> 2 Laminated Photo Frames</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Customized Photo Calendar</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> FREE Pendrive</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>One 70 Pages Premium Album</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Highlights Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reel</li>
+                                </ul>
+                            </div>
+                            <div class="package-event-section" style="margin-top:20px;padding-top:20px;border-top:1px dashed var(--border-glass);">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-box-open"></i> What You Will Get...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Photographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Videographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Calendar</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Pen Drive</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 2 Wall Frames</li>
                                     <li><i class="fa-regular fa-circle-check"></i> Edited Photos for Social Media</li>
                                 </ul>
                             </div>
-                            
-                            <!-- Reception Sub-Section -->
-                            <div class="package-event-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border-glass);">
-                                <h4 class="event-section-title" style="font-size: 12px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-glass-cheers"></i> Reception Event Inclusions (₹20,000 Value)</h4>
-                                <ul class="package-features">
-                                    <li><i class="fa-regular fa-circle-check"></i> Reception Photography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Reception Videography coverage</li>
+                            <div class="flyer-additional-services-box" style="margin-top:20px;padding:12px;background:rgba(255,255,255,0.01);">
+                                <h5 style="font-size:10px;color:var(--primary-gold);font-weight:700;text-transform:uppercase;margin-bottom:8px;"><i class="fa-solid fa-circle-nodes"></i> Complimentary Perks</h5>
+                                <ul style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;list-style:none;padding:0;">
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-cloud-arrow-up" style="font-size:8px;color:var(--primary-gold);"></i> 1 Year Google Drive</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-comments" style="font-size:8px;color:var(--primary-gold);"></i> WhatsApp Support</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-file-invoice-dollar" style="font-size:8px;color:var(--primary-gold);"></i> Digital Invoice</li>
                                 </ul>
-                            </div>
-                            
-                            <!-- Additional perks box -->
-                            <div class="flyer-additional-services-box" style="margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.01);">
-                                <h5 style="font-size: 10px; color: var(--primary-gold); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
-                                    <i class="fa-solid fa-circle-nodes"></i> Complimentary Perks Included
-                                </h5>
-                                <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-cloud-arrow-up text-primary-gold" style="font-size: 8px;"></i> 1 Year Google Drive Support</li>
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-comments text-primary-gold" style="font-size: 8px;"></i> WhatsApp Group Support</li>
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-file-invoice-dollar text-primary-gold" style="font-size: 8px;"></i> Digital Invoice</li>
-                                </ul>
+                                <p style="font-size:9px;color:var(--text-muted);font-style:italic;">*Special Discounted Prices Are Applicable For A Limited Duration Only.</p>
                             </div>
                         </div>
-                        
-                        <div class="package-footer" style="margin-top: auto; padding-top: 20px;">
-                            <button class="btn btn-secondary btn-block select-pkg-btn" data-plan="Package 1 Single Side Bride or Groom" data-price="39999">Book Package 1 Now</button>
-                            <span class="package-legal-disclaimer" style="display: block; text-align: center; font-size: 10px; color: #ff8a80; margin-top: 10px; font-weight: 700; letter-spacing: 0.02em;">
-                                <i class="fa-solid fa-circle-exclamation"></i> Travel & Stay charges are excluded
+
+                        <div class="package-footer" style="margin-top:auto;padding-top:20px;">
+                            <button class="btn btn-secondary btn-block select-pkg-btn" data-plan="Wedding Photography Package" data-price="39999">Book This Package Now</button>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
+                            </span>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:#ff8a80;margin-top:6px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-circle-exclamation"></i> Travel &amp; Stay charges excluded
                             </span>
                         </div>
                     </div>
 
-                    <!-- Premium Wedding + Reception Package -->
-                    <div class="package-card glass-card premium-card" id="pkgComboCard" data-plan="Package 2 Bride or Groom" data-price="49999">
+                    <!-- Package 2: Wedding Photography Package with Pre-Wedding (₹54,999) -->
+                    <div class="package-card glass-card" id="pkgWeddingPreCard" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">
                         <div class="package-glow"></div>
-                        <!-- Package Cover Image -->
                         <div class="package-cover-wrapper">
                             <span class="flyer-ribbon-tag">Limited Time Offer</span>
-                            <div class="flyer-brand-logo">
-                                <span class="dw-monogram">DW</span>
-                            </div>
-                            <img src="images/package2_cover.jpg" class="package-cover-img" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.5s ease;" alt="Cover">
-                            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, rgba(10, 11, 14, 0.95), transparent);"></div>
+                            <div class="flyer-brand-logo"><span class="dw-monogram">DW</span></div>
+                            <img src="images/package2_cover.jpg" class="package-cover-img" style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;" alt="Wedding Photography Package with Pre-Wedding Cover">
+                            <div style="position:absolute;bottom:0;left:0;width:100%;height:60%;background:linear-gradient(to top,rgba(10,11,14,0.95),transparent);"></div>
                         </div>
                         <div class="package-header">
-                            <span class="package-badge badge-premium alert-glow"><i class="fa-solid fa-star"></i> Most Recommended</span>
-                            <h3>PACKAGE 2 BRIDE OR GROOM</h3>
-                            <p class="package-subtitle"><strong>1 Photographer + 1 Videographer</strong> Crew Coverage</p>
-                            
-                            <!-- Premium Promo Card (Free Prewedding Photography + Scarcity Timer) -->
-                            <div class="premium-promo-card">
-                                <!-- Elegant Limited Offer Badge with Timer -->
-                                <div style="
-                                    display: inline-block;
-                                    border: 1px solid rgba(218, 165, 32, 0.5);
-                                    background: rgba(218, 165, 32, 0.08);
-                                    color: var(--primary-gold);
-                                    padding: 6px 14px;
-                                    font-size: 10px;
-                                    font-weight: 800;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.12em;
-                                    border-radius: 4px;
-                                    margin-bottom: 14px;
-                                ">
-                                    ⏳ Offer Closes In: <span id="comboCardTimer">00d : 00h : 00m : 00s</span>
+                            <span class="package-badge alert-glow"><i class="fa-solid fa-clock animate-pulse"></i> Limited Time Offer</span>
+                            <h3>WEDDING PHOTOGRAPHY PACKAGE</h3>
+                            <p class="package-subtitle"><strong>With Pre-Wedding Shoot</strong> — 1 Photographer + 1 Videographer</p>
+
+                            <div class="card-urgency-timer-wrapper">
+                                <span class="timer-label"><i class="fa-regular fa-clock"></i> Offer Closes In:</span>
+                                <span class="card-countdown-timer" id="comboCardTimer">00d : 00h : 00m : 00s</span>
+                            </div>
+
+                            <!-- Special Offer Promo Box -->
+                            <div class="premium-promo-card" style="margin-top:16px;border-color:rgba(218,165,32,0.35);background:rgba(218,165,32,0.04);">
+                                <!-- Slots Left Alert -->
+                                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                                    <div style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(218,165,32,0.5);background:rgba(218,165,32,0.1);color:var(--primary-gold);padding:5px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;border-radius:4px;">
+                                        <i class="fa-solid fa-fire" style="font-size:10px;"></i> Only 5 Slots Left!
+                                    </div>
+                                    <div style="font-size:9px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">
+                                        ⏳ <span id="specialOfferTimer2">00d : 00h : 00m : 00s</span>
+                                    </div>
                                 </div>
 
-                                <!-- Content -->
-                                <div>
-                                    <!-- Thin-stroke Gold Camera Icon -->
-                                    <div style="margin-bottom: 12px; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(218,165,32,0.03); border: 1px solid rgba(218,165,32,0.15);">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.95;">
-                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                            <circle cx="12" cy="13" r="4"></circle>
-                                        </svg>
-                                    </div>
+                                <!-- Slots Visual Counter -->
+                                <div style="display:flex;align-items:center;gap:5px;margin-bottom:14px;">
+                                    <div style="width:22px;height:8px;border-radius:100px;background:var(--primary-gold);box-shadow:0 0 8px rgba(218,165,32,0.5);"></div>
+                                    <div style="width:22px;height:8px;border-radius:100px;background:var(--primary-gold);box-shadow:0 0 8px rgba(218,165,32,0.5);"></div>
+                                    <div style="width:22px;height:8px;border-radius:100px;background:var(--primary-gold);box-shadow:0 0 8px rgba(218,165,32,0.5);"></div>
+                                    <div style="width:22px;height:8px;border-radius:100px;background:var(--primary-gold);box-shadow:0 0 8px rgba(218,165,32,0.5);"></div>
+                                    <div style="width:22px;height:8px;border-radius:100px;background:var(--primary-gold);box-shadow:0 0 8px rgba(218,165,32,0.5);"></div>
+                                    <span style="font-size:9px;color:var(--text-muted);margin-left:6px;font-weight:600;">5 of 5 slots available</span>
+                                </div>
 
-                                    <div style="font-size: 9.5px; font-weight: 700; color: var(--primary-gold); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px;">🎁 Exclusive Bonus Included</div>
+                                <!-- Offer Content -->
+                                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(218,165,32,0.05);border:1px solid rgba(218,165,32,0.2);margin-bottom:10px;">
+                                    <i class="fa-solid fa-film" style="font-size:18px;color:var(--primary-gold);"></i>
+                                </div>
 
-                                    <div style="font-size: 23px; font-weight: 300; font-family: 'Cormorant Garamond', serif; color: white; line-height: 1.25; margin-bottom: 8px; font-style: italic;">
-                                        Free Prewedding Photography
-                                    </div>
+                                <div style="font-size:9.5px;font-weight:800;color:var(--primary-gold);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">🎁 Special Offer — Limited Time Only</div>
 
-                                    <div style="font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; display: inline-block;">
-                                        Worth <s style="color: rgba(255,255,255,0.4);">₹15,000/-</s> — <span style="color: #2ecc71; font-weight: 800;">Yours at ₹0/-</span>
-                                        <div style="font-size: 9.5px; color: var(--text-muted); font-weight: 300; margin-top: 3px;">Book this package &amp; get a full prewedding shoot absolutely free!</div>
-                                    </div>
+                                <div style="font-size:20px;font-weight:300;font-family:'Cormorant Garamond',serif;color:white;line-height:1.3;margin-bottom:8px;font-style:italic;">
+                                    FREE Cinematic<br><span style="font-size:15px;color:var(--primary-gold);font-weight:400;">Highlights Reel Edit</span>
+                                </div>
 
-                                    <br>
-                                    <div class="bonus-claim-btn" style="margin-top: 8px;">
-                                        🔥 Claim This Offer Now
-                                    </div>
+                                <div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">
+                                    Worth <s style="color:rgba(255,255,255,0.35);">₹8,000/-</s> —
+                                    <span style="color:#2ecc71;font-weight:800;">Yours at ₹0/-</span>
+                                    <div style="font-size:9.5px;color:var(--text-muted);font-weight:300;margin-top:3px;">Book now &amp; get a fully edited cinematic highlights reel delivered for free — for the next 5 bookings only!</div>
+                                </div>
+
+                                <div style="display:inline-block;border:1px solid rgba(218,165,32,0.4);color:var(--primary-gold);background:rgba(218,165,32,0.08);padding:6px 14px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">
+                                    🔥 Claim This Offer Now
                                 </div>
                             </div>
-                            
-                            <div class="package-price">
-                                <span class="original-price-struck" style="font-size: 16px; margin-right: 8px;">₹75,000/-</span>
+
+                            <div class="package-price" style="margin-top:16px;">
+                                <span class="original-price-struck" style="font-size:16px;margin-right:8px;">₹75,000/-</span>
                                 <span class="currency">Rs.</span>
-                                <span class="price-value">49,999</span>
+                                <span class="price-value">54,999</span>
                                 <span class="tax-tag">/- Net</span>
                             </div>
-                            
-                            <div class="savings-tag-badge" style="margin-bottom: 8px;"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹25,001/- (33% OFF)</div>
-                            
-                            <!-- Above Inclusions Quick CTA -->
-                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top: 16px;" data-plan="Package 2 Bride or Groom" data-price="49999">
-                                <span>Book Package 2 Now</span> <i class="fa-solid fa-arrow-right"></i>
+                            <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹20,001/- (27% OFF)</div>
+
+                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">
+                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
-                        <div class="package-event-sections" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; text-align: left; margin: 20px 0;">
-                            <!-- Wedding Sub-Section -->
+
+                        <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
                             <div class="package-event-section">
-                                <h4 class="event-section-title" style="font-size: 12px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-church"></i> Wedding Event Inclusions (₹55,000 Value)</h4>
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-camera-retro"></i> We Cover For You...</h4>
                                 <ul class="package-features">
-                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Photography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Videography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> <strong>80 Pages Premium Customized Wedding Album & 1 Mini Album</strong></li>
-                                    <li><i class="fa-regular fa-circle-check"></i> <strong>2 Laminated Wall Frames</strong></li>
-                                    <li><i class="fa-regular fa-circle-check"></i> 1 Customized Photo Calendar</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> 1 PEN DRIVE</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Cinematic HD Video Highlights</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video Film</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Dynamic Instagram Reel Highlights</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>Pre-Wedding Photo + Video (Save The Date)</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>One 80 Pages Premium Album</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 80 Pages Mini Album</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Highlights Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reel</li>
+                                </ul>
+                            </div>
+                            <div class="package-event-section" style="margin-top:20px;padding-top:20px;border-top:1px dashed var(--border-glass);">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-box-open"></i> What You Will Get...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Photographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Videographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Calendar</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Pen Drive</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 2 Wall Frames</li>
                                     <li><i class="fa-regular fa-circle-check"></i> Edited Photos for Social Media</li>
                                 </ul>
                             </div>
-                            
-                            <!-- Reception Sub-Section -->
-                            <div class="package-event-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border-glass);">
-                                <h4 class="event-section-title" style="font-size: 12px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-glass-cheers"></i> Reception Event Inclusions (₹20,000 Value)</h4>
-                                <ul class="package-features">
-                                    <li><i class="fa-regular fa-circle-check"></i> Reception Photography coverage</li>
-                                    <li><i class="fa-regular fa-circle-check"></i> Reception Videography coverage</li>
+                            <div class="flyer-additional-services-box" style="margin-top:20px;padding:12px;background:rgba(255,255,255,0.01);">
+                                <h5 style="font-size:10px;color:var(--primary-gold);font-weight:700;text-transform:uppercase;margin-bottom:8px;"><i class="fa-solid fa-circle-nodes"></i> Complimentary Perks</h5>
+                                <ul style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;list-style:none;padding:0;">
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-cloud-arrow-up" style="font-size:8px;color:var(--primary-gold);"></i> 1 Year Google Drive</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-comments" style="font-size:8px;color:var(--primary-gold);"></i> WhatsApp Support</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-file-invoice-dollar" style="font-size:8px;color:var(--primary-gold);"></i> Digital Invoice</li>
                                 </ul>
-                            </div>
-                            
-                            <!-- Additional perks box -->
-                            <div class="flyer-additional-services-box" style="margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.01);">
-                                <h5 style="font-size: 10px; color: var(--primary-gold); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
-                                    <i class="fa-solid fa-circle-nodes"></i> Complimentary Perks Included
-                                </h5>
-                                <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; list-style: none; padding: 0;">
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-cloud-arrow-up text-primary-gold" style="font-size: 8px;"></i> 1 Year Google Drive Support</li>
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-comments text-primary-gold" style="font-size: 8px;"></i> WhatsApp Group Support</li>
-                                    <li style="font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-file-invoice-dollar text-primary-gold" style="font-size: 8px;"></i> Digital Invoice</li>
-                                </ul>
+                                <p style="font-size:9px;color:var(--text-muted);font-style:italic;">*Special Discounted Prices Are Applicable For A Limited Duration Only.</p>
                             </div>
                         </div>
-                        <div class="package-footer">
-                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Package 2 Bride or Groom" data-price="49999">Book Package 2 Now</button>
-                            <span class="package-legal-disclaimer" style="display: block; text-align: center; font-size: 10px; color: var(--primary-gold); margin-top: 15px; font-weight: 700; letter-spacing: 0.02em; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 10px; margin-bottom: 10px; cursor: pointer;">
-                                <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 73562 97265
+
+                        <div class="package-footer" style="margin-top:auto;padding-top:20px;">
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">Book This Package Now</button>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
                             </span>
-                            <span class="package-legal-disclaimer" style="display: block; text-align: center; font-size: 9px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.02em;">
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:#ff8a80;margin-top:6px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-circle-exclamation"></i> Travel &amp; Stay charges excluded
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Package 3: Candid Photography Package (₹69,999) -->
+                    <div class="package-card glass-card premium-card" id="pkgCandidCard" data-plan="Candid Photography Package" data-price="69999">
+                        <div class="package-glow"></div>
+                        <div class="package-cover-wrapper">
+                            <span class="flyer-ribbon-tag">Limited Time Offer</span>
+                            <div class="flyer-brand-logo"><span class="dw-monogram">DW</span></div>
+                            <img src="images/arathi.jpg" class="package-cover-img" style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;" alt="Candid Photography Package Cover">
+                            <div style="position:absolute;bottom:0;left:0;width:100%;height:60%;background:linear-gradient(to top,rgba(10,11,14,0.95),transparent);"></div>
+                        </div>
+                        <div class="package-header">
+                            <span class="package-badge badge-premium alert-glow"><i class="fa-solid fa-star"></i> Most Popular — Limited Time</span>
+                            <h3>CANDID PHOTOGRAPHY PACKAGE</h3>
+                            <p class="package-subtitle"><strong>1 Photographer + 1 Videographer</strong> — Full Candid Coverage</p>
+
+                            <div class="card-urgency-timer-wrapper">
+                                <span class="timer-label"><i class="fa-regular fa-clock"></i> Offer Closes In:</span>
+                                <span class="card-countdown-timer" id="candidCardTimer">00d : 00h : 00m : 00s</span>
+                            </div>
+
+                            <!-- Special Offer Promo Box -->
+                            <div class="premium-promo-card" style="margin-top:16px;border-color:rgba(167,139,250,0.35);background:rgba(167,139,250,0.04);">
+                                <!-- Slots Left Alert -->
+                                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                                    <div style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(167,139,250,0.5);background:rgba(167,139,250,0.1);color:#a78bfa;padding:5px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;border-radius:4px;">
+                                        <i class="fa-solid fa-fire" style="font-size:10px;"></i> Only 4 Slots Left!
+                                    </div>
+                                    <div style="font-size:9px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">
+                                        ⏳ <span id="specialOfferTimer3">00d : 00h : 00m : 00s</span>
+                                    </div>
+                                </div>
+
+                                <!-- Slots Visual Counter -->
+                                <div style="display:flex;align-items:center;gap:5px;margin-bottom:14px;">
+                                    <div style="width:24px;height:8px;border-radius:100px;background:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+                                    <div style="width:24px;height:8px;border-radius:100px;background:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+                                    <div style="width:24px;height:8px;border-radius:100px;background:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+                                    <div style="width:24px;height:8px;border-radius:100px;background:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+                                    <span style="font-size:9px;color:var(--text-muted);margin-left:6px;font-weight:600;">4 of 4 slots available</span>
+                                </div>
+
+                                <!-- Offer Content -->
+                                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.2);margin-bottom:10px;">
+                                    <i class="fa-solid fa-images" style="font-size:18px;color:#a78bfa;"></i>
+                                </div>
+
+                                <div style="font-size:9.5px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">🎁 Special Offer — Next 4 Bookings Only</div>
+
+                                <div style="font-size:20px;font-weight:300;font-family:'Cormorant Garamond',serif;color:white;line-height:1.3;margin-bottom:8px;font-style:italic;">
+                                    FREE Photo Calendar<br><span style="font-size:15px;color:#a78bfa;font-weight:400;">+ 1 Extra Wall Frame</span>
+                                </div>
+
+                                <div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">
+                                    Worth <s style="color:rgba(255,255,255,0.35);">₹6,500/-</s> —
+                                    <span style="color:#2ecc71;font-weight:800;">Yours at ₹0/-</span>
+                                    <div style="font-size:9.5px;color:var(--text-muted);font-weight:300;margin-top:3px;">Book this package &amp; receive a premium customized photo calendar plus an extra laminated wall frame absolutely free!</div>
+                                </div>
+
+                                <div style="display:inline-block;border:1px solid rgba(167,139,250,0.4);color:#a78bfa;background:rgba(167,139,250,0.08);padding:6px 14px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">
+                                    🔥 Claim This Offer Now
+                                </div>
+                            </div>
+
+                            <div class="package-price" style="margin-top:16px;">
+                                <span class="original-price-struck" style="font-size:16px;margin-right:8px;">₹75,000/-</span>
+                                <span class="currency">Rs.</span>
+                                <span class="price-value">69,999</span>
+                                <span class="tax-tag">/- Net</span>
+                            </div>
+                            <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹5,001/- (7% OFF)</div>
+
+                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Candid Photography Package" data-price="69999">
+                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
+                            <div class="package-event-section">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-camera-retro"></i> We Cover For You...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>Pre-Wedding Photo + Video (Save The Date)</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>Wedding Day Candid-Photography</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>One 80 Pages Premium Album</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 80 Pages Mini Album</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Highlights Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reel</li>
+                                </ul>
+                            </div>
+                            <div class="package-event-section" style="margin-top:20px;padding-top:20px;border-top:1px dashed var(--border-glass);">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-box-open"></i> What You Will Get...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Photographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Videographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Calendar</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Pen Drive</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 2 Wall Frames</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Edited Photos for Social Media</li>
+                                </ul>
+                            </div>
+                            <div class="flyer-additional-services-box" style="margin-top:20px;padding:12px;background:rgba(255,255,255,0.01);">
+                                <h5 style="font-size:10px;color:var(--primary-gold);font-weight:700;text-transform:uppercase;margin-bottom:8px;"><i class="fa-solid fa-circle-nodes"></i> Complimentary Perks</h5>
+                                <ul style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;list-style:none;padding:0;">
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-cloud-arrow-up" style="font-size:8px;color:var(--primary-gold);"></i> 1 Year Google Drive</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-comments" style="font-size:8px;color:var(--primary-gold);"></i> WhatsApp Support</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-file-invoice-dollar" style="font-size:8px;color:var(--primary-gold);"></i> Digital Invoice</li>
+                                </ul>
+                                <p style="font-size:9px;color:var(--text-muted);font-style:italic;">*Special Discounted Prices Are Applicable For A Limited Duration Only.</p>
+                            </div>
+                        </div>
+
+                        <div class="package-footer" style="margin-top:auto;padding-top:20px;">
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Package" data-price="69999">Book This Package Now</button>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
+                            </span>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:#ff8a80;margin-top:6px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-circle-exclamation"></i> Travel &amp; Stay charges excluded
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Package 4: Candid Photography Videography Package (₹79,999) -->
+                    <div class="package-card glass-card premium-card" id="pkgCandidVideoCard" data-plan="Candid Photography Videography Package" data-price="79999">
+                        <div class="package-glow"></div>
+                        <div class="package-cover-wrapper">
+                            <span class="flyer-ribbon-tag">Limited Time Offer</span>
+                            <div class="flyer-brand-logo"><span class="dw-monogram">DW</span></div>
+                            <img src="images/dr_arsha.jpg" class="package-cover-img" style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;" alt="Candid Photography Videography Package Cover">
+                            <div style="position:absolute;bottom:0;left:0;width:100%;height:60%;background:linear-gradient(to top,rgba(10,11,14,0.95),transparent);"></div>
+                        </div>
+                        <div class="package-header">
+                            <span class="package-badge badge-premium alert-glow"><i class="fa-solid fa-gem"></i> Premium — Limited Time</span>
+                            <h3>CANDID PHOTOGRAPHY VIDEOGRAPHY PACKAGE</h3>
+                            <p class="package-subtitle"><strong>1 Photographer + 1 Videographer</strong> — Premium Candid Coverage</p>
+
+                            <div class="card-urgency-timer-wrapper">
+                                <span class="timer-label"><i class="fa-regular fa-clock"></i> Offer Closes In:</span>
+                                <span class="card-countdown-timer" id="candidVideoCardTimer">00d : 00h : 00m : 00s</span>
+                            </div>
+
+                            <!-- Special Offer Promo Box -->
+                            <div class="premium-promo-card" style="margin-top:16px;border-color:rgba(251,146,60,0.35);background:rgba(251,146,60,0.04);">
+                                <!-- Slots Left Alert -->
+                                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                                    <div style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(251,146,60,0.5);background:rgba(251,146,60,0.1);color:#fb923c;padding:5px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;border-radius:4px;">
+                                        <i class="fa-solid fa-helicopter" style="font-size:10px;"></i> Only 3 Slots Left!
+                                    </div>
+                                    <div style="font-size:9px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">
+                                        ⏳ <span id="specialOfferTimer4">00d : 00h : 00m : 00s</span>
+                                    </div>
+                                </div>
+
+                                <!-- Slots Visual Counter -->
+                                <div style="display:flex;align-items:center;gap:5px;margin-bottom:14px;">
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#fb923c;box-shadow:0 0 8px rgba(251,146,60,0.5);"></div>
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#fb923c;box-shadow:0 0 8px rgba(251,146,60,0.5);"></div>
+                                    <div style="width:28px;height:8px;border-radius:100px;background:#fb923c;box-shadow:0 0 8px rgba(251,146,60,0.5);"></div>
+                                    <span style="font-size:9px;color:var(--text-muted);margin-left:6px;font-weight:600;">3 of 3 slots available</span>
+                                </div>
+
+                                <!-- Offer Content -->
+                                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(251,146,60,0.05);border:1px solid rgba(251,146,60,0.2);margin-bottom:10px;">
+                                    <i class="fa-solid fa-helicopter" style="font-size:18px;color:#fb923c;"></i>
+                                </div>
+
+                                <div style="font-size:9.5px;font-weight:800;color:#fb923c;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;">🎁 Exclusive Offer — Next 3 Bookings Only</div>
+
+                                <div style="font-size:20px;font-weight:300;font-family:'Cormorant Garamond',serif;color:white;line-height:1.3;margin-bottom:8px;font-style:italic;">
+                                    FREE Drone / Helicam<br><span style="font-size:15px;color:#fb923c;font-weight:400;">Aerial Coverage Shot</span>
+                                </div>
+
+                                <div style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">
+                                    Worth <s style="color:rgba(255,255,255,0.35);">₹10,000/-</s> —
+                                    <span style="color:#2ecc71;font-weight:800;">Yours at ₹0/-</span>
+                                    <div style="font-size:9.5px;color:var(--text-muted);font-weight:300;margin-top:3px;">Book this premium package &amp; unlock a FREE 4K drone / helicam aerial shot for your wedding — limited to the next 3 bookings only!</div>
+                                </div>
+
+                                <div style="display:inline-block;border:1px solid rgba(251,146,60,0.4);color:#fb923c;background:rgba(251,146,60,0.08);padding:6px 14px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">
+                                    🔥 Claim This Offer Now
+                                </div>
+                            </div>
+
+                            <div class="package-price" style="margin-top:16px;">
+                                <span class="original-price-struck" style="font-size:16px;margin-right:8px;">₹75,000/-</span>
+                                <span class="currency">Rs.</span>
+                                <span class="price-value">79,999</span>
+                                <span class="tax-tag">/- Net</span>
+                            </div>
+                            <div class="savings-tag-badge" style="background:rgba(218,165,32,0.15);"><i class="fa-solid fa-crown"></i> SPECIAL PRICE — BOOK YOUR SLOTS NOW</div>
+
+                            <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Candid Photography Videography Package" data-price="79999">
+                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
+                            <div class="package-event-section">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-camera-retro"></i> We Cover For You...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>Pre-Wedding Photo + Video (Save The Date)</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reception Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Photography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>Wedding Day Candid-Photography</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Day Videography</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> <strong>One 100 Pages Premium Album</strong></li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 100 Pages Mini Album</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Highlights Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Full HD Wedding Video</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Wedding Reel</li>
+                                </ul>
+                            </div>
+                            <div class="package-event-section" style="margin-top:20px;padding-top:20px;border-top:1px dashed var(--border-glass);">
+                                <h4 class="event-section-title" style="font-size:12px;font-weight:700;color:var(--primary-gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-box-open"></i> What You Will Get...</h4>
+                                <ul class="package-features">
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Photographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Videographer</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Calendar</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 1 Pen Drive</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> 2 Wall Frames</li>
+                                    <li><i class="fa-regular fa-circle-check"></i> Edited Photos for Social Media</li>
+                                </ul>
+                            </div>
+                            <div class="flyer-additional-services-box" style="margin-top:20px;padding:12px;background:rgba(255,255,255,0.01);">
+                                <h5 style="font-size:10px;color:var(--primary-gold);font-weight:700;text-transform:uppercase;margin-bottom:8px;"><i class="fa-solid fa-circle-nodes"></i> Complimentary Perks</h5>
+                                <ul style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;list-style:none;padding:0;">
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-cloud-arrow-up" style="font-size:8px;color:var(--primary-gold);"></i> 1 Year Google Drive</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-comments" style="font-size:8px;color:var(--primary-gold);"></i> WhatsApp Support</li>
+                                    <li style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-file-invoice-dollar" style="font-size:8px;color:var(--primary-gold);"></i> Digital Invoice</li>
+                                </ul>
+                                <p style="font-size:9px;color:var(--text-muted);font-style:italic;">*Special Discounted Prices Are Applicable For A Limited Duration Only.</p>
+                            </div>
+                        </div>
+
+                        <div class="package-footer" style="margin-top:auto;padding-top:20px;">
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Videography Package" data-price="79999">Book This Package Now</button>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
+                            </span>
+                            <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:#ff8a80;margin-top:6px;font-weight:700;letter-spacing:0.02em;">
+                                <i class="fa-solid fa-circle-exclamation"></i> Travel &amp; Stay charges excluded
+                            </span>
+                        </div>
+                    </div>pacing: 0.02em;">
                                 <i class="fa-solid fa-circle-exclamation"></i> Travel & Stay charges are excluded
                             </span>
                         </div>
@@ -1986,6 +2259,10 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                         <span>Confirm & Complete Registration</span> <i class="fa-solid fa-circle-check"></i>
                     </button>
                 </form>
+                
+                <button type="button" class="btn btn-secondary btn-block" id="btnBackFromPassword" style="margin-top: 12px;">
+                    <i class="fa-solid fa-arrow-left"></i> Change Registration Details
+                </button>
             </div>
         </div>
     </div>
@@ -2124,5 +2401,34 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase_auth.js"></script>
     <script src="app.js?v=1.2"></script>
+    <!-- Special Offer Countdown Timer Script -->
+    <script>
+        (function() {
+            const OFFER_KEY = 'dws_special_offer_deadline';
+            const OFFER_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+            let deadline = parseInt(localStorage.getItem(OFFER_KEY));
+            if (!deadline || deadline < Date.now()) {
+                deadline = Date.now() + OFFER_DURATION_MS;
+                localStorage.setItem(OFFER_KEY, deadline);
+            }
+            function pad(n) { return String(n).padStart(2, '0'); }
+            function updateSpecialTimers() {
+                const diff = deadline - Date.now();
+                const ids = ['specialOfferTimer', 'specialOfferTimer2', 'specialOfferTimer3', 'specialOfferTimer4'];
+                ids.forEach(function(id) {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    if (diff <= 0) { el.textContent = 'OFFER ENDED'; return; }
+                    const d = Math.floor(diff / 86400000);
+                    const h = Math.floor((diff % 86400000) / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    el.textContent = pad(d) + 'd : ' + pad(h) + 'h : ' + pad(m) + 'm : ' + pad(s) + 's';
+                });
+            }
+            updateSpecialTimers();
+            setInterval(updateSpecialTimers, 1000);
+        })();
+    </script>
 </body>
 </html>
