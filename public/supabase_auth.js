@@ -143,8 +143,14 @@ _supa.auth.onAuthStateChange(async (event, session) => {
 
 // ── UI Controllers ───────────────────────────────────────────
 
-function showLoginSection()  { document.getElementById('dwLoginSection').style.display  = 'block'; }
-function hideLoginSection()  { document.getElementById('dwLoginSection').style.display  = 'none';  }
+function showLoginSection()  { 
+  const el = document.getElementById('dwLoginSection');
+  if (el) el.style.display = 'block'; 
+}
+function hideLoginSection()  { 
+  const el = document.getElementById('dwLoginSection');
+  if (el) el.style.display = 'none'; 
+}
 function showCustomerDashboard() {
   const dash = document.getElementById('customerDashboardSection');
   if (dash) dash.style.display = 'block';
@@ -288,13 +294,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ── Navbar "Customer Portal" button → scroll to login ──
+  // ── Navbar "Customer Portal" button → scroll to login or open modal ──
   const navPortalBtn = document.getElementById('btnCustomerPortalToggle');
   if (navPortalBtn) {
     navPortalBtn.addEventListener('click', (e) => {
-      e.preventDefault();
       const loginSec = document.getElementById('dwLoginSection');
-      if (loginSec) loginSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (loginSec) {
+        e.preventDefault();
+        loginSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const portalModal = document.getElementById('customerPortalModal');
+        if (portalModal) {
+          e.preventDefault();
+          portalModal.style.display = 'flex';
+        }
+      }
     });
   }
 });
