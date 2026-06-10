@@ -287,7 +287,69 @@
             </div>
         </section>
 
+        <!-- Premium Cinema Gallery Section -->
+        <section id="cinema-gallery" class="cinema-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle"><i class="fa-solid fa-film"></i> Cinematic Love Stories</span>
+                    <h2>Featured Wedding Films</h2>
+                    <p>Experience the premium quality, color grading, and emotional depth of our high-end wedding films.</p>
+                </div>
 
+                <div class="cinema-grid">
+                    <!-- Film 1 -->
+                    <div class="cinema-card glass-card" onclick="playCinemaVideo('https://www.youtube.com/embed/b_M2fI6Xzlg?autoplay=1')">
+                        <div class="cinema-media-wrapper">
+                            <img src="https://img.youtube.com/vi/b_M2fI6Xzlg/maxresdefault.jpg" class="cinema-thumbnail" alt="Devanand & Sandra Wedding Film Cover" onerror="this.src='https://img.youtube.com/vi/b_M2fI6Xzlg/hqdefault.jpg'">
+                            <div class="cinema-play-overlay">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="cinema-info">
+                            <div>
+                                <span class="cinema-tag">Traditional Mandap Highlights</span>
+                                <h4>Devanand & Sandra | Devi Temple Wedding Film</h4>
+                            </div>
+                            <p class="cinema-desc">A beautiful, traditional temple vows ceremony captured with cinematic lenses and raw color science, showcasing rich Kasavu styling and elegant Mandap details.</p>
+                        </div>
+                    </div>
+
+                    <!-- Film 2 -->
+                    <div class="cinema-card glass-card" onclick="playCinemaVideo('https://www.youtube.com/embed/S9-SrdnKsMs?autoplay=1')">
+                        <div class="cinema-media-wrapper">
+                            <img src="https://img.youtube.com/vi/S9-SrdnKsMs/maxresdefault.jpg" class="cinema-thumbnail" alt="Dr. Athulraj & Dr. Parvathi Story Cover" onerror="this.src='https://img.youtube.com/vi/S9-SrdnKsMs/hqdefault.jpg'">
+                            <div class="cinema-play-overlay">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="cinema-info">
+                            <div>
+                                <span class="cinema-tag">Cinematic Resort Highlights</span>
+                                <h4>Dr. Athulraj & Dr. Parvathi | Scenic Varkala Story</h4>
+                            </div>
+                            <p class="cinema-desc">A premium cinematic highlight reel shot along the Varkala cliffs, showcasing drone aerial work, natural color science, and dynamic story transitions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Film 3 -->
+                    <div class="cinema-card glass-card" onclick="playCinemaVideo('https://www.youtube.com/embed/jnSAu-C6OmQ?autoplay=1')">
+                        <div class="cinema-media-wrapper">
+                            <img src="https://img.youtube.com/vi/jnSAu-C6OmQ/maxresdefault.jpg" class="cinema-thumbnail" alt="Dr. Fathima Mohsina & Dr. Saheed Reel Cover" onerror="this.src='https://img.youtube.com/vi/jnSAu-C6OmQ/hqdefault.jpg'">
+                            <div class="cinema-play-overlay">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="cinema-info">
+                            <div>
+                                <span class="cinema-tag">Candid Monochromatic Highlights</span>
+                                <h4>Dr. Fathima Mohsina & Dr. Saheed | Cinematic Highlights Reel</h4>
+                            </div>
+                            <p class="cinema-desc">An emotionally charged, modern wedding highlight reel combining fast cuts, aesthetic low-light details, and deep Kasavu Kasargod gold coloring.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Admin Dashboard Section (Visible only when Admin Mode is ON) -->
         <section id="adminDashboard" class="admin-section" style="display: none;">
@@ -795,7 +857,11 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
             <div class="container">
                 <div class="section-header">
                     <span class="section-subtitle">Your Available Offers</span>
-                    <h2>Compare Wedding Package                    <!-- Package 1: Wedding Photography Package (₹39,999) -->
+                    <h2>Compare Wedding Packages</h2>
+                </div>
+                
+                <div class="packages-grid" id="packagesGrid">
+                    <!-- Package 1: Wedding Photography Package (₹39,999) -->
                     <div class="package-card glass-card highlight-glow" id="pkgWeddingBasicCard" data-plan="Wedding Photography Package" data-price="39999">
                         <div class="package-glow"></div>
                         <div class="package-cover-wrapper">
@@ -863,10 +929,14 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                                 <span class="tax-tag">/- Net</span>
                             </div>
                             <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹20,001/- (33% OFF)</div>
+                            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(218,165,32,0.12);border:1px solid rgba(218,165,32,0.25);color:var(--primary-gold);padding:5px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;">
+                                <i class="fa-solid fa-wallet"></i> Pay only ₹5,000 advance to book
+                            </div>
 
                             <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;box-shadow:var(--gold-glow);" data-plan="Wedding Photography Package" data-price="39999">
-                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                                <span>Secure Slot for ₹5,000</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
+                            <div style="font-size:9.5px;color:var(--text-muted);text-align:center;margin-top:6px;font-weight:600;"><i class="fa-solid fa-shield-halved"></i> 100% Refundable if your wedding date changes</div>
                         </div>
 
                         <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
@@ -906,7 +976,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                         </div>
 
                         <div class="package-footer" style="margin-top:auto;padding-top:20px;">
-                            <button class="btn btn-secondary btn-block select-pkg-btn" data-plan="Wedding Photography Package" data-price="39999">Book This Package Now</button>
+                            <button class="btn btn-secondary btn-block select-pkg-btn" data-plan="Wedding Photography Package" data-price="39999">Secure Slot for ₹5,000</button>
                             <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
                                 <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
                             </span>
@@ -986,10 +1056,14 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                                 <span class="tax-tag">/- Net</span>
                             </div>
                             <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹20,001/- (27% OFF)</div>
+                            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(218,165,32,0.12);border:1px solid rgba(218,165,32,0.25);color:var(--primary-gold);padding:5px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;">
+                                <i class="fa-solid fa-wallet"></i> Pay only ₹5,000 advance to book
+                            </div>
 
                             <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">
-                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                                <span>Secure Slot for ₹5,000</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
+                            <div style="font-size:9.5px;color:var(--text-muted);text-align:center;margin-top:6px;font-weight:600;"><i class="fa-solid fa-shield-halved"></i> 100% Refundable if your wedding date changes</div>
                         </div>
 
                         <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
@@ -1031,7 +1105,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                         </div>
 
                         <div class="package-footer" style="margin-top:auto;padding-top:20px;">
-                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">Book This Package Now</button>
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Wedding Photography Package (With Pre-Wedding)" data-price="54999">Secure Slot for ₹5,000</button>
                             <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
                                 <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
                             </span>
@@ -1110,10 +1184,14 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                                 <span class="tax-tag">/- Net</span>
                             </div>
                             <div class="savings-tag-badge"><i class="fa-solid fa-piggy-bank"></i> YOU SAVE ₹5,001/- (7% OFF)</div>
+                            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(218,165,32,0.12);border:1px solid rgba(218,165,32,0.25);color:var(--primary-gold);padding:5px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;">
+                                <i class="fa-solid fa-wallet"></i> Pay only ₹5,000 advance to book
+                            </div>
 
                             <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Candid Photography Package" data-price="69999">
-                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                                <span>Secure Slot for ₹5,000</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
+                            <div style="font-size:9.5px;color:var(--text-muted);text-align:center;margin-top:6px;font-weight:600;"><i class="fa-solid fa-shield-halved"></i> 100% Refundable if your wedding date changes</div>
                         </div>
 
                         <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
@@ -1156,7 +1234,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                         </div>
 
                         <div class="package-footer" style="margin-top:auto;padding-top:20px;">
-                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Package" data-price="69999">Book This Package Now</button>
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Package" data-price="69999">Secure Slot for ₹5,000</button>
                             <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
                                 <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
                             </span>
@@ -1234,10 +1312,14 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                                 <span class="tax-tag">/- Net</span>
                             </div>
                             <div class="savings-tag-badge" style="background:rgba(218,165,32,0.15);"><i class="fa-solid fa-crown"></i> SPECIAL PRICE — BOOK YOUR SLOTS NOW</div>
+                            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(218,165,32,0.12);border:1px solid rgba(218,165,32,0.25);color:var(--primary-gold);padding:5px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;">
+                                <i class="fa-solid fa-wallet"></i> Pay only ₹5,000 advance to book
+                            </div>
 
                             <button class="btn btn-primary btn-block select-pkg-btn" style="margin-top:16px;" data-plan="Candid Photography Videography Package" data-price="79999">
-                                <span>Book This Package Now</span> <i class="fa-solid fa-arrow-right"></i>
+                                <span>Secure Slot for ₹5,000</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
+                            <div style="font-size:9.5px;color:var(--text-muted);text-align:center;margin-top:6px;font-weight:600;"><i class="fa-solid fa-shield-halved"></i> 100% Refundable if your wedding date changes</div>
                         </div>
 
                         <div class="package-event-sections" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;margin:20px 0;">
@@ -1280,16 +1362,12 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                         </div>
 
                         <div class="package-footer" style="margin-top:auto;padding-top:20px;">
-                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Videography Package" data-price="79999">Book This Package Now</button>
+                            <button class="btn btn-primary btn-block select-pkg-btn" data-plan="Candid Photography Videography Package" data-price="79999">Secure Slot for ₹5,000</button>
                             <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:var(--primary-gold);margin-top:10px;font-weight:700;letter-spacing:0.02em;">
                                 <i class="fa-solid fa-phone"></i> CALL / WHATSAPP: +91 99954 12955
                             </span>
                             <span class="package-legal-disclaimer" style="display:block;text-align:center;font-size:10px;color:#ff8a80;margin-top:6px;font-weight:700;letter-spacing:0.02em;">
                                 <i class="fa-solid fa-circle-exclamation"></i> Travel &amp; Stay charges excluded
-                            </span>
-                        </div>
-                    </div>pacing: 0.02em;">
-                                <i class="fa-solid fa-circle-exclamation"></i> Travel & Stay charges are excluded
                             </span>
                         </div>
                     </div>
@@ -1751,11 +1829,11 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                     <!-- FAQ 2 -->
                     <div class="faq-item glass-card">
                         <div class="faq-question">
-                            <h4>Are there additional fuel/travel charges?</h4>
+                            <h4>Are travel expenses and stay/accommodation included?</h4>
                             <span class="faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
                         </div>
                         <div class="faq-answer">
-                            <p>For events within Trivandrum and Kollam cities, travel is fully included in our standard package pricing. For distant regional locations (e.g. northern Kerala borders), a minor additional fuel charge (typically ₹1,000 to ₹2,000 maximum) is calculated transparently in your digital invoice.</p>
+                            <p>For events within Trivandrum and Kollam cities, travel is fully included in our pricing. For other locations across Kerala, actual travel expenses (fuel/conveyance) are applicable extra. Additionally, if the venue location requires an early morning start or multi-day coverage outside our base locations, simple stay/accommodation must be provided or covered for the photography crew.</p>
                         </div>
                     </div>
 
@@ -2401,20 +2479,60 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase_auth.js"></script>
     <script src="app.js?v=1.2"></script>
-    <!-- Special Offer Countdown Timer Script -->
+    <!-- Special Offer Countdown Timer & Cinema Helpers Script -->
     <script>
+        // Cinema modal global controllers
+        window.playCinemaVideo = function(url) {
+            const modal = document.getElementById('videoPlayerModal');
+            const iframe = document.getElementById('videoPlayerIframe');
+            if (modal && iframe) {
+                iframe.src = url;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        };
+
+        window.closeCinemaVideo = function() {
+            const modal = document.getElementById('videoPlayerModal');
+            const iframe = document.getElementById('videoPlayerIframe');
+            if (modal && iframe) {
+                modal.style.display = 'none';
+                iframe.src = '';
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Attach close event listeners immediately on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('btnCloseVideoPlayer');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', window.closeCinemaVideo);
+            }
+            const modal = document.getElementById('videoPlayerModal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) window.closeCinemaVideo();
+                });
+            }
+        });
+
+        // Unified non-freezing countdown timer logic for all 10 timer IDs
         (function() {
             const OFFER_KEY = 'dws_special_offer_deadline';
-            const OFFER_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+            const OFFER_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days countdown
             let deadline = parseInt(localStorage.getItem(OFFER_KEY));
             if (!deadline || deadline < Date.now()) {
                 deadline = Date.now() + OFFER_DURATION_MS;
                 localStorage.setItem(OFFER_KEY, deadline);
             }
             function pad(n) { return String(n).padStart(2, '0'); }
-            function updateSpecialTimers() {
+            function updateAllTimers() {
                 const diff = deadline - Date.now();
-                const ids = ['specialOfferTimer', 'specialOfferTimer2', 'specialOfferTimer3', 'specialOfferTimer4'];
+                const ids = [
+                    'specialOfferTimer', 'specialOfferTimer2', 'specialOfferTimer3', 'specialOfferTimer4',
+                    'standardCardTimer', 'comboCardTimer', 'candidCardTimer', 'candidVideoCardTimer',
+                    'luxuryCardTimer', 'topTickerTimer'
+                ];
                 ids.forEach(function(id) {
                     const el = document.getElementById(id);
                     if (!el) return;
@@ -2423,11 +2541,13 @@ EDITED PHOTOS FOR SOCIAL MEDIA</textarea>
                     const h = Math.floor((diff % 86400000) / 3600000);
                     const m = Math.floor((diff % 3600000) / 60000);
                     const s = Math.floor((diff % 60000) / 1000);
+                    
+                    // Format output
                     el.textContent = pad(d) + 'd : ' + pad(h) + 'h : ' + pad(m) + 'm : ' + pad(s) + 's';
                 });
             }
-            updateSpecialTimers();
-            setInterval(updateSpecialTimers, 1000);
+            updateAllTimers();
+            setInterval(updateAllTimers, 1000);
         })();
     </script>
 </body>

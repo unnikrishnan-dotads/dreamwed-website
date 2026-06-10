@@ -777,15 +777,21 @@ section {
 /* --- Packages Grid & Cards --- */
 .packages-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    max-width: 1200px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1400px;
     margin: 0 auto;
     transition: var(--transition-smooth);
 }
 
 .packages-grid.has-custom {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+}
+
+#pkgBrideGroomCard {
+    grid-column: 2 / span 2;
+    max-width: 650px;
+    margin: 30px auto 0;
 }
 
 .package-card {
@@ -1221,6 +1227,12 @@ section {
     .packages-grid.has-custom {
         grid-template-columns: 1fr;
         max-width: 600px;
+    }
+    
+    #pkgBrideGroomCard {
+        grid-column: auto;
+        max-width: 600px;
+        margin: 30px auto 0;
     }
     
     .admin-form-row {
@@ -3625,4 +3637,138 @@ body.has-ticker .main-header {
     border-color: #ffffff !important;
     transform: scale(1.15) rotate(90deg) !important;
     box-shadow: 0 8px 25px rgba(218, 165, 32, 0.6) !important;
+}
+
+/* --- Premium Cinema Gallery Section --- */
+.cinema-section {
+    background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.05) 0%, rgba(10, 11, 14, 0) 70%);
+    padding: 80px 0;
+    border-top: 1px solid var(--border-glass);
+    border-bottom: 1px solid var(--border-glass);
+    position: relative;
+}
+
+.cinema-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cinema-card {
+    background: rgba(20, 22, 28, 0.65);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.cinema-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-gold);
+    box-shadow: 0 15px 40px rgba(218, 165, 32, 0.15);
+}
+
+.cinema-media-wrapper {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: #000;
+}
+
+.cinema-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: var(--transition-smooth);
+}
+
+.cinema-card:hover .cinema-thumbnail {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+.cinema-play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(10, 11, 14, 0.85);
+    border: 2px solid var(--primary-gold);
+    color: var(--primary-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: var(--transition-smooth);
+    box-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+    pointer-events: none;
+}
+
+.cinema-card:hover .cinema-play-overlay {
+    background: var(--primary-gold);
+    color: var(--bg-dark);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 30px rgba(218, 165, 32, 0.6);
+}
+
+.cinema-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cinema-info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    transition: var(--transition-smooth);
+}
+
+.cinema-card:hover .cinema-info h4 {
+    color: var(--primary-gold);
+}
+
+.cinema-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary-gold);
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.cinema-desc {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+    .cinema-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cinema-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
 }
