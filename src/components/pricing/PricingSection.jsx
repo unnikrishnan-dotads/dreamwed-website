@@ -114,7 +114,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
           {pricingPlans.map((plan, index) => {
             const isPopular = index === 2;
             return (
@@ -129,9 +129,9 @@ const PricingSection = () => {
                   setActivePlanIndex(index);
                   setCurrentSlide(0);
                 }}
-                className={`relative rounded-[28px] md:rounded-[36px] p-6 md:p-8 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
+                className={`relative rounded-[30px] md:rounded-[40px] p-8 md:p-10 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
                   isPopular 
-                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-xl" 
+                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-2xl" 
                     : "bg-[#ececea] text-black hover:bg-white border border-transparent hover:border-zinc-200"
                 }`}
               >

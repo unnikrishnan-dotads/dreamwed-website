@@ -93,7 +93,7 @@ const TestimonialSection = () => {
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="bg-[#ececea] rounded-[28px] md:rounded-[36px] p-6 md:p-8 min-h-[300px] flex flex-col justify-between cursor-default"
+              className="bg-[#ececea] rounded-[30px] md:rounded-[40px] p-8 md:p-10 min-h-[340px] flex flex-col justify-between cursor-default"
             >
               {/* TOP */}
               <div>
