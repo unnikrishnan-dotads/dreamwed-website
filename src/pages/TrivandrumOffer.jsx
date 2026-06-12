@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, Clock, Check, Star, ArrowRight, Gift, Flame, 
-  Heart, Camera, ShieldCheck, Mail, Phone, Calendar, User, MessageSquare, AlertCircle, X, Tv
+  Heart, Camera, ShieldCheck, Mail, Phone, Calendar, User, MessageSquare, AlertCircle, X, Tv, Tag
 } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa6";
 import SEO from "../components/SEO";
@@ -18,6 +18,12 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy15y5t2F5uM9NiYPim
 
 const TrivandrumOffer = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", date: "", receptionDate: "", sameDate: true, message: "" });
+  const [likedPacks, setLikedPacks] = useState({});
+
+  const toggleLikePack = (e, packId) => {
+    e.stopPropagation();
+    setLikedPacks((prev) => ({ ...prev, [packId]: !prev[packId] }));
+  };
   const [status, setStatus] = useState("idle"); 
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isAlbumVideoModalOpen, setIsAlbumVideoModalOpen] = useState(false);
@@ -560,316 +566,108 @@ const TrivandrumOffer = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
-            
-            {/* TIER 1: BRIDE OR GROOM PACK 01 (Rs. 49,999) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => setActiveDetailPackage(0)}
-              className="rounded-[32px] overflow-hidden border border-zinc-200 bg-[#fbfbfa] p-6 sm:p-8 space-y-6 relative shadow-md hover:border-[#1e3f20]/30 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:shadow-[0_15px_45px_rgba(30,63,32,0.06)] group/card"
-            >
-              {/* Tap Indicator Tag */}
-              <div className="absolute top-4 right-4 bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1.5 rounded-full text-[8px] font-bold tracking-widest uppercase opacity-60 group-hover/card:opacity-100 transition-opacity duration-300">
-                ✨ View Photos
-              </div>
+            {packagesInfo.map((pack, idx) => {
+              const isBestDeal = pack.id === 3;
+              const badgeText = isBestDeal ? "BEST DEAL (RECOMMENDED)" : pack.bonus;
+              const badgeStyles = isBestDeal 
+                ? "bg-amber-500/20 text-amber-200 border border-amber-500/30" 
+                : "bg-zinc-500/25 text-zinc-200 border border-zinc-500/35";
 
-              <div className="space-y-6">
-                <div className="space-y-1 pt-2">
-                  <h3 className="text-2xl text-zinc-900 font-medium tracking-tight">Bride or Groom Pack 01</h3>
-                  <p className="text-[#b4975a] text-[10px] font-bold tracking-wider uppercase">Special Package Coverage</p>
-                </div>
+              // Inclusion tag
+              const inclusionLabel = 
+                pack.id === 1 ? "📷 1 Photographer Setup" 
+                : pack.id === 4 ? "🚁 Drone Aerial Coverage"
+                : "📷 4 Camera Setup";
 
-                <div className="space-y-1">
-                  <div className="text-zinc-400 text-xs line-through tracking-wider">Regular: 65,000/-</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-bold text-[#9b1c1c] tracking-tight">Rs. 49,999/-</span>
+              return (
+                <motion.div
+                  key={pack.id}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  onClick={() => setActiveDetailPackage(idx)}
+                  className={`relative rounded-[30px] md:rounded-[40px] overflow-hidden flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] shadow-xl hover:shadow-2xl aspect-[3/4.8] md:aspect-auto min-h-[540px] ${
+                    isBestDeal ? "border-2 border-amber-500/80 shadow-amber-500/5" : "border border-zinc-800/20"
+                  }`}
+                >
+                  {/* Background Cover Image with Zoom Effect */}
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src={pack.images[0]}
+                      alt={pack.title}
+                      className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
+                    />
+                    {/* Rich dark gradient for high typography contrast and readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent z-10" />
                   </div>
-                </div>
 
-                {/* Bonus tag inside card */}
-                <div className="bg-[#1e3f20]/5 border border-[#1e3f20]/15 p-4 rounded-2xl flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#1e3f20]/15 flex items-center justify-center text-[#1e3f20] shrink-0">
-                    <Gift size={16} />
+                  {/* Click hint inside card in top-left */}
+                  <div className="absolute top-6 left-6 text-[8px] font-bold tracking-widest uppercase text-white/50 group-hover:text-white/95 transition-colors duration-300 z-20">
+                    ✨ CLICK FOR PHOTOS & DETAILS
                   </div>
-                  <div>
-                    <span className="block text-[#1e3f20] text-xs font-bold uppercase tracking-wide">FREE PRE-WEDDING PHOTO</span>
-                    <span className="text-zinc-600 text-[10px] font-light leading-snug block mt-0.5">
-                      Save ₹15,000! Premium pre-wedding photography session is fully included.
-                    </span>
-                  </div>
-                </div>
 
-                <div className="w-full h-px bg-zinc-200" />
-
-                <div className="space-y-4">
-                  <span className="text-[9px] text-zinc-400 tracking-widest uppercase font-bold block">What's Included:</span>
-                  {[
-                    "Free Pre-Wedding (Photo Coverage)",
-                    "Wedding Day Photography",
-                    "Wedding Day Videography",
-                    "One 80-Pages Premium layflat Album",
-                    "Cinematic Highlights Video"
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-xs text-zinc-600 font-light">
-                      <span className="w-4.5 h-4.5 rounded-full bg-[#1e3f20]/10 text-[#1e3f20] flex items-center justify-center shrink-0">
-                        <Check size={10} strokeWidth={3} />
-                      </span>
-                      {item}
-                    </div>
-                  ))}
-                  
-                  {/* Elegant View More Button */}
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setActiveDetailPackage(0); }}
-                    className="w-full py-3 mt-2 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                  {/* Floating Heart Icon Button in Top Right */}
+                  <button
+                    onClick={(e) => toggleLikePack(e, pack.id)}
+                    className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-black/35 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    title="Add to wishlist"
                   >
-                    ✨ View Full Details & Photos
+                    <Heart
+                      size={18}
+                      className={`transition-colors duration-300 ${likedPacks[pack.id] ? "fill-red-500 stroke-red-500" : "stroke-white"}`}
+                    />
                   </button>
-                </div>
-              </div>
 
-              <button 
-                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 01", 49999); }}
-                className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
-              >
-                Secure ₹49,999 Offer
-              </button>
-            </motion.div>
-
-            {/* TIER 2: BRIDE & GROOM PACK 02 (Rs. 99,999) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => setActiveDetailPackage(1)}
-              className="rounded-[32px] overflow-hidden border border-zinc-200 bg-[#fbfbfa] p-6 sm:p-8 space-y-6 relative shadow-md hover:border-[#1e3f20]/30 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:shadow-[0_15px_45px_rgba(30,63,32,0.06)] group/card"
-            >
-              {/* Tap Indicator Tag */}
-              <div className="absolute top-4 right-4 bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1.5 rounded-full text-[8px] font-bold tracking-widest uppercase opacity-60 group-hover/card:opacity-100 transition-opacity duration-300">
-                ✨ View Photos
-              </div>
-
-              <div className="space-y-6">
-                <div className="space-y-1 pt-2">
-                  <h3 className="text-2xl text-zinc-900 font-medium tracking-tight">Bride & Groom Pack 02</h3>
-                  <p className="text-[#b4975a] text-[10px] font-bold tracking-wider uppercase">Premium Photo & Video Package</p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="text-zinc-400 text-xs line-through tracking-wider">Regular: 1,09,999/-</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-bold text-[#9b1c1c] tracking-tight">Rs. 99,999/-</span>
-                  </div>
-                </div>
-
-                {/* Bonus tag inside card */}
-                <div className="bg-[#1e3f20]/5 border border-[#1e3f20]/15 p-4 rounded-2xl flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#1e3f20]/15 flex items-center justify-center text-[#1e3f20] shrink-0">
-                    <Gift size={16} />
-                  </div>
-                  <div>
-                    <span className="block text-[#1e3f20] text-xs font-bold uppercase tracking-wide">FREE PRE-WEDDING PHOTO</span>
-                    <span className="text-zinc-600 text-[10px] font-light leading-snug block mt-0.5">
-                      Save ₹15,000! Premium pre-wedding photography session is fully included.
-                    </span>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-zinc-200" />
-
-                <div className="space-y-4">
-                  <span className="text-[9px] text-zinc-400 tracking-widest uppercase font-bold block">What's Included:</span>
-                  {[
-                    "Free Pre-Wedding (Photo Coverage)",
-                    "Wedding Day (Photo + Video)",
-                    "4 Camera Wedding Setup",
-                    "One 80-Page Premium layflat Album",
-                    "Cinematic Highlights Video"
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-xs text-zinc-600 font-light">
-                      <span className="w-4.5 h-4.5 rounded-full bg-[#1e3f20]/10 text-[#1e3f20] flex items-center justify-center shrink-0">
-                        <Check size={10} strokeWidth={3} />
+                  {/* Card Content Overlaid on Bottom */}
+                  <div className="relative z-10 flex flex-col h-full justify-between p-6 sm:p-8 flex-1">
+                    {/* Top Tag */}
+                    <div>
+                      <span className={`inline-block px-3 py-1.5 rounded-full text-[8px] tracking-widest uppercase font-bold mt-4 ${badgeStyles}`}>
+                        ✦ {badgeText}
                       </span>
-                      {item}
                     </div>
-                  ))}
-                  
-                  {/* Elegant View More Button */}
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setActiveDetailPackage(1); }}
-                    className="w-full py-3 mt-2 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    ✨ View Full Details & Photos
-                  </button>
-                </div>
-              </div>
 
-              <button 
-                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 02", 99999); }}
-                className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
-              >
-                Secure ₹99,999 Offer
-              </button>
-            </motion.div>
+                    {/* Bottom Info Details and CTA */}
+                    <div className="mt-auto">
+                      <h3 className="text-xl sm:text-2xl leading-[1.1] tracking-tight font-serif text-white font-normal mb-1">
+                        {pack.title}
+                      </h3>
+                      <p className="text-[#b4975a] text-[9px] font-bold tracking-wider uppercase mb-2">
+                        {pack.subtitle}
+                      </p>
+                      
+                      <p className="text-zinc-300 text-xs font-light mb-4 line-clamp-2 leading-relaxed">
+                        {pack.description}
+                      </p>
 
-            {/* TIER 3: BRIDE & GROOM PACK 03 (Rs. 1,10,000) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => setActiveDetailPackage(2)}
-              className="rounded-[32px] overflow-hidden border-2 border-[#9b1c1c] bg-white p-6 sm:p-8 space-y-6 relative shadow-xl flex flex-col justify-between cursor-pointer hover:shadow-[0_20px_50px_rgba(155,28,28,0.1)] group/card"
-            >
-              <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#9b1c1c] text-white px-5 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase whitespace-nowrap shadow-md z-10">
-                🔥 Best Deal (Highly Recommended)
-              </div>
+                      {/* Info labels row matching the travel card style */}
+                      <div className="flex flex-wrap items-center gap-2 mb-6 text-white/90 text-xs font-light">
+                        <div className="flex items-center gap-1.2 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/5">
+                          <Tag size={12} className="text-amber-400" />
+                          <span>from <strong className="font-semibold text-white">₹{pack.offerPrice}</strong></span>
+                        </div>
+                        <div className="flex items-center gap-1.2 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/5">
+                          <span>{inclusionLabel}</span>
+                        </div>
+                      </div>
 
-              {/* Tap Indicator Tag */}
-              <div className="absolute top-5 right-4 bg-[#9b1c1c]/5 text-[#9b1c1c] px-3 py-1.5 rounded-full text-[8px] font-bold tracking-widest uppercase opacity-60 group-hover/card:opacity-100 transition-opacity duration-300">
-                ✨ View Photos
-              </div>
-
-              <div className="space-y-6">
-                <div className="space-y-1 pt-2">
-                  <h3 className="text-2xl text-zinc-900 font-semibold tracking-tight">Bride & Groom Pack 03</h3>
-                  <p className="text-[#1e3f20] text-[10px] font-bold tracking-wider uppercase">Complete Cinematic & Portraiture</p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="text-zinc-400 text-xs line-through tracking-wider">Regular: 1,20,000/-</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-bold text-[#9b1c1c] tracking-tight">Rs. 1,10,000/-</span>
-                  </div>
-                </div>
-
-                {/* Bonus tag inside card */}
-                <div className="bg-[#1e3f20]/5 border border-[#1e3f20]/15 p-4 rounded-2xl flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#1e3f20]/15 flex items-center justify-center text-[#1e3f20] shrink-0">
-                    <Gift size={16} />
-                  </div>
-                  <div>
-                    <span className="block text-[#1e3f20] text-xs font-bold uppercase tracking-wide">FREE PHOTO & CINEMA FILM</span>
-                    <span className="text-zinc-600 text-[10px] font-light leading-snug block mt-0.5">
-                      Save ₹30,000! Includes **both** Pre-wedding Photos **and** Pre-wedding Cinematic video!
-                    </span>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-zinc-200" />
-
-                <div className="space-y-4">
-                  <span className="text-[9px] text-[#1e3f20] tracking-widest uppercase font-extrabold block">What's Included:</span>
-                  {[
-                    "Free Pre-Wedding (Photo AND Cinematic Video!)",
-                    "Wedding Day (Photo + Video)",
-                    "4 Camera Wedding Setup",
-                    "One 90-Page Premium layflat Album",
-                    "Cinematic Highlights Video"
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-xs text-zinc-600 font-light">
-                      <span className="w-4.5 h-4.5 rounded-full bg-[#1e3f20]/10 text-[#1e3f20] flex items-center justify-center shrink-0">
-                        <Check size={10} strokeWidth={3} />
-                      </span>
-                      {item}
+                      {/* CTA Button centered at bottom - stacked on two lines as requested */}
+                      <Button
+                        variant="secondary"
+                        className="w-full py-4 rounded-[24px] bg-white text-black hover:bg-zinc-100 hover:shadow-lg transition-all duration-300 text-[11px] font-bold tracking-wider flex flex-col items-center justify-center leading-snug"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          triggerBookingModal(pack.title, parseInt(pack.offerPrice.replace(/[^0-9]/g, "")));
+                        }}
+                      >
+                        <span className="block">SECURE</span>
+                        <span className="block">OFFER</span>
+                      </Button>
                     </div>
-                  ))}
-                  
-                  {/* Elegant View More Button */}
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setActiveDetailPackage(2); }}
-                    className="w-full py-3 mt-2 bg-[#9b1c1c]/5 hover:bg-[#9b1c1c]/10 border border-[#9b1c1c]/20 hover:border-[#9b1c1c]/30 text-[#9b1c1c] text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    ✨ View Full Details & Photos
-                  </button>
-                </div>
-              </div>
-
-              <button 
-                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Bride & Groom Pack 03", 110000); }}
-                className="w-full py-4 bg-[#9b1c1c] text-white font-bold rounded-xl hover:bg-[#801414] transition-all text-xs tracking-widest uppercase shadow-md mt-4"
-              >
-                Secure ₹1,10,000 Offer
-              </button>
-            </motion.div>
-
-            {/* TIER 4: ENGAGEMENT + WEDDING PACK 04 (Rs. 1,59,000) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => setActiveDetailPackage(3)}
-              className="rounded-[32px] overflow-hidden border border-zinc-200 bg-[#fbfbfa] p-6 sm:p-8 space-y-6 relative shadow-md hover:border-[#1e3f20]/30 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:shadow-[0_15px_45px_rgba(30,63,32,0.06)] group/card"
-            >
-              {/* Tap Indicator Tag */}
-              <div className="absolute top-4 right-4 bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1.5 rounded-full text-[8px] font-bold tracking-widest uppercase opacity-60 group-hover/card:opacity-100 transition-opacity duration-300">
-                ✨ View Photos
-              </div>
-
-              <div className="space-y-6">
-                <div className="space-y-1 pt-2">
-                  <h3 className="text-2xl text-zinc-900 font-semibold tracking-tight leading-tight">Engagement + Wedding Pack 04</h3>
-                  <p className="text-[#b4975a] text-[10px] font-bold tracking-wider uppercase">Multi-Day Complete Coverage</p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="text-zinc-400 text-xs line-through tracking-wider">Regular: 1,79,999/-</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-[#9b1c1c] tracking-tight">Rs. 1,59,000/-</span>
                   </div>
-                </div>
-
-                {/* Bonus tag inside card */}
-                <div className="bg-[#1e3f20]/5 border border-[#1e3f20]/15 p-4 rounded-2xl flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#1e3f20]/15 flex items-center justify-center text-[#1e3f20] shrink-0">
-                    <Gift size={16} />
-                  </div>
-                  <div>
-                    <span className="block text-[#1e3f20] text-xs font-bold uppercase tracking-wide">FREE DRONE COVERAGE</span>
-                    <span className="text-zinc-600 text-[10px] font-light leading-snug block mt-0.5">
-                      Save ₹15,000! Drone aerial coverage is fully included for both days.
-                    </span>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-zinc-200" />
-
-                <div className="space-y-4">
-                  <span className="text-[9px] text-zinc-400 tracking-widest uppercase font-bold block">What's Included:</span>
-                  {[
-                    "Engagement Day Photo + Video",
-                    "Pre-Wedding Photo Shoot",
-                    "Bride Reception (Photo + Video)",
-                    "Groom Reception (Photo + Video)",
-                    "Drone Aerial Coverage (Both Days)",
-                    "One 80-Page Premium layflat Album"
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-xs text-zinc-600 font-light">
-                      <span className="w-4.5 h-4.5 rounded-full bg-[#1e3f20]/10 text-[#1e3f20] flex items-center justify-center shrink-0">
-                        <Check size={10} strokeWidth={3} />
-                      </span>
-                      {item}
-                    </div>
-                  ))}
-                  
-                  {/* Elegant View More Button */}
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setActiveDetailPackage(3); }}
-                    className="w-full py-3 mt-2 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    ✨ View Full Details & Photos
-                  </button>
-                </div>
-              </div>
-
-              <button 
-                onClick={(e) => { e.stopPropagation(); triggerBookingModal("Engagement + Wedding Pack 04", 159000); }}
-                className="w-full py-4 bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold rounded-xl transition-all text-xs tracking-widest uppercase shadow-sm mt-4"
-              >
-                Secure ₹1,59,000 Offer
-              </button>
-            </motion.div>
-
+                </motion.div>
+              );
+            })}
           </div>
 
         </div>

@@ -1,54 +1,111 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, Gift, Sparkles, Heart, Tag } from "lucide-react";
+import { Check, X, Gift, Sparkles, Heart, Tag, Camera, Plane } from "lucide-react";
+import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 
 const pricingPlans = [
   {
-    title: "Silver",
+    title: "Bride or Groom Pack 01",
     price: "₹49,999",
-    tag: "Essential",
-    desc: "Perfect for intimate weddings. Candid & traditional coverage for your special day.",
+    tag: "+ FREE PRE-WEDDING PHOTO",
+    modalTag: "Essential",
+    subtitle: "SPECIAL PACKAGE COVERAGE",
+    desc: "Our highly sought-after single-side coverage package. Designed to capture every detail of the Bride's OR Groom's celebrations with elite creative precision and beautiful physical heirlooms.",
+    setup: "1 Photographer Setup",
     images: ["/uploaded_bride_yellow.jpg", "/athulraj.jpg", "/anandha_lekshmi.jpg"],
     features: [
-      "8 Hours Coverage",
-      "1 Professional Photographer",
-      "400+ Edited High-Res Photos",
-      "Online Gallery Access",
-      "30-Day Delivery",
-    ],
+      "Free Pre-Wedding (Photo Coverage)",
+      "Wedding Reception Photography",
+      "Wedding Reception Videography",
+      "Wedding Day Photography",
+      "Wedding Day Videography",
+      "One 80-Pages Premium layflat Album (Panoramic layout)",
+      "One 80-Pages Mini layflat Album (Parent copy)",
+      "Cinematic Highlights Video Film",
+      "Full HD Wedding Video Film (Traditional & Candid mix)",
+      "Instagram Wedding Reel & Social Media edits",
+      "1 Photographer Setup",
+      "1 Videographer Setup",
+      "2x Premium Wall Frames & Custom Calendar",
+      "Edited Social-Media Photos & High-speed Pendrive"
+    ]
   },
   {
-    title: "Gold Lite",
+    title: "Bride & Groom Pack 02",
     price: "₹99,999",
-    tag: "Best Value",
-    desc: "Complete photography & videography coverage with a premium layflat album.",
+    tag: "+ FREE PRE-WEDDING PHOTO",
+    modalTag: "Premium",
+    subtitle: "PREMIUM PHOTO & VIDEO PACKAGE",
+    desc: "Our comprehensive premium dual-side package. Ideal for capturing both sides of the family together in one unified, masterfully crafted visual narrative with a full 4-camera creative setup.",
+    setup: "4 Camera Setup",
     images: ["/uploaded_couple_blackwhite.jpg", "/kochi_couple_carry.jpg", "/deepak.jpg"],
     features: [
-      "Wedding Photo + Video Coverage",
-      "Reception Photo + Video Coverage",
-      "Premium 70-Page Album",
-      "HD Cinematic Highlights Reel",
-      "Full HD Wedding Video",
-      "Social Media Reel",
-      "Personalised Desktop Calendar",
-    ],
+      "Free Pre-Wedding (Photo Coverage)",
+      "Bride Reception (Photo + Video)",
+      "Candid Wedding (Photo + Video)",
+      "Wedding Day (Photo + Video)",
+      "Groom Reception (Photo + Video)",
+      "4 Camera Wedding Setup",
+      "One 80-Page Premium layflat Album (Panoramic layout)",
+      "One 80-Page Mini layflat Album (Parent copy)",
+      "Cinematic Highlights Video Film",
+      "Full HD Wedding Film with Candids & Live streams",
+      "Instagram reels & Edited Social Photos in private cloud",
+      "2x Luxury Wall Frames",
+      "Signature Album Bag, Custom Calendar & Pen Drive"
+    ]
   },
   {
-    title: "Gold",
+    title: "Bride & Groom Pack 03",
     price: "₹1,10,000",
-    tag: "Most Popular",
-    desc: "Our most-loved package — complete photo and video storytelling.",
+    tag: "✦ BEST DEAL (RECOMMENDED)",
+    modalTag: "Signature",
+    subtitle: "COMPLETE CINEMATIC & PORTRAITURE",
+    desc: "Our absolute signature masterpiece package. Includes premium pre-wedding photos and cinematic video films, fine-art layflat albums, and full-spectrum cinema-grade wedding production. Highly recommended.",
+    setup: "4 Camera Setup",
     images: ["/uploaded_bride_traditional.jpg", "/uploaded_bride_gold.jpg", "/chindu.jpg"],
     features: [
-      "Full Day Coverage (12 hrs)",
-      "2 Photographers + 1 Videographer",
-      "Cinematic Wedding Film (5–8 min)",
-      "Social Media Highlight Reel",
-      "500+ Edited High-Res Photos",
-      "Online Gallery Access",
-    ],
+      "Free Pre-Wedding (Photo AND Cinematic Video Film!)",
+      "Bride Reception (Photo + Video)",
+      "Candid Wedding (Photo + Video)",
+      "Wedding Day (Photo + Video)",
+      "Groom Reception (Photo + Video)",
+      "4 Camera Wedding Setup",
+      "One 90-Page Premium layflat Album (Archival paper)",
+      "One 90-Page Mini layflat Album (Parent copy)",
+      "Cinematic Highlights Video Film (Cinema grade coloring)",
+      "Full HD Wedding Film with Candids & Live sound capture",
+      "Instagram reels & Edited Social Photos in private cloud",
+      "2x Luxury Wall Frames",
+      "Signature Album Bag, Custom Calendar & Pen Drive"
+    ]
   },
+  {
+    title: "Engagement + Wedding Pack 04",
+    price: "₹1,59,000",
+    tag: "+ FREE DRONE AERIAL COVERAGE",
+    modalTag: "Ultimate",
+    subtitle: "MULTI-DAY COMPLETE COVERAGE",
+    desc: "Our ultimate, all-inclusive multi-day celebration package. Captures your entire love story from the intimate engagement rituals to the grand wedding reception, with elite 4-camera setups and aerial drone artistry.",
+    setup: "Drone Aerial Coverage",
+    images: ["/uploaded_couple_blackwhite.jpg", "/kochi_couple_carry.jpg", "/deepak.jpg"],
+    features: [
+      "Engagement Day Photo + Video",
+      "Pre-Wedding Photo Shoot",
+      "Bride Reception (Photo + Video)",
+      "Groom Reception (Photo + Video)",
+      "Wedding Day (Photo + Video)",
+      "Wedding Day Candid (Photo + Video)",
+      "Drone Aerial Coverage (Both Days)",
+      "One 80-Page Premium layflat Album (Panoramic layout)",
+      "One 80-Page Mini layflat Album (Parent copy)",
+      "Full HD Wedding Film with Candid edits",
+      "Cinematic Highlights Video & Wedding Reel",
+      "3x Luxury Wall Frames",
+      "Signature Album Bag, Custom Calendar & Pen Drive"
+    ]
+  }
 ];
 
 const cardVariants = {
@@ -120,180 +177,132 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
           {pricingPlans.map((plan, index) => {
-            const isPopular = index === 2; // Gold plan (Style 1 - Full Image Overlay)
+            const isSpecial = plan.title.includes("Pack 03");
             
-            if (isPopular) {
-              // Style 1: Full-Image Overlay Card (Gold Plan)
-              return (
-                <motion.div
-                  key={index}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  onClick={() => {
-                    setActivePlanIndex(index);
-                    setCurrentSlide(0);
-                  }}
-                  className="relative rounded-[30px] md:rounded-[40px] overflow-hidden flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] shadow-xl hover:shadow-2xl aspect-[3/4.5] md:aspect-auto min-h-[500px]"
-                >
-                  {/* Background Cover Image with Zoom Effect */}
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src={plan.images[0]}
-                      alt={plan.title}
-                      className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
-                    />
-                    {/* Rich dark gradient for high typography contrast and readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent z-10" />
+            // Helper to split title elegantly on two lines
+            const getSplitTitle = (title) => {
+              if (title.includes("Pack 04")) {
+                return ["Engagement +", "Wedding Pack 04"];
+              }
+              const idx = title.indexOf("Pack");
+              if (idx !== -1) {
+                return [title.substring(0, idx).trim(), title.substring(idx).trim()];
+              }
+              return [title, ""];
+            };
+
+            const [titleLine1, titleLine2] = getSplitTitle(plan.title);
+
+            return (
+              <motion.div
+                key={index}
+                custom={index}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                onClick={() => {
+                  setActivePlanIndex(index);
+                  setCurrentSlide(0);
+                }}
+                className={`relative rounded-[32px] md:rounded-[40px] overflow-hidden flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
+                  isSpecial 
+                    ? "border-[3px] border-[#d1a852] shadow-[0_0_35px_rgba(209,168,82,0.3),_0_20px_50px_rgba(0,0,0,0.4)]" 
+                    : "border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+                } aspect-[9/17.2] min-h-[580px] md:min-h-[640px]`}
+              >
+                {/* Background Cover Image with Zoom Effect */}
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src={plan.images[0]}
+                    alt={plan.title}
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
+                  />
+                  {/* Luxury black gradients for extreme legibility */}
+                  <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-transparent to-black/95 z-10 pointer-events-none" />
+                </div>
+
+                {/* Floating Top Elements */}
+                <div className="absolute top-6 left-6 right-6 z-20 flex justify-between items-center">
+                  {/* Badge */}
+                  <div className={`px-3 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase flex items-center gap-1 ${
+                    isSpecial 
+                      ? "bg-[#d1a852] text-black" 
+                      : "bg-white/10 backdrop-blur-md border border-white/20 text-white"
+                  }`}>
+                    {plan.tag}
                   </div>
 
-                  {/* Click hint inside card */}
-                  <div className="absolute top-6 left-6 text-[8px] font-bold tracking-widest uppercase text-white/50 group-hover:text-white/95 transition-colors duration-300 z-20">
-                    ✨ Click for photos & details
-                  </div>
-
-                  {/* Floating Heart Icon Button in Top Right */}
+                  {/* Floating Heart Icon Button */}
                   <button
                     onClick={(e) => toggleLike(e, index)}
-                    className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-black/35 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    className="w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    title="Add to wishlist"
                   >
                     <Heart
-                      size={18}
+                      size={16}
                       className={`transition-colors duration-300 ${likedPlans[index] ? "fill-red-500 stroke-red-500" : "stroke-white"}`}
                     />
                   </button>
+                </div>
 
-                  {/* Card Content Overlaid on Bottom */}
-                  <div className="relative z-10 flex flex-col h-full justify-between p-8 md:p-10 flex-1">
-                    {/* Top Tag */}
-                    <div>
-                      <span className="inline-block px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/30 text-[9px] tracking-widest uppercase font-bold mt-4">
-                        ✦ {plan.tag}
-                      </span>
+                {/* Click hint inside card */}
+                <div className="absolute top-20 left-0 right-0 z-20 text-center flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.2em] text-white/50 group-hover:text-white/90 transition-colors duration-300">
+                  <span className="text-amber-400">✈</span> CLICK FOR PHOTOS & DETAILS
+                </div>
+
+                {/* Card Content Overlaid on Bottom */}
+                <div className="relative z-10 flex flex-col h-full justify-end p-6 md:p-8 mt-auto select-none">
+                  {/* Title */}
+                  <h3 className="text-[26px] sm:text-[28px] md:text-[32px] leading-tight font-serif text-white font-light text-center mb-1">
+                    {titleLine1}
+                    {titleLine2 && <span className="block mt-0.5">{titleLine2}</span>}
+                  </h3>
+
+                  {/* Category */}
+                  <p className="text-[#d1a852] text-[9.5px] md:text-[10px] tracking-[0.2em] font-semibold uppercase text-center mb-3">
+                    {plan.subtitle}
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-zinc-400 text-[11px] md:text-[12px] font-light text-center max-w-[255px] mx-auto mb-5 line-clamp-2 leading-relaxed">
+                    {plan.desc}
+                  </p>
+
+                  {/* Pills Stack */}
+                  <div className="flex flex-col items-center gap-2 mb-6">
+                    {/* Price Pill */}
+                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-white text-xs font-light">
+                      <Tag size={12} className="text-[#d1a852]" />
+                      <span>from <strong className="font-semibold text-white">{plan.price}</strong></span>
                     </div>
 
-                    {/* Bottom Info Details and CTA */}
-                    <div className="mt-auto">
-                      <h3 className="text-[28px] md:text-[34px] leading-[1.1] tracking-tight font-serif text-white font-normal mb-2">
-                        {plan.title}
-                      </h3>
-                      
-                      <p className="text-zinc-300 text-xs md:text-sm font-light mb-4 line-clamp-2 leading-relaxed">
-                        {plan.desc}
-                      </p>
-
-                      {/* Info labels row matching the travel card style */}
-                      <div className="flex flex-wrap items-center gap-3 mb-6 text-white/90 text-xs font-light">
-                        <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
-                          <Tag size={12} className="text-amber-400" />
-                          <span>from <strong className="font-semibold text-white">{plan.price}</strong></span>
-                        </div>
-                        <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
-                          <span>✨ Full Video + Photo</span>
-                        </div>
-                      </div>
-
-                      {/* CTA Button centered at bottom */}
-                      <Button
-                        to="/contact"
-                        variant="secondary"
-                        className="w-full py-4.5 rounded-[20px] bg-white text-black hover:bg-zinc-100 hover:shadow-lg transition-all duration-300 uppercase tracking-wider text-xs font-bold"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Book Consultation
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            } else {
-              // Style 2: Top Image, White Bottom Content (Silver & Gold Lite Plans)
-              return (
-                <motion.div
-                  key={index}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  onClick={() => {
-                    setActivePlanIndex(index);
-                    setCurrentSlide(0);
-                  }}
-                  className="relative rounded-[30px] md:rounded-[40px] bg-white border border-zinc-100 p-4 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] shadow-sm hover:shadow-xl min-h-[500px]"
-                >
-                  {/* Top Image Header Container with Rounded Corners */}
-                  <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden">
-                    <img
-                      src={plan.images[0]}
-                      alt={plan.title}
-                      className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
-                    
-                    {/* Floating Info Tag inside Image */}
-                    <span className="absolute top-4 left-4 inline-block px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-zinc-100 text-[8px] tracking-wider uppercase font-bold border border-white/10">
-                      {plan.tag}
-                    </span>
-
-                    {/* Click hint overlaid on image hover */}
-                    <div className="absolute bottom-4 left-4 text-[8px] font-bold tracking-widest uppercase text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      ✨ Click for Details
+                    {/* Setup Pill */}
+                    <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/5 text-white/90 text-xs font-light">
+                      {plan.title.includes("Pack 04") ? (
+                        <Plane size={12} className="text-amber-400 rotate-45" />
+                      ) : (
+                        <Camera size={12} className="text-zinc-300" />
+                      )}
+                      <span>{plan.setup}</span>
                     </div>
                   </div>
 
-                  {/* Bottom details block */}
-                  <div className="flex-1 flex flex-col justify-between pt-6 px-3 pb-2">
-                    <div>
-                      <h3 className="text-[26px] md:text-[30px] leading-[1.1] tracking-tight font-serif text-zinc-950 font-normal mb-2">
-                        {plan.title}
-                      </h3>
-                      
-                      <p className="text-zinc-500 text-xs md:text-sm font-light mb-4 line-clamp-2 leading-relaxed">
-                        {plan.desc}
-                      </p>
-
-                      {/* Info labels row with price tag icon */}
-                      <div className="flex flex-wrap items-center gap-3 mb-6 text-zinc-600 text-xs font-light">
-                        <div className="flex items-center gap-1.5 bg-zinc-100 px-3 py-1.5 rounded-full">
-                          <Tag size={12} className="text-[#1e3f20]" />
-                          <span>from <strong className="font-semibold text-zinc-900">{plan.price}</strong></span>
-                        </div>
-                        <div className="flex items-center gap-1.5 bg-zinc-100 px-3 py-1.5 rounded-full">
-                          <span>📷 {plan.title === "Silver" ? "Photo Only" : "Photo + Video"}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* CTA Button and Heart Icon Button side-by-side */}
-                    <div className="flex items-center gap-3 mt-auto">
-                      <Button
-                        to="/contact"
-                        variant="primary"
-                        className="flex-1 py-4 rounded-[20px] bg-zinc-950 text-white hover:bg-black uppercase tracking-wider text-xs font-bold"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Book Consultation
-                      </Button>
-                      <button
-                        onClick={(e) => toggleLike(e, index)}
-                        className="w-12 h-12 rounded-[20px] border border-zinc-200 flex items-center justify-center bg-white transition-all hover:bg-zinc-50 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
-                        title="Add to wishlist"
-                      >
-                        <Heart
-                          size={18}
-                          className={`transition-colors duration-300 ${likedPlans[index] ? "fill-red-500 stroke-red-500" : "stroke-zinc-400"}`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            }
+                  {/* CTA Secure Offer Button */}
+                  <Link
+                    to="/contact"
+                    className="py-3.5 px-8 w-full max-w-[170px] mx-auto rounded-[20px] bg-white text-black hover:bg-zinc-100 hover:shadow-lg transition-all duration-300 text-[11px] font-extrabold tracking-[0.2em] flex flex-col items-center justify-center leading-tight shadow-md select-none cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>SECURE</span>
+                    <span>OFFER</span>
+                  </Link>
+                </div>
+              </motion.div>
+            );
           })}
         </div>
       </div>
@@ -389,7 +398,7 @@ const PricingSection = () => {
                 {/* Header detail */}
                 <div className="space-y-2 select-none">
                   <span className="inline-flex items-center gap-1 bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">
-                    {pricingPlans[activePlanIndex].tag} Collection
+                    {pricingPlans[activePlanIndex].modalTag || "Premium"} Collection
                   </span>
                   <h3 className="text-2xl sm:text-3xl text-zinc-900 font-semibold tracking-tight font-serif">
                     {pricingPlans[activePlanIndex].title} Package
@@ -482,4 +491,5 @@ const PricingSection = () => {
 };
 
 export default PricingSection;
+
 
