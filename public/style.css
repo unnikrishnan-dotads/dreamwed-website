@@ -4130,7 +4130,7 @@ body.has-ticker .main-header {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    opacity: 0.85 !important;
+    opacity: 0.95 !important;
     transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
@@ -4141,7 +4141,7 @@ body.has-ticker .main-header {
 .packages-grid .package-card .package-cover-overlay {
     position: absolute !important;
     inset: 0 !important;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.96) 100%) !important;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 75%, #000000 100%) !important;
     z-index: 2 !important;
 }
 
