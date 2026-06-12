@@ -2202,10 +2202,6 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     let currentSelectedPrice = '';
     
     // --- DETAILS MODAL CONTROLLER (screenshot style popup for checklists) ---
-        // --- DETAILS MODAL CONTROLLER (screenshot style popup for checklists) ---
-        // --- DETAILS MODAL CONTROLLER (screenshot style popup for checklists) ---
-        // --- DETAILS MODAL CONTROLLER (screenshot style popup for checklists) ---
-        // --- DETAILS MODAL CONTROLLER (screenshot style popup for checklists) ---
     window.openDetailsModal = function(card) {
         // Remove existing modal if any
         const existing = document.getElementById('pkgDetailsModal');
@@ -2233,21 +2229,23 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             'pkgWeddingBasicCard': 'ESSENTIAL COLLECTION',
             'pkgWeddingPreCard': 'PREMIUM COLLECTION',
             'pkgCandidCard': 'SIGNATURE COLLECTION',
-            'pkgCandidVideoCard': 'MULTI-DAY COLLECTION'
+            'pkgCandidVideoCard': 'CINEMATIC COLLECTION',
+            'pkgBrideGroomCard': 'LUXURY COLLECTION'
         };
         const collectionTag = collectionTags[cardId] || 'SPECIAL COLLECTION';
 
         // Add Package suffix to title if not present
         let displayTitleText = titleText;
-        if (!displayTitleText.toLowerCase().endsWith('package')) {
+        if (!displayTitleText.toLowerCase().endsWith('package') && !displayTitleText.toLowerCase().includes('pack')) {
             displayTitleText += ' Package';
         }
 
         const descriptions = {
-            'pkgWeddingBasicCard': "Our highly sought-after single-side coverage package. Designed to capture every detail of the Bride's OR Groom's celebrations with elite creative precision and beautiful physical heirlooms.",
-            'pkgWeddingPreCard': 'Our comprehensive premium dual-side package. Ideal for capturing both sides of the celebrations with multiple angles and full coverage.',
-            'pkgCandidCard': 'Our absolute signature masterpiece package. Includes premium pre-wedding photos and complete cinematic & portraiture coverage.',
-            'pkgCandidVideoCard': 'Our ultimate, all-inclusive multi-day celebration package. Captures your entire wedding story across multiple days.'
+            'pkgWeddingBasicCard': "Our highly sought-after single-side coverage package. Designed to capture every detail of the celebrations with creative precision.",
+            'pkgWeddingPreCard': "Our comprehensive single-side package including a gorgeous pre-wedding shoot. Perfect for couples who want their full story captured.",
+            'pkgCandidCard': "Our absolute signature masterpiece candid package. Highlighting premium artistic captures and cinematic styling.",
+            'pkgCandidVideoCard': "Our premium complete candid photo & cinematic video package. Features extensive coverage and full digital deliverables.",
+            'pkgBrideGroomCard': "Our premier dual-side luxury coverage package. Designed to capture both the Bride's and Groom's sides with a complete 4-camera creative crew."
         };
         const descriptionText = descriptions[cardId] || subtitleText;
 
@@ -2343,100 +2341,125 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
 
     // --- CARDS RESTRUCTURER CONTROLLER (To match the screenshot's compact look and details) ---
     window.restructurePackageCards = function() {
-        const cardData = {
-            'pkgWeddingBasicCard': {
-                title: 'Bride or Groom<br>Pack 01',
-                category: 'SPECIAL PACKAGE COVERAGE',
-                desc: "Our highly sought-after single-side coverage package. Designed to capture every detail o..",
-                priceText: 'from ₹49,999',
-                priceVal: '49999',
-                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer Setup',
-                ribbon: '+ FREE PRE-WEDDING PHOTO',
-                ribbonClass: '',
-                img: 'uploaded_bride_yellow.jpg',
-                highlighted: false
-            },
-            'pkgWeddingPreCard': {
-                title: 'Bride & Groom<br>Pack 02',
-                category: 'PREMIUM PHOTO & VIDEO PACKAGE',
-                desc: 'Our comprehensive premium dual-side package. Ideal for capturing both sides of th..',
-                priceText: 'from ₹99,999',
-                priceVal: '99999',
-                setup: '<i class="fa-solid fa-camera"></i> 4 Camera Setup',
-                ribbon: '+ FREE PRE-WEDDING PHOTO',
-                ribbonClass: '',
-                img: 'uploaded_couple_blackwhite.jpg',
-                highlighted: false
-            },
-            'pkgCandidCard': {
-                title: 'Bride & Groom<br>Pack 03',
-                category: 'COMPLETE CINEMATIC & PORTRAITURE',
-                desc: 'Our absolute signature masterpiece package. Includes premium pre-wedding photos and..',
-                priceText: 'from ₹1,10,000',
-                priceVal: '110000',
-                setup: '<i class="fa-solid fa-camera"></i> 4 Camera Setup',
-                ribbon: '+ BEST DEAL (RECOMMENDED)',
-                ribbonClass: 'best-deal-ribbon',
-                img: 'uploaded_bride_traditional.jpg',
-                highlighted: true
-            },
-            'pkgCandidVideoCard': {
-                title: 'Engagement +<br>Wedding Pack 04',
-                category: 'MULTI-DAY COMPLETE COVERAGE',
-                desc: 'Our ultimate, all-inclusive multi-day celebration package. Captures your entire...',
-                priceText: 'from ₹1,59,000',
-                priceVal: '159000',
-                setup: '<i class="fa-solid fa-plane"></i> Drone Aerial Coverage',
-                ribbon: '+ FREE DRONE AERIAL COVERAGE',
-                ribbonClass: '',
-                img: 'uploaded_couple_blackwhite.jpg',
-                highlighted: false
-            }
-        };
+        const ids = ['pkgWeddingBasicCard', 'pkgWeddingPreCard', 'pkgCandidCard', 'pkgCandidVideoCard', 'pkgBrideGroomCard'];
 
-        // Hide the 5th card
-        const card5 = document.getElementById('pkgBrideGroomCard');
-        if (card5) {
-            card5.style.setProperty('display', 'none', 'important');
-        }
-
-        Object.keys(cardData).forEach(id => {
+        ids.forEach(id => {
             const card = document.getElementById(id);
             if (!card) return;
 
             // If already restructured, don't overwrite
             if (card.querySelector('.package-card-body')) return;
 
-            const data = cardData[id];
+            // Extract original details
+            const planName = card.getAttribute('data-plan') || '';
+            const priceVal = card.getAttribute('data-price') || '';
+            
+            const titleEl = card.querySelector('.package-header h3') || card.querySelector('.package-title');
+            let originalTitle = titleEl ? titleEl.innerHTML.trim() : planName;
+            
+            // Clean title if it contains HTML or is uppercase
+            originalTitle = originalTitle.replace(/<[^>]*>/g, '').trim();
 
-            // Save original features/checklists if not already saved
+            const subEl = card.querySelector('.package-subtitle');
+            const originalSubtitle = subEl ? subEl.innerHTML.trim() : '';
+            const subText = subEl ? subEl.textContent.trim() : '';
+
+            // Extract setup details from subtitle (e.g. "1 Photographer + 1 Videographer")
+            let setupText = '';
+            if (subText.includes('—')) {
+                const parts = subText.split('—');
+                if (parts[0].includes('Photographer') || parts[0].includes('Videographer') || parts[0].includes('Camera') || parts[0].includes('Crew')) {
+                    setupText = parts[0].trim();
+                } else {
+                    setupText = parts[1].trim();
+                }
+            } else {
+                setupText = subText;
+            }
+            // Clean up setupText a bit if it has extra text
+            setupText = setupText.replace(/<strong>|<\/strong>/gi, '').trim();
+            
+            const setupIcon = setupText.toLowerCase().includes('drone') ? 'fa-plane' : 'fa-camera';
+            const setupHtml = `<i class="fa-solid ${setupIcon}"></i> ${setupText}`;
+
+            // Extract original ribbon or badge
+            const ribbonEl = card.querySelector('.flyer-ribbon-tag') || card.querySelector('.package-badge');
+            let originalRibbon = ribbonEl ? ribbonEl.textContent.trim() : 'Limited Time Offer';
+            
+            // Format ribbon nicely like home page
+            if (originalRibbon.includes('Limited Time')) {
+                originalRibbon = '✦ LIMITED TIME OFFER';
+            } else if (originalRibbon.includes('Most Popular')) {
+                originalRibbon = '✦ MOST POPULAR';
+            } else if (originalRibbon.includes('Premium')) {
+                originalRibbon = '✦ PREMIUM SELECTION';
+            } else if (originalRibbon.includes('Ultimate')) {
+                originalRibbon = '✦ ULTIMATE LUXURY';
+            } else if (!originalRibbon.startsWith('✦') && !originalRibbon.startsWith('+')) {
+                originalRibbon = '✦ ' + originalRibbon.toUpperCase();
+            }
+
+            const ribbonClass = (id === 'pkgCandidCard' || id === 'pkgBrideGroomCard') ? 'best-deal-ribbon' : '';
+
+            // Extract original image
+            const imgEl = card.querySelector('.package-cover-img');
+            const originalImg = imgEl ? imgEl.getAttribute('src') : 'images/DSC00315-min.jpg';
+
+            // Extract original features checklist
             let checklistHtml = '';
             const featuresEl = card.querySelector('.package-event-sections');
             if (featuresEl) {
                 checklistHtml = featuresEl.innerHTML;
             }
 
-            // Set data attributes for standard booking flow
-            card.setAttribute('data-plan', data.title.replace('<br>', ' '));
-            card.setAttribute('data-price', data.priceVal);
-
-            // Apply card highlighted styles
-            if (data.highlighted) {
+            // Apply card highlighted styles (pkgCandidCard and pkgBrideGroomCard were premium in original)
+            const highlighted = card.classList.contains('premium-card') || id === 'pkgCandidCard' || id === 'pkgBrideGroomCard';
+            if (highlighted) {
                 card.classList.add('premium-card');
             } else {
                 card.classList.remove('premium-card');
             }
 
+            // Ensure card gets appropriate data attributes for click/booking handling
+            card.setAttribute('data-plan', planName);
+            card.setAttribute('data-price', priceVal);
+
+            // Format Title for display (e.g. split into two lines or display elegantly)
+            let displayTitle = originalTitle;
+            if (displayTitle.toLowerCase().startsWith('wedding photography')) {
+                displayTitle = 'Wedding<br>Photography';
+            } else if (displayTitle.toLowerCase().startsWith('candid photography')) {
+                displayTitle = 'Candid Photo &<br>Videography';
+            } else if (displayTitle.toLowerCase().startsWith('bride & groom')) {
+                displayTitle = 'Bride & Groom<br>Package';
+            }
+
+            // Category title based on package ID
+            const categoryTitles = {
+                'pkgWeddingBasicCard': 'ESSENTIAL SINGLE-SIDE',
+                'pkgWeddingPreCard': 'PRE-WEDDING & PHOTO',
+                'pkgCandidCard': 'ARTISTIC CANDID SHOTS',
+                'pkgCandidVideoCard': 'CINEMATIC CINEMA STORY',
+                'pkgBrideGroomCard': 'DUAL-SIDE COMPLETE ELITE'
+            };
+            const categoryTitle = categoryTitles[id] || 'WEDDING PACKAGE';
+
+            // Short desc
+            let shortDesc = subText.split('—')[0].replace(/With Pre-Wedding Shoot/gi, '').trim();
+            if (shortDesc.length > 80) {
+                shortDesc = shortDesc.substring(0, 77) + '...';
+            }
+
             card.innerHTML = `
                 <!-- Background Cover Image -->
                 <div class="package-cover-wrapper">
-                    <img src="${data.img}" class="package-cover-img" alt="${data.title}">
+                    <img src="${originalImg}" class="package-cover-img" alt="${originalTitle}">
                     <div class="package-cover-overlay"></div>
                 </div>
 
                 <!-- Floating Top Row Elements -->
                 <div class="package-card-top-row">
-                    <span class="flyer-ribbon-tag ${data.ribbonClass}">${data.ribbon}</span>
+                    <span class="flyer-ribbon-tag ${ribbonClass}">${originalRibbon}</span>
                     <button class="card-heart-btn" title="Add to Wishlist">
                         <i class="fa-regular fa-heart"></i>
                     </button>
@@ -2445,22 +2468,22 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 <!-- Card Content -->
                 <div class="package-card-body">
                     <span class="click-details-hint"><i class="fa-solid fa-plane"></i> CLICK FOR PHOTOS & DETAILS</span>
-                    <h3 class="package-title">${data.title}</h3>
-                    <span class="package-category-title">${data.category}</span>
-                    <p class="package-short-desc">${data.desc}</p>
+                    <h3 class="package-title">${displayTitle}</h3>
+                    <span class="package-category-title">${categoryTitle}</span>
+                    <p class="package-short-desc">${shortDesc}</p>
                     
                     <!-- Stacked Pills -->
                     <div class="package-pills-stack">
                         <div class="package-pill price-pill">
-                            <i class="fa-solid fa-tag"></i> ${data.priceText}
+                            <i class="fa-solid fa-tag"></i> from ₹${parseInt(priceVal).toLocaleString()}
                         </div>
                         <div class="package-pill setup-pill">
-                            ${data.setup}
+                            ${setupHtml}
                         </div>
                     </div>
 
                     <!-- Secure Offer CTA -->
-                    <button class="select-pkg-btn secure-offer-btn" data-plan="${data.title.replace('<br>', ' ')}" data-price="${data.priceVal}">
+                    <button class="select-pkg-btn secure-offer-btn" data-plan="${planName}" data-price="${priceVal}">
                         SECURE<br>OFFER
                     </button>
                 </div>
@@ -2471,15 +2494,15 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 </div>
                 
                 <div class="package-subtitle" style="display:none !important;">
-                    ${data.desc}
+                    ${originalSubtitle}
                 </div>
 
                 <div class="package-badge" style="display:none !important;">
-                    ${data.ribbon}
+                    ${originalRibbon}
                 </div>
 
                 <div class="package-price" style="display:none !important;">
-                    <span class="price-value">₹${parseInt(data.priceVal).toLocaleString()}/-</span>
+                    <span class="price-value">₹${parseInt(priceVal).toLocaleString()}/-</span>
                 </div>
             `;
         });
