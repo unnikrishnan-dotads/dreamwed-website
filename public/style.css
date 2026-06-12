@@ -53,6 +53,29 @@ body {
     font-size: 16px;
 }
 
+main, footer {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.mobile-ticker-text {
+    display: none;
+}
+
+.card-luxury-timer-badge {
+    display: inline-block;
+    border: 1px solid rgba(255, 235, 59, 0.5);
+    background: rgba(255, 235, 59, 0.08);
+    color: #ffeb3b;
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
@@ -78,6 +101,7 @@ img {
 
 /* --- Layout Utility Classes --- */
 .container {
+    width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 24px;
@@ -2425,6 +2449,19 @@ section {
         margin: -20px -14px 20px -14px !important;
         border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
     }
+    .card-urgency-timer-wrapper {
+        flex-direction: column !important;
+        gap: 4px !important;
+        padding: 8px 10px !important;
+    }
+    .card-luxury-timer-badge {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        letter-spacing: 0.05em;
+        padding: 8px 10px;
+    }
     .visual-flyer-card {
         min-height: auto !important;
     }
@@ -2818,12 +2855,21 @@ body.has-ticker .main-header {
         white-space: nowrap; /* Strictly force single-line inline presentation */
     }
     
+    .desktop-ticker-text {
+        display: none !important;
+    }
+    
+    .mobile-ticker-text {
+        display: inline !important;
+    }
+    
     .ticker-countdown {
         padding: 2px 4px !important;
         gap: 3px !important;
         background: transparent !important;
         border: none !important;
         margin-left: 4px;
+        white-space: nowrap !important;
     }
     
     .ticker-timer-label {
@@ -2832,6 +2878,7 @@ body.has-ticker .main-header {
     
     .ticker-timer-numbers {
         font-size: 10.5px !important;
+        white-space: nowrap !important;
     }
     
     body.has-ticker {
@@ -3344,95 +3391,95 @@ body.has-ticker .main-header {
 }
 
 /* --- OVERRIDES FOR PACKAGE 2 (EMERALD GREEN / GOLD THEME) --- */
-#pkgComboCard {
+#pkgWeddingPreCard {
     background: linear-gradient(135deg, rgba(0, 35, 20, 0.95) 0%, rgba(0, 15, 8, 0.98) 100%) !important;
     border: 2px solid #00b894 !important;
     box-shadow: 0 8px 32px rgba(0, 184, 148, 0.15), 0 0 15px rgba(0, 184, 148, 0.1) !important;
 }
 
-#pkgComboCard:hover {
+#pkgWeddingPreCard:hover {
     box-shadow: 0 12px 40px rgba(0, 184, 148, 0.4), 0 0 25px rgba(0, 184, 148, 0.25) !important;
     border-color: #26de81 !important;
 }
 
 /* Green gradient ribbon tag override for Package 2 */
-#pkgComboCard .flyer-ribbon-tag {
+#pkgWeddingPreCard .flyer-ribbon-tag {
     background: linear-gradient(135deg, #00b894 0%, #10ac84 100%) !important;
 }
 
 /* Badge override for Package 2 */
-#pkgComboCard .package-badge {
+#pkgWeddingPreCard .package-badge {
     background: linear-gradient(135deg, #00b894 0%, #10ac84 100%) !important;
     color: white !important;
 }
 
 /* Button overrides for Package 2 */
-#pkgComboCard .select-pkg-btn {
+#pkgWeddingPreCard .select-pkg-btn {
     background: linear-gradient(135deg, #00b894 0%, #10ac84 100%) !important;
     color: white !important;
     border: none !important;
     box-shadow: 0 0 15px rgba(0, 184, 148, 0.25) !important;
 }
 
-#pkgComboCard .select-pkg-btn:hover {
+#pkgWeddingPreCard .select-pkg-btn:hover {
     background: linear-gradient(135deg, #26de81 0%, #10ac84 100%) !important;
     box-shadow: 0 0 25px rgba(38, 222, 129, 0.45) !important;
 }
 
 /* Section titles and icons inside Package 2 */
-#pkgComboCard .event-section-title {
+#pkgWeddingPreCard .event-section-title {
     color: #26de81 !important;
 }
 
-#pkgComboCard .package-features li i {
+#pkgWeddingPreCard .package-features li i {
     color: #26de81 !important;
 }
 
 /* Premium promo card adjustments for Package 2 */
-#pkgComboCard .premium-promo-card {
+#pkgWeddingPreCard .premium-promo-card {
     border-color: rgba(0, 184, 148, 0.35) !important;
     background: rgba(0, 184, 148, 0.015) !important;
 }
 
-#pkgComboCard .premium-promo-card svg {
+#pkgWeddingPreCard .premium-promo-card svg {
     stroke: #26de81 !important;
 }
 
-#pkgComboCard .premium-promo-card div {
+#pkgWeddingPreCard .premium-promo-card div {
     color: #26de81 !important;
 }
 
-#pkgComboCard .premium-promo-card div style {
+#pkgWeddingPreCard .premium-promo-card div style {
     color: #26de81 !important;
 }
 
-#pkgComboCard .premium-promo-card #comboCardTimer {
+#pkgWeddingPreCard .premium-promo-card #comboCardTimer {
     color: #26de81 !important;
 }
 
-#pkgComboCard .premium-promo-card > div:first-child {
+#pkgWeddingPreCard .premium-promo-card > div:first-child {
     border-color: rgba(0, 184, 148, 0.5) !important;
     background: rgba(0, 184, 148, 0.08) !important;
     color: #26de81 !important;
 }
 
-#pkgComboCard .bonus-claim-btn {
+#pkgWeddingPreCard .bonus-claim-btn {
     border-color: #00b894 !important;
     color: #26de81 !important;
     background: rgba(0, 184, 148, 0.05) !important;
 }
 
-#pkgComboCard .bonus-claim-btn:hover {
+#pkgWeddingPreCard .bonus-claim-btn:hover {
     background: #00b894 !important;
     color: white !important;
 }
 
-#pkgComboCard .flyer-additional-services-box h5,
-#pkgComboCard .flyer-additional-services-box ul li i {
+#pkgWeddingPreCard .flyer-additional-services-box h5,
+#pkgWeddingPreCard .flyer-additional-services-box ul li i {
     color: #26de81 !important;
 }
 
-#pkgComboCard .savings-tag-badge {
+#pkgWeddingPreCard .savings-tag-badge {
     background: rgba(0, 184, 148, 0.1) !important;
     color: #26de81 !important;
     border: 1px solid rgba(0, 184, 148, 0.2) !important;
@@ -3450,7 +3497,7 @@ body.has-ticker .main-header {
 }
 
 /* Specific border adjustments for colored package cards */
-#pkgComboCard .package-cover-wrapper {
+#pkgWeddingPreCard .package-cover-wrapper {
     border-bottom: 1px solid rgba(0, 184, 148, 0.25);
 }
 
