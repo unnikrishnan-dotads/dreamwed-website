@@ -46,11 +46,10 @@ const ConsultationSection = () => {
         <div className="max-w-3xl">
           <h2
             className="
-              text-[36px]
-              sm:text-[48px]
-              md:text-[80px]
+              text-[32px]
+              sm:text-[40px]
+              md:text-[56px]
               leading-[1.1]
-              md:leading-[0.95]
               tracking-[-0.04em]
               text-black
               font-normal
@@ -62,13 +61,13 @@ const ConsultationSection = () => {
 
           <p
             className="
-              mt-6
-              md:mt-8
-              text-[18px]
-              md:text-[28px]
+              mt-4
+              md:mt-6
+              text-[15px]
+              md:text-[18px]
               leading-relaxed
               text-[#697169]
-              max-w-2xl
+              max-w-xl
               font-light
             "
           >
@@ -80,10 +79,10 @@ const ConsultationSection = () => {
           <Button 
             to="/contact"
             variant="dark"
-            className="mt-10 md:mt-12 h-[64px] md:h-[76px] text-[18px] md:text-[24px] w-full sm:w-auto rounded-full shadow-lg hover:shadow-xl transition-all duration-500"
+            className="mt-8 md:mt-10 h-[52px] md:h-[60px] text-[15px] md:text-[17px] w-full sm:w-auto rounded-full shadow-lg hover:shadow-xl transition-all duration-500"
           >
             Book my free consultation
-            <ArrowRight size={24} className="md:w-7 md:h-7" />
+            <ArrowRight size={18} className="md:w-5 md:h-5" />
           </Button>
         </div>
 
