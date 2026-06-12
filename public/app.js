@@ -958,6 +958,9 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                         <!-- CTA Book buttons -->
                         <div class="flyer-footer-cta">
                             <button class="btn btn-primary btn-block select-pkg-btn">BOOK YOUR SLOTS NOW</button>
+                            <button class="btn btn-outline btn-block share-pkg-btn" style="margin-top: 8px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); color: white; font-size: 11px; font-weight: 700; padding: 8px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.3s;" data-id="${pkg.id}" data-title="${pkg.title}">
+                                <i class="fa-solid fa-share-nodes"></i> Share Package Details
+                            </button>
                             <span class="package-legal-disclaimer" style="display: block; text-align: center; font-size: 10px; color: #ff8a80; margin-top: 10px; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px;">
                                 <i class="fa-solid fa-circle-exclamation"></i> Travel & Stay charges are excluded
                             </span>
@@ -1057,6 +1060,9 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                         <div class="flyer-footer-cta">
                             <button class="btn btn-success btn-large btn-block select-pkg-btn">
                                 <span>BOOK YOUR SLOTS NOW</span> <i class="fa-solid fa-circle-check"></i>
+                            </button>
+                            <button class="btn btn-outline btn-block share-pkg-btn" style="margin-top: 8px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); color: white; font-size: 11px; font-weight: 700; padding: 8px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.3s;" data-id="${pkg.id}" data-title="${pkg.title}">
+                                <i class="fa-solid fa-share-nodes"></i> Share Package Details
                             </button>
                             <span class="package-legal-disclaimer" style="display: block; text-align: center; font-size: 10px; color: #ff8a80; margin-top: 10px; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px;">
                                 <i class="fa-solid fa-circle-exclamation"></i> Travel & Stay charges are excluded
@@ -3059,6 +3065,113 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             });
         }
     }
+
+    // --- 8. PREMIUM WEB SHARE INTEGRATION FOR CLIENT SHARING ---
+    document.addEventListener('click', async (e) => {
+        const shareBtn = e.target.closest('.share-pkg-btn');
+        if (!shareBtn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const packageId = shareBtn.getAttribute('data-id');
+        const packageTitle = shareBtn.getAttribute('data-title');
+        
+        // Generate the shareable URL with anchor hash pointing to this card
+        const shareUrl = `${window.location.origin}${window.location.pathname}#${packageId}`;
+        const shareText = `Check out this premium wedding package details from Dreamwed Stories: "${packageTitle}"`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Dreamwed Stories Package',
+                    text: shareText,
+                    url: shareUrl
+                });
+                console.log('Package shared successfully!');
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Error sharing:', err);
+                }
+            }
+        } else {
+            // Desktop fallback: Copy to Clipboard
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                
+                // Show a modern custom floating toast notification
+                showToastNotification('📋 Link Copied!', 'Package details link copied to clipboard. Share it with your client!');
+            } catch (err) {
+                console.error('Failed to copy to clipboard:', err);
+                alert(`Here is the link to share: ${shareUrl}`);
+            }
+        }
+    });
+
+    // Helper to render premium custom toast notifications
+    function showToastNotification(title, message) {
+        let container = document.getElementById('bookingToastContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'bookingToastContainer';
+            container.className = 'booking-toast-container';
+            document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'booking-toast';
+        toast.style.borderLeftColor = 'var(--primary-gold)';
+        toast.innerHTML = `
+            <div class="toast-icon-box" style="color: var(--primary-gold); border-color: rgba(218, 165, 32, 0.3);">
+                <i class="fa-solid fa-link"></i>
+            </div>
+            <div class="toast-content-box">
+                <div class="toast-headline" style="color: white;">${title}</div>
+                <div class="toast-sub" style="color: var(--text-muted); font-size: 10px; line-height: 1.3;">${message}</div>
+            </div>
+        `;
+
+        container.appendChild(toast);
+
+        // Slide out after 5 seconds
+        setTimeout(() => {
+            toast.classList.add('slide-out');
+            setTimeout(() => {
+                toast.remove();
+            }, 400);
+        }, 5000);
+    }
+
+    // --- 9. AUTO-SCROLL & HIGHLIGHT ON SHARED LINK ACCESS ---
+    function handleSharedPackageLink() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        const targetId = hash.substring(1);
+        
+        // Wait briefly to ensure dynamic visual-flyer-cards are fully rendered in DOM
+        setTimeout(() => {
+            const targetCard = document.getElementById(targetId);
+            if (targetCard) {
+                // Scroll smoothly to target card
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Apply gold pulse highlight animation
+                targetCard.classList.add('shared-highlight');
+                
+                // Remove highlight class after animation finishes
+                setTimeout(() => {
+                    targetCard.classList.remove('shared-highlight');
+                }, 4500); // 1.5s * 3 repeats
+            }
+        }, 300);
+    }
+
+    // Listen to hash change and window load events
+    window.addEventListener('hashchange', handleSharedPackageLink);
+    window.addEventListener('load', handleSharedPackageLink);
+    // Also run immediately in case DOM is already loaded
+    handleSharedPackageLink();
 
 });
 

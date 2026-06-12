@@ -2410,6 +2410,47 @@ section {
     .package-card {
         padding: 24px 20px !important;
     }
+    .package-cover-wrapper {
+        margin: -24px -20px 20px -20px !important;
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
+    }
+    .visual-flyer-card {
+        min-height: auto !important;
+    }
+    .flyer-body-content {
+        padding: 20px !important;
+    }
+    .template-gold .flyer-title {
+        font-size: 20px !important;
+    }
+    .template-burgundy .flyer-title {
+        font-size: 22px !important;
+    }
+    .flyer-quote {
+        font-size: 13px !important;
+        line-height: 1.4 !important;
+    }
+    .flyer-spotlight-box {
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 12px 16px !important;
+        align-items: center !important;
+        text-align: center !important;
+        transform: none !important;
+    }
+    .spotlight-left-block {
+        flex-direction: column !important;
+        gap: 4px !important;
+        transform: none !important;
+        align-items: center !important;
+    }
+    .spotlight-big-number {
+        font-size: 30px !important;
+    }
+    .spotlight-price {
+        transform: none !important;
+        font-size: 18px !important;
+    }
     .packages-grid.has-custom {
         grid-template-columns: 1fr !important;
     }
@@ -3778,5 +3819,22 @@ body.has-ticker .main-header {
     .cinema-grid {
         grid-template-columns: 1fr;
         max-width: 500px;
+    }
+}
+
+/* --- SHARED PACKAGE HIGHLIGHT PULSE ANIMATION --- */
+.shared-highlight {
+    animation: sharedCardPulse 1.5s ease-in-out 3 !important;
+    border: 2px solid var(--primary-gold) !important;
+}
+
+@keyframes sharedCardPulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(218, 165, 32, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(218, 165, 32, 0.7), 0 0 20px rgba(218, 165, 32, 0.4);
+        transform: scale(1.02);
     }
 }
