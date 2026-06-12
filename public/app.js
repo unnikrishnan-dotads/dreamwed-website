@@ -3077,8 +3077,8 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
         const packageId = shareBtn.getAttribute('data-id');
         const packageTitle = shareBtn.getAttribute('data-title');
         
-        // Generate the shareable URL with anchor hash pointing to this card
-        const shareUrl = `${window.location.origin}${window.location.pathname}#${packageId}`;
+        // Generate the shareable URL with query parameter pointing to this card
+        const shareUrl = `${window.location.origin}${window.location.pathname}?pkg=${packageId}`;
         const shareText = `Check out this premium wedding package details from Dreamwed Stories: "${packageTitle}"`;
 
         if (navigator.share) {
@@ -3145,9 +3145,12 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     // --- 9. AUTO-SCROLL & HIGHLIGHT ON SHARED LINK ACCESS ---
     function handleSharedPackageLink() {
         const hash = window.location.hash;
-        if (!hash) return;
+        const urlParams = new URLSearchParams(window.location.search);
+        const pkgQuery = urlParams.get('pkg');
+        
+        if (!hash && !pkgQuery) return;
 
-        const targetId = hash.substring(1);
+        const targetId = hash ? hash.substring(1) : pkgQuery;
         
         // Wait briefly to ensure dynamic visual-flyer-cards are fully rendered in DOM
         setTimeout(() => {

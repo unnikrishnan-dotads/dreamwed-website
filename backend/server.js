@@ -43,6 +43,76 @@ app.use('/dashboard', express.static(path.join(__dirname, 'dashboard')));
 
 // Serve static client website from DreamwedWebsite dist folder
 const websiteDist = path.join(__dirname, '../dist');
+
+// Dynamic packages meta injection route
+app.get('/packages.html', (req, res) => {
+  const pkgId = req.query.pkg;
+  
+  // Try dist folder first, then public folder
+  let filePath = path.join(__dirname, '../dist/packages.html');
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(__dirname, 'public/packages.html');
+  }
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(__dirname, '../public/packages.html');
+  }
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send('Packages page not found');
+  }
+
+  try {
+    let html = fs.readFileSync(filePath, 'utf8');
+    
+    if (pkgId) {
+      let title = "Dreamwed Stories | Premium Wedding Packages";
+      let desc = "Curated Kerala wedding photography and cinematic filmmaking packages.";
+      let image = "https://dreamwedstories.co.in/images/package2_cover.jpg";
+      
+      if (pkgId === 'pkgWeddingBasicCard') {
+        title = "Wedding Photography Package - ₹39,999 | Dreamwed Stories";
+        desc = "1 Photographer + 1 Videographer. Wedding & Reception Coverage. Inclusions: 80-Pages Premium Layflat Album, HD Highlights Film, 2 Wall Frames. Pay only ₹5,000 to book.";
+        image = "https://dreamwedstories.co.in/images/DSC00315-min.jpg";
+      } else if (pkgId === 'pkgWeddingPreCard') {
+        title = "Wedding & Pre-Wedding Package - ₹54,999 | Dreamwed Stories";
+        desc = "Wedding + Reception Coverage + Pre-Wedding Photo Session. Inclusions: 2 Photographers + 1 Videographer, 80-Page Album, HD Cinematic Video + Highlights.";
+        image = "https://dreamwedstories.co.in/images/package2_cover.jpg";
+      } else if (pkgId === 'pkgCandidCard') {
+        title = "Candid Photography Package - ₹69,999 | Dreamwed Stories";
+        desc = "Creative Candid & Traditional. Inclusions: 1 Lead Candid Photographer, 1 Assistant Photographer, 80-Page layflat album, 2 Wall Frames, Free Pre-wedding photos.";
+        image = "https://dreamwedstories.co.in/images/DSC00470-min.jpg";
+      } else if (pkgId === 'pkgCandidVideoCard') {
+        title = "Candid Photo & Video Package - ₹79,999 | Dreamwed Stories";
+        desc = "Premium Candid Photography + Cinematic Videography. Inclusions: 1 Lead Candid Photographer, 1 Traditional Photographer, 1 Cinema Videographer, highlights, 80-Page Album.";
+        image = "https://dreamwedstories.co.in/images/package3_cover.jpg";
+      } else if (pkgId === 'pkgBrideGroomCard') {
+        title = "Bride & Groom Package 1 - ₹1,10,000 | Dreamwed Stories";
+        desc = "Dual-Side Wedding Coverage. Inclusions: 4-Camera Setup, 80-Page Album + Parent copy, Cinematic Highlights Film, 2 Luxury Frames, Album Bag. Free Pre-Wedding!";
+        image = "https://dreamwedstories.co.in/images/package3_cover.jpg";
+      }
+      
+      // Inject custom OG tags in the head of packages.html
+      html = html.replace(/<meta property="og:title" content="[^"]*"\s*\/?>/g, `<meta property="og:title" content="${title}" />`);
+      html = html.replace(/<meta property="og:description" content="[^"]*"\s*\/?>/g, `<meta property="og:description" content="${desc}" />`);
+      html = html.replace(/<meta property="og:image" content="[^"]*"\s*\/?>/g, `<meta property="og:image" content="${image}" />`);
+      html = html.replace(/<meta name="twitter:title" content="[^"]*"\s*\/?>/g, `<meta name="twitter:title" content="${title}" />`);
+      html = html.replace(/<meta name="twitter:description" content="[^"]*"\s*\/?>/g, `<meta name="twitter:description" content="${desc}" />`);
+      html = html.replace(/<meta name="twitter:image" content="[^"]*"\s*\/?>/g, `<meta name="twitter:image" content="${image}" />`);
+    }
+    
+    res.set({
+      'Content-Type': 'text/html',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+    return res.send(html);
+  } catch (err) {
+    console.error('Error serving dynamic packages page:', err);
+    return res.status(500).send('Internal Server Error');
+  }
+});
+
 if (fs.existsSync(websiteDist)) {
   console.log(`📦 Serving React website static assets from: ${websiteDist}`);
   app.use(express.static(websiteDist, {

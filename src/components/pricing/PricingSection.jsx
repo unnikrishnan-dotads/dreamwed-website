@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, Gift, Sparkles } from "lucide-react";
+import { Check, X, Gift, Sparkles, Heart, Tag } from "lucide-react";
 import Button from "../ui/Button";
 
 const pricingPlans = [
@@ -67,6 +67,12 @@ const cardVariants = {
 const PricingSection = () => {
   const [activePlanIndex, setActivePlanIndex] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [likedPlans, setLikedPlans] = useState({});
+
+  const toggleLike = (e, index) => {
+    e.stopPropagation();
+    setLikedPlans((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
 
   // Keyboard Escape listener to exit modal smoothly
   useEffect(() => {
@@ -116,100 +122,178 @@ const PricingSection = () => {
         {/* Pricing Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
           {pricingPlans.map((plan, index) => {
-            const isPopular = index === 2;
-            return (
-              <motion.div
-                key={index}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                onClick={() => {
-                  setActivePlanIndex(index);
-                  setCurrentSlide(0);
-                }}
-                className={`relative rounded-[30px] md:rounded-[40px] p-8 md:p-10 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
-                  isPopular 
-                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-2xl" 
-                    : "bg-[#ececea] text-black hover:bg-white border border-transparent hover:border-zinc-200"
-                }`}
-              >
-                {/* Click hint inside card */}
-                <div className={`absolute top-4 left-6 text-[8px] font-bold tracking-widest uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-300 ${isPopular ? "text-white/60" : "text-zinc-500"}`}>
-                  ✨ Click for photos & details
-                </div>
-
-                {/* Popular Badge */}
-                {isPopular && (
-                  <div className="absolute top-6 right-6 md:top-8 md:right-8 px-3 py-1 bg-white text-black text-[9px] md:text-[10px] font-bold rounded-full tracking-widest uppercase shadow-md">
-                    ✦ Most Popular
-                  </div>
-                )}
-
-                <div className="flex-1 pt-4">
-                  <span className={`text-[10px] tracking-[0.2em] uppercase font-bold mb-4 block ${
-                    isPopular ? "text-zinc-500" : "text-[#8a9289]"
-                  }`}>
-                    {plan.tag}
-                  </span>
-                  
-                  <h3 className="text-[28px] md:text-[34px] leading-[1.1] tracking-[-0.04em] font-normal mb-3 font-serif">
-                    {plan.title}
-                  </h3>
-                  
-                  <p className={`text-[14px] md:text-[15px] leading-relaxed mb-6 md:mb-8 min-h-[2.5rem] font-light ${
-                    isPopular ? "text-zinc-400" : "text-[#66706a]"
-                  }`}>
-                    {plan.desc}
-                  </p>
-
-                  <div className="mb-6 md:mb-8">
-                    <span className="text-[34px] md:text-[44px] leading-none tracking-[-0.04em] font-normal numbers-pro">
-                      {plan.price}
-                    </span>
-                  </div>
-
-                  <div className={`w-full h-px mb-6 md:mb-8 ${
-                    isPopular ? "bg-zinc-800" : "bg-[#d8d8d8]"
-                  }`} />
-
-                  <ul className="space-y-3 md:space-y-4">
-                    {plan.features.slice(0, 5).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <Check 
-                          size={16} 
-                          className={`mt-1 shrink-0 ${
-                            isPopular ? "text-white" : "text-[#5d665f]"
-                          }`} 
-                        />
-                        <span className={`text-[14px] md:text-[15px] leading-snug font-light numbers-pro ${
-                          isPopular ? "text-zinc-300" : "text-[#2c2c2c]"
-                        }`}>
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                    {plan.features.length > 5 && (
-                      <li className={`text-[12px] font-bold tracking-wider uppercase pl-7 mt-2 ${
-                        isPopular ? "text-zinc-400" : "text-[#5d665f]"
-                  }`}>
-                        + View {plan.features.length - 5} More features...
-                      </li>
-                    )}
-                  </ul>
-                </div>
-
-                <Button 
-                  to="/contact"
-                  variant={isPopular ? "secondary" : "primary"}
-                  className="mt-8 md:mt-10 w-full py-4 md:py-4.5 rounded-[16px] md:rounded-[20px]"
-                  onClick={(e) => e.stopPropagation()}
+            const isPopular = index === 2; // Gold plan (Style 1 - Full Image Overlay)
+            
+            if (isPopular) {
+              // Style 1: Full-Image Overlay Card (Gold Plan)
+              return (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  onClick={() => {
+                    setActivePlanIndex(index);
+                    setCurrentSlide(0);
+                  }}
+                  className="relative rounded-[30px] md:rounded-[40px] overflow-hidden flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] shadow-xl hover:shadow-2xl aspect-[3/4.5] md:aspect-auto min-h-[500px]"
                 >
-                  Book a Consultation
-                </Button>
-              </motion.div>
-            );
+                  {/* Background Cover Image with Zoom Effect */}
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src={plan.images[0]}
+                      alt={plan.title}
+                      className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
+                    />
+                    {/* Rich dark gradient for high typography contrast and readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent z-10" />
+                  </div>
+
+                  {/* Click hint inside card */}
+                  <div className="absolute top-6 left-6 text-[8px] font-bold tracking-widest uppercase text-white/50 group-hover:text-white/95 transition-colors duration-300 z-20">
+                    ✨ Click for photos & details
+                  </div>
+
+                  {/* Floating Heart Icon Button in Top Right */}
+                  <button
+                    onClick={(e) => toggleLike(e, index)}
+                    className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-black/35 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                  >
+                    <Heart
+                      size={18}
+                      className={`transition-colors duration-300 ${likedPlans[index] ? "fill-red-500 stroke-red-500" : "stroke-white"}`}
+                    />
+                  </button>
+
+                  {/* Card Content Overlaid on Bottom */}
+                  <div className="relative z-10 flex flex-col h-full justify-between p-8 md:p-10 flex-1">
+                    {/* Top Tag */}
+                    <div>
+                      <span className="inline-block px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/30 text-[9px] tracking-widest uppercase font-bold mt-4">
+                        ✦ {plan.tag}
+                      </span>
+                    </div>
+
+                    {/* Bottom Info Details and CTA */}
+                    <div className="mt-auto">
+                      <h3 className="text-[28px] md:text-[34px] leading-[1.1] tracking-tight font-serif text-white font-normal mb-2">
+                        {plan.title}
+                      </h3>
+                      
+                      <p className="text-zinc-300 text-xs md:text-sm font-light mb-4 line-clamp-2 leading-relaxed">
+                        {plan.desc}
+                      </p>
+
+                      {/* Info labels row matching the travel card style */}
+                      <div className="flex flex-wrap items-center gap-3 mb-6 text-white/90 text-xs font-light">
+                        <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
+                          <Tag size={12} className="text-amber-400" />
+                          <span>from <strong className="font-semibold text-white">{plan.price}</strong></span>
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
+                          <span>✨ Full Video + Photo</span>
+                        </div>
+                      </div>
+
+                      {/* CTA Button centered at bottom */}
+                      <Button
+                        to="/contact"
+                        variant="secondary"
+                        className="w-full py-4.5 rounded-[20px] bg-white text-black hover:bg-zinc-100 hover:shadow-lg transition-all duration-300 uppercase tracking-wider text-xs font-bold"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Book Consultation
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            } else {
+              // Style 2: Top Image, White Bottom Content (Silver & Gold Lite Plans)
+              return (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  onClick={() => {
+                    setActivePlanIndex(index);
+                    setCurrentSlide(0);
+                  }}
+                  className="relative rounded-[30px] md:rounded-[40px] bg-white border border-zinc-100 p-4 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] shadow-sm hover:shadow-xl min-h-[500px]"
+                >
+                  {/* Top Image Header Container with Rounded Corners */}
+                  <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden">
+                    <img
+                      src={plan.images[0]}
+                      alt={plan.title}
+                      className="w-full h-full object-cover transition-transform duration-1000 ease-[0.16, 1, 0.3, 1] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+                    
+                    {/* Floating Info Tag inside Image */}
+                    <span className="absolute top-4 left-4 inline-block px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-zinc-100 text-[8px] tracking-wider uppercase font-bold border border-white/10">
+                      {plan.tag}
+                    </span>
+
+                    {/* Click hint overlaid on image hover */}
+                    <div className="absolute bottom-4 left-4 text-[8px] font-bold tracking-widest uppercase text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      ✨ Click for Details
+                    </div>
+                  </div>
+
+                  {/* Bottom details block */}
+                  <div className="flex-1 flex flex-col justify-between pt-6 px-3 pb-2">
+                    <div>
+                      <h3 className="text-[26px] md:text-[30px] leading-[1.1] tracking-tight font-serif text-zinc-950 font-normal mb-2">
+                        {plan.title}
+                      </h3>
+                      
+                      <p className="text-zinc-500 text-xs md:text-sm font-light mb-4 line-clamp-2 leading-relaxed">
+                        {plan.desc}
+                      </p>
+
+                      {/* Info labels row with price tag icon */}
+                      <div className="flex flex-wrap items-center gap-3 mb-6 text-zinc-600 text-xs font-light">
+                        <div className="flex items-center gap-1.5 bg-zinc-100 px-3 py-1.5 rounded-full">
+                          <Tag size={12} className="text-[#1e3f20]" />
+                          <span>from <strong className="font-semibold text-zinc-900">{plan.price}</strong></span>
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-zinc-100 px-3 py-1.5 rounded-full">
+                          <span>📷 {plan.title === "Silver" ? "Photo Only" : "Photo + Video"}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CTA Button and Heart Icon Button side-by-side */}
+                    <div className="flex items-center gap-3 mt-auto">
+                      <Button
+                        to="/contact"
+                        variant="primary"
+                        className="flex-1 py-4 rounded-[20px] bg-zinc-950 text-white hover:bg-black uppercase tracking-wider text-xs font-bold"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Book Consultation
+                      </Button>
+                      <button
+                        onClick={(e) => toggleLike(e, index)}
+                        className="w-12 h-12 rounded-[20px] border border-zinc-200 flex items-center justify-center bg-white transition-all hover:bg-zinc-50 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                        title="Add to wishlist"
+                      >
+                        <Heart
+                          size={18}
+                          className={`transition-colors duration-300 ${likedPlans[index] ? "fill-red-500 stroke-red-500" : "stroke-zinc-400"}`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            }
           })}
         </div>
       </div>
