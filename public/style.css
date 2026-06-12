@@ -42,10 +42,13 @@ html {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-light);
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
     overflow-x: hidden;
+    width: 100%;
     line-height: 1.6;
     font-size: 16px;
 }
@@ -2402,16 +2405,24 @@ section {
 
 /* Mobile Responsiveness override for flyers */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 12px !important;
+    }
+    .scarcity-top-ticker {
+        overflow: hidden !important;
+    }
     .packages-grid {
         grid-template-columns: 1fr !important;
         gap: 20px;
-        padding: 0 16px;
+        padding: 0 !important;
+        width: 100% !important;
     }
     .package-card {
-        padding: 24px 20px !important;
+        padding: 20px 14px !important;
+        width: 100% !important;
     }
     .package-cover-wrapper {
-        margin: -24px -20px 20px -20px !important;
+        margin: -20px -14px 20px -14px !important;
         border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
     }
     .visual-flyer-card {
