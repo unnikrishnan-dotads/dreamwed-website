@@ -2402,8 +2402,13 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             const ribbonClass = (id === 'pkgCandidCard' || id === 'pkgBrideGroomCard') ? 'best-deal-ribbon' : '';
 
             // Extract original image
-            const imgEl = card.querySelector('.package-cover-img');
-            const originalImg = imgEl ? imgEl.getAttribute('src') : 'images/DSC00315-min.jpg';
+            let originalImg = '';
+            if (id === 'pkgWeddingBasicCard') {
+                originalImg = 'images/uploaded_bride_purple.jpg';
+            } else {
+                const imgEl = card.querySelector('.package-cover-img');
+                originalImg = imgEl ? imgEl.getAttribute('src') : 'images/DSC00315-min.jpg';
+            }
 
             // Extract original features checklist
             let checklistHtml = '';
