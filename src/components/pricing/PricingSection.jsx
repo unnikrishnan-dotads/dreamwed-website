@@ -89,24 +89,24 @@ const PricingSection = () => {
   }, [activePlanIndex]);
 
   return (
-    <section className="w-full bg-[#f5f5f3] py-24 md:py-32 px-4 md:px-6 overflow-hidden">
+    <section className="w-full bg-[#f5f5f3] py-20 md:py-24 px-4 md:px-6 overflow-hidden">
       <div className="container">
         
         {/* Header Section */}
-        <div className="text-center mb-16 md:mb-24 px-4">
+        <div className="text-center mb-12 md:mb-16 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-5 py-2 rounded-full bg-[#ececea] text-[#5d665f] text-[11px] md:text-[13px] tracking-[0.2em] uppercase font-semibold mb-6 md:mb-8">
+            <span className="inline-block px-5 py-2 rounded-full bg-[#ececea] text-[#5d665f] text-[11px] md:text-[12px] tracking-[0.2em] uppercase font-semibold mb-4 md:mb-6">
               Investment
             </span>
-            <h2 className="text-[42px] sm:text-[52px] md:text-[80px] leading-[1.1] tracking-[-0.04em] text-black font-normal mb-6 md:mb-8 text-balance">
+            <h2 className="text-[36px] sm:text-[44px] md:text-[56px] leading-[1.1] tracking-[-0.04em] text-black font-normal mb-4 md:mb-6 text-balance">
               Wedding Packages
             </h2>
-            <p className="text-[17px] md:text-[22px] leading-relaxed text-[#6f766f] max-w-2xl mx-auto font-light">
+            <p className="text-[15px] md:text-[18px] leading-relaxed text-[#6f766f] max-w-xl mx-auto font-light">
               Choose the package that fits your vision. All packages include a 
               personalised story consultation before the wedding.
             </p>
@@ -114,7 +114,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
           {pricingPlans.map((plan, index) => {
             const isPopular = index === 2;
             return (
@@ -129,61 +129,61 @@ const PricingSection = () => {
                   setActivePlanIndex(index);
                   setCurrentSlide(0);
                 }}
-                className={`relative rounded-[30px] md:rounded-[40px] p-8 md:p-10 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
+                className={`relative rounded-[28px] md:rounded-[36px] p-6 md:p-8 flex flex-col transition-all duration-700 ease-[0.22, 1, 0.36, 1] group cursor-pointer hover:scale-[1.02] ${
                   isPopular 
-                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-2xl" 
+                    ? "bg-[#1a1a1a] text-white xl:scale-105 xl:z-10 shadow-xl" 
                     : "bg-[#ececea] text-black hover:bg-white border border-transparent hover:border-zinc-200"
                 }`}
               >
                 {/* Click hint inside card */}
-                <div className={`absolute top-4 left-8 text-[8px] font-bold tracking-widest uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-300 ${isPopular ? "text-white/60" : "text-zinc-500"}`}>
+                <div className={`absolute top-4 left-6 text-[8px] font-bold tracking-widest uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-300 ${isPopular ? "text-white/60" : "text-zinc-500"}`}>
                   ✨ Click for photos & details
                 </div>
 
                 {/* Popular Badge */}
                 {isPopular && (
-                  <div className="absolute top-8 right-8 md:top-10 md:right-10 px-4 py-1.5 bg-white text-black text-[10px] md:text-[12px] font-bold rounded-full tracking-widest uppercase shadow-md">
+                  <div className="absolute top-6 right-6 md:top-8 md:right-8 px-3 py-1 bg-white text-black text-[9px] md:text-[10px] font-bold rounded-full tracking-widest uppercase shadow-md">
                     ✦ Most Popular
                   </div>
                 )}
 
                 <div className="flex-1 pt-4">
-                  <span className={`text-[11px] tracking-[0.25em] uppercase font-bold mb-6 block ${
+                  <span className={`text-[10px] tracking-[0.2em] uppercase font-bold mb-4 block ${
                     isPopular ? "text-zinc-500" : "text-[#8a9289]"
                   }`}>
                     {plan.tag}
                   </span>
                   
-                  <h3 className="text-[36px] md:text-[48px] leading-[1] tracking-[-0.04em] font-normal mb-4 font-serif">
+                  <h3 className="text-[28px] md:text-[34px] leading-[1.1] tracking-[-0.04em] font-normal mb-3 font-serif">
                     {plan.title}
                   </h3>
                   
-                  <p className={`text-[15px] md:text-[17px] leading-relaxed mb-10 md:mb-12 min-h-[3rem] font-light ${
+                  <p className={`text-[14px] md:text-[15px] leading-relaxed mb-6 md:mb-8 min-h-[2.5rem] font-light ${
                     isPopular ? "text-zinc-400" : "text-[#66706a]"
                   }`}>
                     {plan.desc}
                   </p>
 
-                  <div className="mb-8 md:mb-10">
-                    <span className="text-[42px] md:text-[56px] leading-none tracking-[-0.04em] font-normal numbers-pro">
+                  <div className="mb-6 md:mb-8">
+                    <span className="text-[34px] md:text-[44px] leading-none tracking-[-0.04em] font-normal numbers-pro">
                       {plan.price}
                     </span>
                   </div>
 
-                  <div className={`w-full h-px mb-10 md:mb-12 ${
+                  <div className={`w-full h-px mb-6 md:mb-8 ${
                     isPopular ? "bg-zinc-800" : "bg-[#d8d8d8]"
                   }`} />
 
-                  <ul className="space-y-4 md:space-y-6">
+                  <ul className="space-y-3 md:space-y-4">
                     {plan.features.slice(0, 5).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-4">
+                      <li key={i} className="flex items-start gap-3">
                         <Check 
-                          size={18} 
+                          size={16} 
                           className={`mt-1 shrink-0 ${
                             isPopular ? "text-white" : "text-[#5d665f]"
                           }`} 
                         />
-                        <span className={`text-[15px] md:text-[17px] leading-snug font-light numbers-pro ${
+                        <span className={`text-[14px] md:text-[15px] leading-snug font-light numbers-pro ${
                           isPopular ? "text-zinc-300" : "text-[#2c2c2c]"
                         }`}>
                           {feature}
@@ -191,9 +191,9 @@ const PricingSection = () => {
                       </li>
                     ))}
                     {plan.features.length > 5 && (
-                      <li className={`text-[13px] font-bold tracking-wider uppercase pl-8 mt-2 ${
+                      <li className={`text-[12px] font-bold tracking-wider uppercase pl-7 mt-2 ${
                         isPopular ? "text-zinc-400" : "text-[#5d665f]"
-                      }`}>
+                  }`}>
                         + View {plan.features.length - 5} More features...
                       </li>
                     )}
@@ -203,7 +203,7 @@ const PricingSection = () => {
                 <Button 
                   to="/contact"
                   variant={isPopular ? "secondary" : "primary"}
-                  className="mt-10 md:mt-14 w-full py-5 md:py-6 rounded-[20px] md:rounded-[24px]"
+                  className="mt-8 md:mt-10 w-full py-4 md:py-4.5 rounded-[16px] md:rounded-[20px]"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Book a Consultation
