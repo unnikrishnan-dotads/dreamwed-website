@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Hero from "../components/sections/Hero";
 import ExperienceBento from "../components/sections/ExperienceBento";
-import PricingSection from "../components/pricing/PricingSection";
 import TestimonialSection from "../components/sections/TestimonialSection";
 import ConsultationSection from "../components/sections/ConsultationSection";
 import InstagramFeed from "../components/sections/InstagramFeed";
@@ -139,9 +138,6 @@ const Home = () => {
 
       {/* 6. Bento Grid Experience */}
       <ExperienceBento />
-
-      {/* 7. Pricing Section */}
-      <PricingSection />
 
       {/* 8. Testimonials Section */}
       <TestimonialSection />
