@@ -588,6 +588,39 @@ export default function CustomPackage() {
     );
   }
 
+  if (!config) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-6 text-white">
+        <div className="text-center max-w-md space-y-6 bg-[#16161a] border border-white/5 p-8 rounded-3xl shadow-xl">
+          <AlertTriangle className="h-10 w-10 text-red-500 mx-auto" />
+          <h2 className="text-xl font-bold">Unable to Synchronize Config</h2>
+          <p className="text-zinc-500 text-xs leading-relaxed">
+            The frontend could not connect to the backend server. Please verify the Express backend server on port 3000 is running.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setLoading(true);
+              fetch(`${API_BASE}/api/public/package-config`)
+                .then((res) => res.json())
+                .then((data) => {
+                  setConfig(data);
+                  setLoading(false);
+                })
+                .catch((err) => {
+                  console.error("Failed to load package config on retry:", err);
+                  setLoading(false);
+                });
+            }}
+            className="w-full py-3 bg-[#d1a852] text-black font-bold rounded-full text-xs uppercase tracking-widest hover:bg-[#b4975a] transition-all"
+          >
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // Success view
   if (submissionResult) {
     return (
