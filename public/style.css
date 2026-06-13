@@ -4161,20 +4161,70 @@ body.has-ticker .main-header {
 .package-card-top-row .flyer-ribbon-tag {
     position: static !important;
     transform: none !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid rgba(209, 168, 82, 0.35) !important;
+    color: #d1a852 !important;
     font-size: 8.5px !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    padding: 6px 12px !important;
+    letter-spacing: 0.12em !important;
+    padding: 6px 14px !important;
     border-radius: 100px !important;
-    box-shadow: none !important;
+    box-shadow: 0 0 10px rgba(209, 168, 82, 0.15) !important;
     margin: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     line-height: 1 !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+.best-deal-ribbon {
+    background: linear-gradient(135deg, #d1a852 0%, #b8903b 100%) !important;
+    color: #000000 !important;
+    border: 1px solid #d1a852 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 0 15px rgba(209, 168, 82, 0.45) !important;
+}
+
+/* Luxury Offer Badge Styles */
+.luxury-offer-badge-wrapper {
+    margin-bottom: 16px !important;
+    width: 100% !important;
+}
+
+.luxury-offer-badge {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    background: linear-gradient(135deg, rgba(209, 168, 82, 0.12) 0%, rgba(209, 168, 82, 0.02) 100%) !important;
+    border: 1px solid rgba(209, 168, 82, 0.3) !important;
+    padding: 8px 14px !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(8px) !important;
+    width: max-content !important;
+    margin: 0 auto !important;
+    box-shadow: 0 0 12px rgba(209, 168, 82, 0.08) !important;
+}
+
+.luxury-offer-badge i {
+    color: #d1a852 !important;
+    font-size: 8px !important;
+    animation: goldPulse 2s infinite ease-in-out !important;
+}
+
+.luxury-offer-badge span {
+    color: #d1a852 !important;
+    font-size: 8.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+}
+
+@keyframes goldPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
 }
 
 .card-heart-btn {

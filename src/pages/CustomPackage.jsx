@@ -322,7 +322,7 @@ export default function CustomPackage() {
 
   const pageTopRef = useRef(null);
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
   // Fetch package configs
   useEffect(() => {

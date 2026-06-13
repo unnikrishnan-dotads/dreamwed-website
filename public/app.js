@@ -2349,6 +2349,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Videographer',
                 ribbon: '+ FREE PRE-WEDDING PHOTO (LIMITED TIME)',
                 ribbonClass: '',
+                preweddingOffer: 'FREE PRE-WEDDING PHOTO (WORTH ₹15,000)',
                 img: 'uploaded_bride_yellow.jpg',
                 highlighted: false
             },
@@ -2361,6 +2362,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Videographer',
                 ribbon: '+ FREE PRE-WEDDING VIDEO (LIMITED TIME)',
                 ribbonClass: '',
+                preweddingOffer: 'FREE PRE-WEDDING VIDEO FILM (WORTH ₹9,999)',
                 img: 'uploaded_couple_blackwhite.jpg',
                 highlighted: false
             },
@@ -2373,6 +2375,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Candid + 1 Videographer',
                 ribbon: '+ LIMITED TIME OFFER',
                 ribbonClass: '',
+                preweddingOffer: 'FREE PRE-WEDDING PHOTO SESSION',
                 img: 'uploaded_bride_traditional.jpg',
                 highlighted: false
             },
@@ -2385,6 +2388,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Candid + 1 Videographer',
                 ribbon: '+ LIMITED TIME OFFER',
                 ribbonClass: 'best-deal-ribbon',
+                preweddingOffer: 'FREE BOTH PRE-WEDDING PHOTO & VIDEO (WORTH ₹30,000)',
                 img: 'uploaded_couple_blackwhite.jpg',
                 highlighted: true
             }
@@ -2445,6 +2449,16 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                     <span class="package-category-title">${data.category}</span>
                     <p class="package-short-desc">${data.desc}</p>
                     
+                    <!-- Luxury Pre-Wedding Offer Callout -->
+                    ${data.preweddingOffer ? `
+                    <div class="luxury-offer-badge-wrapper">
+                        <div class="luxury-offer-badge">
+                            <i class="fa-solid fa-star"></i>
+                            <span>${data.preweddingOffer}</span>
+                        </div>
+                    </div>
+                    ` : ''}
+
                     <!-- Stacked Pills -->
                     <div class="package-pills-stack">
                         <div class="package-pill price-pill">

@@ -67,5 +67,14 @@ const gdriveProxyPlugin = () => ({
 
 export default defineConfig({
   plugins: [react(), gdriveProxyPlugin()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  }
 })
 

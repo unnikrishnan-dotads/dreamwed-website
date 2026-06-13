@@ -11,6 +11,7 @@ const pricingPlans = [
     tag: "+ FREE PRE-WEDDING PHOTO (LIMITED TIME)",
     modalTag: "Essential",
     subtitle: "ESSENTIAL SINGLE-SIDE",
+    preweddingOffer: "FREE PRE-WEDDING PHOTO (WORTH ₹15,000)",
     desc: "Our highly sought-after single-side coverage package. Designed to capture every detail of your celebrations with elite creative precision and beautiful physical heirlooms.",
     setup: "1 Photographer + 1 Videographer",
     images: ["/uploaded_bride_yellow.jpg", "/athulraj.jpg", "/anandha_lekshmi.jpg"],
@@ -37,6 +38,7 @@ const pricingPlans = [
     tag: "+ FREE PRE-WEDDING VIDEO (LIMITED TIME)",
     modalTag: "Premium",
     subtitle: "PRE-WEDDING & PHOTO",
+    preweddingOffer: "FREE PRE-WEDDING VIDEO FILM (WORTH ₹9,999)",
     desc: "Perfect for capturing your beautiful pre-wedding love story and the complete wedding day celebrations. Includes comprehensive coverage and professional deliverables.",
     setup: "1 Photographer + 1 Videographer",
     images: ["/uploaded_couple_blackwhite.jpg", "/kochi_couple_carry.jpg", "/deepak.jpg"],
@@ -61,6 +63,7 @@ const pricingPlans = [
     tag: "+ LIMITED TIME OFFER",
     modalTag: "Signature",
     subtitle: "ARTISTIC CANDID SHOTS",
+    preweddingOffer: "FREE PRE-WEDDING PHOTO SESSION",
     desc: "Our creative 3-camera setup featuring dedicated candid photography. Ideal for couples who want artistic, natural, and unstaged storytelling of their special day.",
     setup: "1 Photographer + 1 Candid Photographer + 1 Videographer",
     images: ["/uploaded_bride_traditional.jpg", "/uploaded_bride_gold.jpg", "/chindu.jpg"],
@@ -85,6 +88,7 @@ const pricingPlans = [
     tag: "+ LIMITED TIME OFFER",
     modalTag: "Ultimate",
     subtitle: "CINEMATIC CINEMA STORY",
+    preweddingOffer: "FREE BOTH PRE-WEDDING PHOTO & VIDEO (WORTH ₹30,000)",
     desc: "Our signature high-production cinematic package. Includes both premium pre-wedding photo & cinema film, fine-art layflat albums, and full-spectrum cinema-grade wedding storytelling.",
     setup: "1 Photographer + 1 Candid Photographer + 1 Videographer",
     images: ["/uploaded_couple_blackwhite.jpg", "/kochi_couple_carry.jpg", "/deepak.jpg"],
@@ -221,10 +225,10 @@ const PricingSection = () => {
                 {/* Floating Top Elements */}
                 <div className="absolute top-6 left-6 right-6 z-20 flex justify-between items-center">
                   {/* Badge */}
-                  <div className={`px-3 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase flex items-center gap-1 ${
+                  <div className={`px-3.5 py-1.5 rounded-full text-[8.5px] font-extrabold tracking-widest uppercase flex items-center gap-1 backdrop-blur-md transition-all duration-300 ${
                     isSpecial 
-                      ? "bg-[#d1a852] text-black" 
-                      : "bg-white/10 backdrop-blur-md border border-white/20 text-white"
+                      ? "bg-gradient-to-r from-[#d1a852] to-[#b8903b] text-black border border-[#d1a852] shadow-[0_0_15px_rgba(209,168,82,0.45)]" 
+                      : "bg-black/50 border border-[#d1a852]/35 text-[#d1a852] shadow-[0_0_10px_rgba(209,168,82,0.2)]"
                   }`}>
                     {plan.tag}
                   </div>
@@ -261,9 +265,19 @@ const PricingSection = () => {
                   </p>
 
                   {/* Description */}
-                  <p className="text-zinc-400 text-[11px] md:text-[12px] font-light text-center max-w-[255px] mx-auto mb-5 line-clamp-2 leading-relaxed">
+                  <p className="text-zinc-400 text-[11px] md:text-[12px] font-light text-center max-w-[255px] mx-auto mb-4 line-clamp-2 leading-relaxed">
                     {plan.desc}
                   </p>
+
+                  {/* Luxury Pre-Wedding Offer Callout */}
+                  {plan.preweddingOffer && (
+                    <div className="mb-4 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#d1a852]/12 via-[#d1a852]/3 to-transparent border border-[#d1a852]/30 backdrop-blur-md flex items-center justify-center gap-1.5 max-w-[260px] mx-auto shadow-[0_0_15px_rgba(209,168,82,0.08)]">
+                      <Sparkles size={10} className="text-[#d1a852] animate-pulse flex-shrink-0" />
+                      <span className="text-[#d1a852] text-[8.5px] font-bold tracking-[0.12em] uppercase text-center leading-tight">
+                        {plan.preweddingOffer}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Pills Stack */}
                   <div className="flex flex-col items-center gap-2 mb-6">
