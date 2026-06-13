@@ -2300,6 +2300,9 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                             <button class="pkg-modal-book-btn select-pkg-btn" data-plan="${planName}" data-price="${planPrice}">
                                 BOOK A CONSULTATION NOW 🌟
                             </button>
+                            <button class="pkg-modal-share-btn share-pkg-btn" data-id="${cardId}" data-title="${displayTitleText}" style="margin-top: 8px; width: 100%; padding: 12px; border-radius: 12px; background: #25d366; color: white; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(37,211,102,0.25);">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 14px;"></i> Share Package on WhatsApp
+                            </button>
                             <div class="pkg-refundable-note">
                                 <i class="fa-solid fa-shield-halved"></i> 100% Refundable if your wedding date changes
                             </div>
@@ -2312,12 +2315,25 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
         document.body.appendChild(modalDiv);
         document.body.style.overflow = 'hidden';
 
-        // Style all checkmark icons inside the modal list to checkmark style
+        // Style all checkmark icons inside the modal list to checkmark style, highlighting free/pre-wedding options
         const listContainer = modalDiv.querySelector('.pkg-details-modal-checklist-container');
         if (listContainer) {
-            const icons = listContainer.querySelectorAll('i');
-            icons.forEach(icon => {
-                icon.className = 'fa-solid fa-check';
+            const listItems = listContainer.querySelectorAll('li');
+            listItems.forEach(li => {
+                const text = li.innerText || '';
+                const isFree = text.toLowerCase().includes('free') || text.toLowerCase().includes('pre-wedding');
+                const icon = li.querySelector('i');
+                if (icon) {
+                    if (isFree) {
+                        icon.className = 'fa-solid fa-star';
+                        icon.style.color = '#d1a852';
+                        li.style.color = '#d1a852';
+                        li.style.fontWeight = '700';
+                        li.style.textShadow = '0 0 10px rgba(209, 168, 82, 0.15)';
+                    } else {
+                        icon.className = 'fa-solid fa-check';
+                    }
+                }
             });
         }
 
@@ -2393,6 +2409,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 highlighted: true
             }
         };
+        window.packageCardData = cardData;
 
         // Hide the 5th card
         const card5 = document.getElementById('pkgBrideGroomCard');
@@ -3384,35 +3401,39 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
         const packageId = shareBtn.getAttribute('data-id');
         const packageTitle = shareBtn.getAttribute('data-title');
         
-        // Generate the shareable URL with query parameter pointing to this card
-        const shareUrl = `${window.location.origin}${window.location.pathname}?pkg=${packageId}`;
-        const shareText = `Check out this premium wedding package details from Dreamwed Stories: "${packageTitle}"`;
-
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'Dreamwed Stories Package',
-                    text: shareText,
-                    url: shareUrl
-                });
-                console.log('Package shared successfully!');
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error('Error sharing:', err);
-                }
-            }
-        } else {
-            // Desktop fallback: Copy to Clipboard
-            try {
-                await navigator.clipboard.writeText(shareUrl);
-                
-                // Show a modern custom floating toast notification
-                showToastNotification('📋 Link Copied!', 'Package details link copied to clipboard. Share it with your client!');
-            } catch (err) {
-                console.error('Failed to copy to clipboard:', err);
-                alert(`Here is the link to share: ${shareUrl}`);
+        const cardData = window.packageCardData || {};
+        const data = cardData[packageId] || {};
+        
+        const titleText = data.title ? data.title.replace(/<br\s*\/?>/gi, ' ') : packageTitle;
+        const categoryText = data.category || '';
+        const priceText = data.priceText || '';
+        const setupText = data.setup ? data.setup.replace(/<[^>]*>/g, '').trim() : '';
+        const offerText = data.preweddingOffer || data.ribbon || '';
+        
+        // Extract key inclusions
+        let featuresText = '';
+        const cardEl = document.getElementById(packageId) || document.querySelector(`.package-card`);
+        if (cardEl) {
+            const listItems = cardEl.querySelectorAll('.package-features li');
+            if (listItems.length > 0) {
+                featuresText = Array.from(listItems).slice(0, 5).map(li => `• ${li.innerText.trim()}`).join('\n');
             }
         }
+        
+        const shareUrl = `${window.location.origin}${window.location.pathname}?pkg=${packageId}`;
+        const message = `📸 *DREAMWED STORIES — Premium Wedding Package* \n\n` +
+                        `📦 *${titleText}* (${categoryText})\n` +
+                        `💰 *Price:* ${priceText} Net\n` +
+                        `⚙️ *Setup:* ${setupText}\n\n` +
+                        `🎁 *EXCLUSIVE OFFER:* \n` +
+                        `⭐ ${offerText.replace('+ ', '')}\n\n` +
+                        (featuresText ? `📜 *Key Inclusions:* \n${featuresText}\n\n` : '') +
+                        `Explore details, custom add-ons & our actual wedding work portfolio here:\n` +
+                        `🔗 ${shareUrl}`;
+
+        // Directly share via WhatsApp
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
     });
 
     // Helper to render premium custom toast notifications

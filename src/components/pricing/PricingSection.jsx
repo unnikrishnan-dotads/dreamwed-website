@@ -152,6 +152,54 @@ const PricingSection = () => {
     return () => clearInterval(interval);
   }, [activePlanIndex]);
 
+  // WhatsApp Share Functionality
+  const handleShare = (e, plan, idx) => {
+    e.stopPropagation();
+    
+    const ids = ["pkgWeddingBasicCard", "pkgWeddingPreCard", "pkgCandidCard", "pkgCandidVideoCard"];
+    const cardId = ids[idx];
+    const shareUrl = `${window.location.origin}/packages?pkg=${cardId}`;
+    
+    const featuresList = plan.features.slice(0, 5).map(f => `• ${f}`).join('\n');
+    
+    const message = `📸 *DREAMWED STORIES — Premium Wedding Package* \n\n` +
+                    `📦 *${plan.title}* (${plan.subtitle})\n` +
+                    `💰 *Price:* ${plan.price} Net\n` +
+                    `⚙️ *Setup:* ${plan.setup}\n\n` +
+                    `🎁 *EXCLUSIVE OFFER:* \n` +
+                    `⭐ ${plan.tag ? plan.tag.replace('+ ', '') : plan.preweddingOffer}\n\n` +
+                    `📜 *Key Inclusions:* \n${featuresList}\n\n` +
+                    `Explore details, custom add-ons & our actual wedding work portfolio here:\n` +
+                    `🔗 ${shareUrl}`;
+                    
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  // Auto-open modal on shared link access
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pkgParam = params.get("pkg");
+    if (pkgParam !== null) {
+      let matchedIndex = parseInt(pkgParam);
+      if (isNaN(matchedIndex)) {
+        const ids = ["pkgWeddingBasicCard", "pkgWeddingPreCard", "pkgCandidCard", "pkgCandidVideoCard"];
+        matchedIndex = ids.indexOf(pkgParam);
+      }
+      if (matchedIndex >= 0 && matchedIndex < pricingPlans.length) {
+        setActivePlanIndex(matchedIndex);
+        
+        // Smooth scroll to pricing grid
+        setTimeout(() => {
+          const element = document.getElementById("pricing-grid-container");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 300);
+      }
+    }
+  }, []);
+
   return (
     <section className="w-full bg-[#f5f5f3] py-20 md:py-24 px-4 md:px-6 overflow-hidden">
       <div className="container">
@@ -178,7 +226,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
+        <div id="pricing-grid-container" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
           {pricingPlans.map((plan, index) => {
             const isSpecial = index === 3;
             
@@ -307,6 +355,14 @@ const PricingSection = () => {
                     <span>SECURE</span>
                     <span>OFFER</span>
                   </Link>
+
+                  {/* WhatsApp Share Button */}
+                  <button
+                    onClick={(e) => handleShare(e, plan, index)}
+                    className="mt-3.5 py-2 px-6 w-full max-w-[170px] mx-auto rounded-[16px] bg-white/5 border border-white/10 hover:bg-white/10 text-white text-[9px] font-bold tracking-widest uppercase flex items-center justify-center gap-1.5 transition-all select-none cursor-pointer"
+                  >
+                    <span className="text-emerald-400">📲</span> Share Package
+                  </button>
                 </div>
               </motion.div>
             );
@@ -719,14 +775,25 @@ const PricingSection = () => {
                       Complete Deliverables (Scroll for all {pricingPlans[activePlanIndex].features.length} items 👇):
                     </span>
                     <div className="space-y-3">
-                      {pricingPlans[activePlanIndex].features.map((item, index) => (
-                        <div key={index} className="flex items-start gap-3 text-xs text-zinc-600 font-light leading-relaxed">
-                          <span className="w-4.5 h-4.5 rounded-full bg-[#1e3f20]/10 text-[#1e3f20] flex items-center justify-center shrink-0 mt-0.5">
-                            <Check size={10} strokeWidth={3} />
-                          </span>
-                          {item}
-                        </div>
-                      ))}
+                      {pricingPlans[activePlanIndex].features.map((item, index) => {
+                        const isFree = item.toLowerCase().includes("free") || item.toLowerCase().includes("pre-wedding");
+                        return (
+                          <div key={index} className={`flex items-start gap-3 text-xs leading-relaxed ${
+                            isFree ? "font-semibold text-[#b8903b]" : "text-zinc-600 font-light"
+                          }`}>
+                            <span className={`w-4.5 h-4.5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                              isFree ? "bg-[#d1a852]/25 text-[#b8903b] shadow-[0_0_8px_rgba(209,168,82,0.2)] animate-pulse" : "bg-[#1e3f20]/10 text-[#1e3f20]"
+                            }`}>
+                              {isFree ? (
+                                <Sparkles size={10} strokeWidth={3} />
+                              ) : (
+                                <Check size={10} strokeWidth={3} />
+                              )}
+                            </span>
+                            {item}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -745,6 +812,15 @@ const PricingSection = () => {
                   >
                     Book a Consultation Now 🌟
                   </Button>
+                  <button
+                    onClick={(e) => handleShare(e, pricingPlans[activePlanIndex], activePlanIndex)}
+                    className="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_4px_12px_rgba(16,185,129,0.25)] select-none"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-white">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.719-1.465zm9.882-2.51c1.56.929 3.085 1.454 4.553 1.456 4.887 0 8.862-3.973 8.865-8.87.001-2.373-.921-4.604-2.597-6.282s-3.91-2.597-6.285-2.599c-4.895 0-8.868 3.977-8.871 8.874-.001 1.666.449 3.29 1.306 4.7l-.993 3.626zm12.39-7.235c-.26-.13-1.53-.755-1.77-.84-.23-.085-.4-.13-.57.13-.17.26-.65.82-.8 1-.15.17-.3.19-.56.06-.26-.13-1.1-.4-2.1-1.3-.77-.69-1.3-1.54-1.45-1.8-.15-.26-.016-.4.115-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.3-.02-.43-.06-.13-.57-1.37-.78-1.88-.2-.5-.41-.43-.57-.44-.15-.008-.32-.01-.5-.01-.17 0-.46.06-.7.33-.24.27-.92.9-1.09 1.1-.17.2-.32.41-.53.5-.21.09-1.12.37-1.92-1.07-.63-.56-1.05-1.25-1.17-1.46-.12-.21-.01-.33.12-.46.12-.11.26-.26.39-.39.13-.13.17-.22.26-.36.09-.15.04-.28-.02-.41-.06-.13-.57-1.37-.78-1.88-.21-.51-.43-.43-.58-.44-.15-.01-.32-.01-.5-.01s-.46.07-.7.33c-.24.26-.92.9-1.09 1.1-.17.2-.32.41-.53.5-.21.09-1.12.37-1.92-1.07zm-1.8 1.48c.18-.09.38-.19.59-.29-.2-.31-.4-.63-.59-.95-.19-.32-.37-.64-.54-.97a6.22 6.22 0 0 1-.41-.85c-.07-.18-.1-.36-.08-.54.02-.18.1-.34.22-.47c.5-.53 1.01-1.07 1.5-1.6c.49-.53.97-1.07 1.44-1.61.16-.18.31-.37.45-.56.12-.16.2-.33.22-.52c.02-.19-.04-.38-.17-.53c-.33-.37-.67-.74-1.01-1.11a24.32 24.32 0 0 0-2.31-2.42c-.15-.14-.33-.23-.53-.25c-.2-.02-.4.04-.55.17a32.96 32.96 0 0 0-3.32 3.19c-.19.2-.34.42-.45.66c-.11.24-.16.5-.16.76c.01.26.07.51.19.74c.24.47.53.92.85 1.36c.64.88 1.41 1.68 2.27 2.37c.86.69 1.83 1.25 2.87 1.66c.52.2 1.06.36 1.62.46c.28.05.57.06.85.04c.28-.02.55-.1.79-.24z"/>
+                    </svg>
+                    Share Package on WhatsApp
+                  </button>
                 </div>
               </div>
 
