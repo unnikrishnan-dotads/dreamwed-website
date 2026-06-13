@@ -2087,7 +2087,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 alert(`🎉 REGISTRATION & BOOKING COMPLETED SUCCESSFULLY!\n\nWelcome to your Wedding Hub! You have been automatically logged in.`);
 
                 // WhatsApp booking confirm GPay prompt
-                const includesPrewedding = (parseInt(savedBooking.price_quoted) === 49999 || parseInt(savedBooking.price_quoted) === 99999 || parseInt(savedBooking.price_quoted) === 110000);
+                const includesPrewedding = (parseInt(savedBooking.price_quoted) === 39999 || parseInt(savedBooking.price_quoted) === 54999 || parseInt(savedBooking.price_quoted) === 79999);
                 const surpriseBonusText = includesPrewedding ? `🎁 SURPRISE BONUS: Free Save the Date Photoshoot (worth ₹9,999/-) included!\n` : '';
 
                 const message = `Hi Unni! I have successfully completed registration on your website and locked in my Package slot booking!\n\n` +
@@ -2113,8 +2113,8 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
                 loadCustomerDashboard();
 
                 let targetWhatsApp = '9995412955';
-                if (savedBooking.package_interest.includes('49999') || savedBooking.package_interest.includes('Prewedding') || savedBooking.price_quoted === '49999' || savedBooking.price_quoted === '110000') {
-                    targetWhatsApp = '7356297265';
+                if (savedBooking.package_interest.includes('39999') || savedBooking.package_interest.includes('Prewedding') || savedBooking.price_quoted === '39999' || savedBooking.price_quoted === '54999' || savedBooking.price_quoted === '79999') {
+                    targetWhatsApp = '9995412955';
                 }
                 window.open(`https://wa.me/91${targetWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
 
@@ -2341,52 +2341,52 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
     window.restructurePackageCards = function() {
         const cardData = {
             'pkgWeddingBasicCard': {
-                title: 'Bride or Groom<br>Pack 01',
-                category: 'SPECIAL PACKAGE COVERAGE',
-                desc: "Our highly sought-after single-side coverage package. Designed to capture every detail of the Bride's OR Groom's celebrations with elite creative precision and beautiful physical heirlooms.",
-                priceText: 'from ₹49,999',
-                priceVal: '49999',
-                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer Setup',
-                ribbon: '+ FREE PRE-WEDDING PHOTO',
+                title: 'Wedding<br>Photography',
+                category: 'ESSENTIAL SINGLE-SIDE',
+                desc: "Our highly sought-after single-side coverage package. Designed to capture every detail of your celebrations with elite creative precision and beautiful physical heirlooms.",
+                priceText: 'from ₹39,999',
+                priceVal: '39999',
+                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Videographer',
+                ribbon: '+ FREE PRE-WEDDING PHOTO (LIMITED TIME)',
                 ribbonClass: '',
                 img: 'uploaded_bride_yellow.jpg',
                 highlighted: false
             },
             'pkgWeddingPreCard': {
-                title: 'Bride & Groom<br>Pack 02',
-                category: 'PREMIUM PHOTO & VIDEO PACKAGE',
-                desc: 'Our comprehensive premium dual-side package. Ideal for capturing both sides of the celebrations with multiple angles and full coverage.',
-                priceText: 'from ₹99,999',
-                priceVal: '99999',
-                setup: '<i class="fa-solid fa-camera"></i> 4 Camera Setup',
-                ribbon: '+ FREE PRE-WEDDING PHOTO',
+                title: 'Wedding Photo &<br>Pre-Wedding',
+                category: 'PRE-WEDDING & PHOTO',
+                desc: 'Perfect for capturing your beautiful pre-wedding love story and the complete wedding day celebrations. Includes comprehensive coverage and professional deliverables.',
+                priceText: 'from ₹54,999',
+                priceVal: '54999',
+                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Videographer',
+                ribbon: '+ FREE PRE-WEDDING VIDEO (LIMITED TIME)',
                 ribbonClass: '',
                 img: 'uploaded_couple_blackwhite.jpg',
                 highlighted: false
             },
             'pkgCandidCard': {
-                title: 'Bride & Groom<br>Pack 03',
-                category: 'COMPLETE CINEMATIC & PORTRAITURE',
-                desc: 'Our absolute signature masterpiece package. Includes premium pre-wedding photos and complete cinematic & portraiture coverage.',
-                priceText: 'from ₹1,10,000',
-                priceVal: '110000',
-                setup: '<i class="fa-solid fa-camera"></i> 4 Camera Setup',
-                ribbon: '+ BEST DEAL (RECOMMENDED)',
-                ribbonClass: 'best-deal-ribbon',
+                title: 'Candid Photo &<br>Videography',
+                category: 'ARTISTIC CANDID SHOTS',
+                desc: 'Our creative 3-camera setup featuring dedicated candid photography. Ideal for couples who want artistic, natural, and unstaged storytelling of their special day.',
+                priceText: 'from ₹69,999',
+                priceVal: '69999',
+                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Candid + 1 Videographer',
+                ribbon: '+ LIMITED TIME OFFER',
+                ribbonClass: '',
                 img: 'uploaded_bride_traditional.jpg',
-                highlighted: true
+                highlighted: false
             },
             'pkgCandidVideoCard': {
-                title: 'Engagement +<br>Wedding Pack 04',
-                category: 'MULTI-DAY COMPLETE COVERAGE',
-                desc: 'Our ultimate, all-inclusive multi-day celebration package. Captures your entire wedding story across multiple days.',
-                priceText: 'from ₹1,59,000',
-                priceVal: '159000',
-                setup: '<i class="fa-solid fa-plane"></i> Drone Aerial Coverage',
-                ribbon: '+ FREE DRONE AERIAL COVERAGE',
-                ribbonClass: '',
+                title: 'Candid Photo &<br>Videography',
+                category: 'CINEMATIC CINEMA STORY',
+                desc: 'Our signature high-production cinematic package. Includes both premium pre-wedding photo & cinema film, fine-art layflat albums, and full-spectrum cinema-grade wedding storytelling.',
+                priceText: 'from ₹79,999',
+                priceVal: '79999',
+                setup: '<i class="fa-solid fa-camera"></i> 1 Photographer + 1 Candid + 1 Videographer',
+                ribbon: '+ LIMITED TIME OFFER',
+                ribbonClass: 'best-deal-ribbon',
                 img: 'uploaded_couple_blackwhite.jpg',
-                highlighted: false
+                highlighted: true
             }
         };
 
@@ -2508,7 +2508,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             // Toggle surprise bonus banner inside the booking modal based on price
             const surpriseBanner = document.getElementById('surpriseBonusBanner');
             if (surpriseBanner) {
-                if (currentSelectedPrice === '49999' || currentSelectedPrice === '99999') {
+                if (currentSelectedPrice === '39999' || currentSelectedPrice === '54999') {
                     surpriseBanner.style.display = 'block';
                 } else {
                     surpriseBanner.style.display = 'none';
@@ -2520,8 +2520,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             if (selectEl) {
                 const isSingleSide = currentSelectedPlan.toLowerCase().includes('single side') || 
                                      currentSelectedPlan.toLowerCase().includes('bride or groom') || 
-                                     currentSelectedPrice === '39999' || 
-                                     currentSelectedPrice === '49999';
+                                     currentSelectedPrice === '39999';
                 if (isSingleSide) {
                     selectEl.innerHTML = `
                         <option value="bride" selected>Bride Side Only (Single Password)</option>
@@ -3083,10 +3082,10 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             stayCostEl.style.color = stayVal === 'Included' ? '#27ae60' : '#ff8a80';
         }
 
-        // Toggle invSurpriseRow row inside itemized table based on selected package price (₹49,999 gets the free photoshoot)
+        // Toggle invSurpriseRow row inside itemized table based on selected package price (₹39,999 gets the free photoshoot)
         const invSurpriseRow = document.getElementById('invSurpriseRow');
         if (invSurpriseRow) {
-            if (price === 49999 || price === 99999) {
+            if (price === 39999 || price === 54999) {
                 invSurpriseRow.style.display = 'table-row';
             } else {
                 invSurpriseRow.style.display = 'none';
@@ -3151,7 +3150,7 @@ EDITED PHOTOS FOR SOCIAL MEDIA`;
             const travelText = travelVal === 'Included' ? 'Included (Free)' : 'Excluded (Payable by client)';
             const stayText = stayVal === 'Included' ? 'Included (Free)' : 'Excluded (Payable by client)';
 
-            const includesPrewedding = (parseInt(b.price_quoted) === 49999 || parseInt(b.price_quoted) === 99999);
+            const includesPrewedding = (parseInt(b.price_quoted) === 39999 || parseInt(b.price_quoted) === 54999);
             const surpriseBonusText = includesPrewedding ? `🎁 SURPRISE BONUS: Free Save the Date Photoshoot (worth ₹9,999/-) included!\n` : '';
 
             const message = `Hi ${b.name}!\n\n` +
