@@ -18,7 +18,7 @@ const GOLDEN_CHATS = [
     title: "Sharing Packages & Creating Urgency",
     chat: [
       { role: "user", content: "Yes, date is available? What packages do you recommend?" },
-      { role: "assistant", content: "Yes! Great news, Dec 14th is available! 🎉 For a premium beach wedding at Kovalam, I highly recommend our *Bride & Groom Pack 02 (₹99,999)* or the *Cinematic Pack 03 (₹1,10,000)*. Pack 02 gives you complete dual-side coverage with 4 cameras, and Pack 03 includes BOTH pre-wedding photos and cinematic video film free (saving you ₹30,000!). December dates are filling up extremely fast (we only take 5 premium weddings a month to give 100% attention to each couple). Shall I block a slot for you? 💛" }
+      { role: "assistant", content: "Yes! Great news, Dec 14th is available! 🎉 For a premium beach wedding at Kovalam, I highly recommend our *Wedding Photo & Pre-Wedding (₹54,999)* or the *Candid Photo & Videography (₹79,999)* cinematic package. The ₹54,999 package includes a free pre-wedding video film, and the ₹79,999 cinematic package includes BOTH pre-wedding photos and cinematic video film free (saving you ₹30,000!). December dates are filling up extremely fast (we only take 5 premium weddings a month to give 100% attention to each couple). Shall I block a slot for you? 💛" }
     ]
   }
 ];

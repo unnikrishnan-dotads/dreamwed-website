@@ -39,8 +39,8 @@ const TrivandrumOffer = () => {
   });
 
   const [isConfirmBookingOpen, setIsConfirmBookingOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState("Bride & Groom Pack 01");
-  const [selectedPackagePrice, setSelectedPackagePrice] = useState(49999);
+  const [selectedPackage, setSelectedPackage] = useState("Wedding Photography");
+  const [selectedPackagePrice, setSelectedPackagePrice] = useState(39999);
   const [bookingForm, setBookingForm] = useState({
     name: "",
     phone: "",
@@ -107,12 +107,12 @@ const TrivandrumOffer = () => {
   const packagesInfo = [
     {
       id: 1,
-      title: "Bride or Groom Pack 01",
-      subtitle: "Special Package Coverage",
-      regularPrice: "65,000",
-      offerPrice: "49,999",
-      bonus: "FREE PRE-WEDDING PHOTO",
-      bonusDesc: "Save ₹15,000! Premium pre-wedding photography session is fully included.",
+      title: "Wedding Photography",
+      subtitle: "Essential Single-Side",
+      regularPrice: "55,000",
+      offerPrice: "39,999",
+      bonus: "LIMITED TIME OFFER",
+      bonusDesc: "Save ₹15,000! Essential single-side coverage at an unbeatable price.",
       images: ["/uploaded_bride_yellow.jpg", "/athulraj.jpg", "/anandha_lekshmi.jpg"],
       details: [
         "Free Pre-Wedding (Photo Coverage)",
@@ -130,85 +130,82 @@ const TrivandrumOffer = () => {
         "2x Premium Wall Frames & Custom Calendar",
         "Edited Social-Media Photos & High-speed Pendrive"
       ],
-      description: "Our highly sought-after single-side coverage package. Designed to capture every detail of the Bride's OR Groom's celebrations with elite creative precision and beautiful physical heirlooms."
+      description: "Our highly sought-after single-side coverage package. Designed to capture every detail of your celebrations with elite creative precision and beautiful physical heirlooms."
     },
     {
       id: 2,
-      title: "Bride & Groom Pack 02",
-      subtitle: "Premium Photo & Video Package",
-      regularPrice: "1,09,999",
-      offerPrice: "99,999",
-      bonus: "FREE PRE-WEDDING PHOTO",
-      bonusDesc: "Save ₹15,000! Premium pre-wedding photography session is fully included.",
+      title: "Wedding Photo & Pre-Wedding",
+      subtitle: "Pre-Wedding & Photo",
+      regularPrice: "75,000",
+      offerPrice: "54,999",
+      bonus: "LIMITED TIME OFFER",
+      bonusDesc: "Save ₹20,000! Includes both Pre-wedding session and Wedding day coverage.",
       images: ["/uploaded_couple_blackwhite.jpg", pic1, pic2],
       details: [
-        "Free Pre-Wedding (Photo Coverage)",
-        "Bride Reception (Photo + Video)",
-        "Candid Wedding (Photo + Video)",
-        "Wedding Day (Photo + Video)",
-        "Groom Reception (Photo + Video)",
-        "4 Camera Wedding Setup",
-        "One 80-Page Premium layflat Album (Panoramic layout)",
-        "One 80-Page Mini layflat Album (Parent copy)",
+        "Premium Pre-Wedding Photo Shoot",
+        "Wedding Day Photography",
+        "Wedding Day Videography",
+        "One 80-Pages Premium layflat Album (Panoramic layout)",
+        "One 80-Pages Mini layflat Album (Parent copy)",
         "Cinematic Highlights Video Film",
-        "Full HD Wedding Film with Candids & Live streams",
-        "Instagram reels & Edited Social Photos in private cloud",
-        "2x Luxury Wall Frames",
-        "Signature Album Bag, Custom Calendar & Pen Drive"
+        "Full HD Wedding Video Film (Traditional & Candid mix)",
+        "Instagram Wedding Reel & Social Media edits",
+        "1 Photographer Setup",
+        "1 Videographer Setup",
+        "2x Premium Wall Frames & Custom Calendar",
+        "Edited Social-Media Photos & High-speed Pendrive"
       ],
-      description: "Our comprehensive premium dual-side package. Ideal for capturing both sides of the family together in one unified, masterfully crafted visual narrative with a full 4-camera creative setup."
+      description: "Perfect for capturing your beautiful pre-wedding love story and the complete wedding day celebrations. Includes comprehensive coverage and professional deliverables."
     },
     {
       id: 3,
-      title: "Bride & Groom Pack 03",
-      subtitle: "Complete Cinematic & Portraiture",
-      regularPrice: "1,20,000",
-      offerPrice: "1,10,000",
-      bonus: "FREE PHOTO & CINEMA FILM",
-      bonusDesc: "Save ₹30,000! Includes both Pre-wedding Photos and Pre-wedding Cinematic video!",
+      title: "Candid Photo & Videography",
+      subtitle: "Artistic Candid Shots",
+      regularPrice: "95,000",
+      offerPrice: "69,999",
+      bonus: "LIMITED TIME OFFER",
+      bonusDesc: "Save ₹25,000! Professional Candid coverage for artistic wedding stories.",
       images: ["/uploaded_bride_traditional.jpg", "/uploaded_bride_gold.jpg", "/kochi_couple_carry.jpg"],
       details: [
-        "Free Pre-Wedding (Photo AND Cinematic Video Film!)",
-        "Bride Reception (Photo + Video)",
-        "Candid Wedding (Photo + Video)",
-        "Wedding Day (Photo + Video)",
-        "Groom Reception (Photo + Video)",
-        "4 Camera Wedding Setup",
-        "One 90-Page Premium layflat Album (Archival paper)",
-        "One 90-Page Mini layflat Album (Parent copy)",
-        "Cinematic Highlights Video Film (Cinema grade coloring)",
-        "Full HD Wedding Film with Candids & Live sound capture",
-        "Instagram reels & Edited Social Photos in private cloud",
-        "2x Luxury Wall Frames",
-        "Signature Album Bag, Custom Calendar & Pen Drive"
+        "Premium Pre-Wedding Photo Shoot",
+        "Dedicated Candid Photography Coverage",
+        "Traditional Wedding Photography",
+        "Traditional Wedding Videography",
+        "One 80-Pages Premium layflat Album (Panoramic layout)",
+        "One 80-Pages Mini layflat Album (Parent copy)",
+        "Cinematic Highlights Video Film",
+        "Full HD Wedding Film (Traditional & Candid mix)",
+        "Instagram Wedding Reel & Social Media edits",
+        "1 Photographer + 1 Candid Photographer + 1 Videographer Setup",
+        "2x Premium Wall Frames & Custom Calendar",
+        "Edited Social-Media Photos & High-speed Pendrive"
       ],
-      description: "Our absolute signature masterpiece package. Includes premium pre-wedding photos and cinematic video films, fine-art layflat albums, and full-spectrum cinema-grade wedding production. Highly recommended."
+      description: "Our creative 3-camera setup featuring dedicated candid photography. Ideal for couples who want artistic, natural, and unstaged storytelling of their special day."
     },
     {
       id: 4,
-      title: "Engagement + Wedding Pack 04",
-      subtitle: "Multi-Day Complete Coverage",
-      regularPrice: "1,79,999",
-      offerPrice: "1,59,000",
-      bonus: "FREE DRONE AERIAL COVERAGE",
-      bonusDesc: "Save ₹15,000! Drone aerial coverage is fully included for both days.",
+      title: "Candid Photo & Videography",
+      subtitle: "Cinematic Cinema Story",
+      regularPrice: "1,15,000",
+      offerPrice: "79,999",
+      bonus: "LIMITED TIME OFFER",
+      bonusDesc: "Save ₹35,000! Full cinematic storytelling with advanced post-production.",
       images: ["/uploaded_couple_blackwhite.jpg", pic1, pic2],
       details: [
-        "Engagement Day Photo + Video",
-        "Pre-Wedding Photo Shoot",
-        "Bride Reception (Photo + Video)",
-        "Groom Reception (Photo + Video)",
-        "Wedding Day (Photo + Video)",
-        "Wedding Day Candid (Photo + Video)",
-        "Drone Aerial Coverage (Both Days)",
-        "One 80-Page Premium layflat Album (Panoramic layout)",
-        "One 80-Page Mini layflat Album (Parent copy)",
-        "Full HD Wedding Film with Candid edits",
-        "Cinematic Highlights Video & Wedding Reel",
-        "3x Luxury Wall Frames",
-        "Signature Album Bag, Custom Calendar & Pen Drive"
+        "Pre-Wedding Photo AND Cinematic Video Film!",
+        "Dedicated Candid Photography Coverage",
+        "Traditional Wedding Photography",
+        "Cinematic Wedding Videography (Cinema-grade coloring)",
+        "One 90-Page Premium layflat Album (Archival Fine-Art Paper)",
+        "One 90-Page Mini layflat Album (Parent copy)",
+        "Cinematic Highlights Video Film (Cinema-grade coloring & sound design)",
+        "Full HD Wedding Film with Candids & Live sound capture",
+        "Instagram Wedding Reel & Social Media edits",
+        "1 Photographer + 1 Candid Photographer + 1 Videographer Setup",
+        "2x Luxury Wall Frames & Signature Album Bag",
+        "Custom Desktop Calendar & High-speed Pendrive"
       ],
-      description: "Our ultimate, all-inclusive multi-day celebration package. Captures your entire love story from the intimate engagement rituals to the grand wedding reception, with elite 4-camera setups and aerial drone artistry."
+      description: "Our signature high-production cinematic package. Includes both premium pre-wedding photo & cinema film, fine-art layflat albums, and full-spectrum cinema-grade wedding storytelling."
     }
   ];
 
@@ -270,9 +267,9 @@ const TrivandrumOffer = () => {
     e.preventDefault();
     setBookingStatus("loading");
     
-    const isPack03 = selectedPackage === "Bride & Groom Pack 03";
+    const isPack04 = selectedPackage === "Candid Photo & Videography" && selectedPackagePrice === 79999;
     const selectedAddonsList = [];
-    if (!isPack03 && selectedAddons.prewedVideo) {
+    if (!isPack04 && selectedAddons.prewedVideo) {
       selectedAddonsList.push({ name: "Cinematic Pre-Wedding Shoot", price: 9999 });
     }
     if (selectedAddons.drone) {
@@ -675,7 +672,7 @@ const TrivandrumOffer = () => {
 
       {/* Standalone & Special Coverage Collections */}
       <section className="py-24 px-6 bg-[#f5f5f3] border-t border-b border-zinc-200/50">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16 space-y-4">
             <span className="text-[#b4975a] text-xs font-bold tracking-[0.2em] uppercase">Specialised Offerings</span>
@@ -687,7 +684,7 @@ const TrivandrumOffer = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto mt-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mt-16 items-start">
             
             {/* COLUMN 1: ENGAGEMENT SPECIAL COVERAGE */}
             <motion.div 
@@ -848,6 +845,121 @@ const TrivandrumOffer = () => {
                     className="w-full py-3 mt-8 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
                   >
                     Book Standalone Reception
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* COLUMN 3: HALDI SPECIAL COVERAGE */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-8"
+            >
+              <div className="space-y-2 border-b border-zinc-300 pb-4">
+                <span className="text-[#5d665f] text-xs font-bold tracking-[0.25em] uppercase">Collection 03</span>
+                <h3 className="text-3xl text-zinc-900 font-normal tracking-tight font-serif italic">Haldi Special Coverage</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                {/* Pack A: Just Haldi Photography */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#1e3f20]/25">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo Only</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photography (Only)</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹10,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Professional Photographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>2-3 Hours Event Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>50+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Online Gallery Access</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setFormData({ ...formData, message: "Hi! I am interested in booking the Haldi Photography Only package for ₹10,000/-." }); scrollToForm(); }}
+                    className="w-full py-3 mt-8 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                  >
+                    Book Haldi Photo
+                  </button>
+                </div>
+
+                {/* Pack B: Haldi Photography with Album */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#1e3f20]/25">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo + Album</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photography with Album</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹15,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Dedicated Photographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>3-4 Hours Event Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>100+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span className="font-semibold text-zinc-800">Premium Layflat Panoramic Album</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setFormData({ ...formData, message: "Hi! I am interested in booking the Haldi Photography with Album package for ₹15,000/-." }); scrollToForm(); }}
+                    className="w-full py-3 mt-8 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                  >
+                    Book Haldi Album
+                  </button>
+                </div>
+
+                {/* Pack C: Haldi Photo & Videography */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#1e3f20]/25 lg:col-span-1 sm:col-span-2">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo + Video</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photo & Videography</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹28,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>1 Photographer + 1 Videographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>4 Hours Full Haldi Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>150+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span className="font-semibold text-zinc-800">Premium Layflat Album & Edited Video</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setFormData({ ...formData, message: "Hi! I am interested in booking the Haldi Photo & Videography package for ₹28,000/-." }); scrollToForm(); }}
+                    className="w-full py-3 mt-8 bg-gradient-to-r from-zinc-50 to-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] select-none cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                  >
+                    Book Full Haldi
                   </button>
                 </div>
               </div>
@@ -1073,7 +1185,7 @@ const TrivandrumOffer = () => {
               Lock In <span className="italic font-serif text-[#b4975a]">Your Wedding Date</span>
             </h2>
             <p className="text-zinc-500 text-xs sm:text-sm font-light leading-relaxed">
-              Verify our availability for your wedding day. Secure your special ₹49,999/-, ₹99,999/-, ₹1,10,000/- or ₹1,59,000/- ad package and claim your **FREE Pre-Wedding Shoot** bonus.
+              Verify our availability for your wedding day. Secure your special ₹39,999/-, ₹54,999/-, ₹69,999/- or ₹79,999/- ad package and claim your **FREE Pre-Wedding Shoot** bonus.
             </p>
           </div>
 
@@ -1307,8 +1419,8 @@ const TrivandrumOffer = () => {
                   <div className="border-t border-zinc-200/60 pt-3 mt-2 space-y-2">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">Customize Optional Add-ons</span>
                     
-                    {/* Cinematic Pre-wedding check (Unless it's Pack 03, which includes it free) */}
-                    {selectedPackage !== "Bride & Groom Pack 03" ? (
+                    {/* Cinematic Pre-wedding check (Unless it's Pack 04, which includes it free) */}
+                    {!(selectedPackage === "Candid Photo & Videography" && selectedPackagePrice === 79999) ? (
                       <label className="flex items-center justify-between text-xs text-zinc-600 cursor-pointer py-1 hover:text-zinc-900 select-none">
                         <span className="flex items-center gap-2">
                           <input 
@@ -1364,7 +1476,7 @@ const TrivandrumOffer = () => {
                     <span className="text-lg text-[#9b1c1c]">
                       ₹{(
                         selectedPackagePrice + 
-                        (selectedPackage !== "Bride & Groom Pack 03" && selectedAddons.prewedVideo ? 9999 : 0) + 
+                        (!(selectedPackage === "Candid Photo & Videography" && selectedPackagePrice === 79999) && selectedAddons.prewedVideo ? 9999 : 0) + 
                         (selectedAddons.drone ? 8000 : 0) + 
                         (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0)
                       ).toLocaleString("en-IN")}
@@ -1798,7 +1910,7 @@ const TrivandrumOffer = () => {
           const basePriceNum = parseInt(packagesInfo[activeDetailPackage].offerPrice.replace(/[^0-9]/g, ""));
           const addonPrice = 
             (selectedAddons.ledScreen === "single" ? 14999 : selectedAddons.ledScreen === "double" ? 24999 : 0) +
-            ((selectedAddons.prewedVideo && activeDetailPackage !== 2) ? 9999 : 0);
+            ((selectedAddons.prewedVideo && activeDetailPackage !== 3) ? 9999 : 0);
           const finalCalculatedPrice = basePriceNum + addonPrice;
 
           return (
@@ -1977,14 +2089,14 @@ const TrivandrumOffer = () => {
                         {/* DRONE REMOVED — included in larger pack */}
                         
                         {/* ITEM 2: PRE-WEDDING CINEMATIC VIDEO */}
-                        {activeDetailPackage === 2 ? (
+                        {activeDetailPackage === 3 ? (
                           <div className="p-3.5 rounded-2xl border bg-[#1e3f20]/5 border-[#1e3f20]/20">
                             <div className="flex justify-between items-center mb-2 select-none">
                               <span className="font-bold text-xs text-[#1e3f20]">Pre-Wedding Cinematic Video</span>
                               <span className="text-[9px] font-extrabold bg-[#1e3f20] text-white px-2 py-0.5 rounded uppercase">Included Free</span>
                             </div>
                             <span className="text-[10px] text-zinc-500 font-light leading-relaxed block select-none">
-                              Save ₹30,000! Pre-wedding cinematic video film is fully included free in Pack 03!
+                              Save ₹35,000! Pre-wedding cinematic video film is fully included free in this cinematic cinema story package!
                             </span>
                           </div>
                         ) : (
@@ -2061,7 +2173,7 @@ const TrivandrumOffer = () => {
                               onClick={() => {
                                 let extras = [];
 
-                                if (selectedAddons.prewedVideo && activeDetailPackage !== 2) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
+                                if (selectedAddons.prewedVideo && activeDetailPackage !== 3) extras.push("Pre-Wedding Cinematic Video (₹9,999)");
                                 if (selectedAddons.ledScreen === "single") extras.push("Single 8x10ft LED Screen (₹14,999)");
                                 if (selectedAddons.ledScreen === "double") extras.push("Double Side Dual-LED Display (₹24,999)");
 

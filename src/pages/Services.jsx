@@ -32,51 +32,51 @@ const Services = () => {
 
   const packages = [
     {
-      title: "Silver Package",
-      price: "₹49,999",
+      title: "Wedding Photography",
+      price: "₹39,999",
       tag: "Essential",
-      desc: "Perfect for intimate weddings. Candid & traditional coverage for your special day.",
+      desc: "Our highly sought-after single-side coverage package. Designed to capture every detail of your celebrations with elite creative precision.",
       images: ["/uploaded_bride_yellow.jpg", "/athulraj.jpg", "/anandha_lekshmi.jpg"],
       icon: <Camera className="w-10 h-10" />,
       features: [
-        "8 Hours Coverage",
-        "1 Professional Photographer",
-        "400+ Edited High-Res Photos",
-        "Online Gallery Access",
-        "30-Day Delivery"
+        "Free Pre-Wedding (Photo Coverage)",
+        "Wedding Day Photography & Videography",
+        "Layflat panoramic album & duplicate parent copy",
+        "Cinematic Highlights film & Full HD video",
+        "1 Photographer + 1 Videographer Setup",
+        "Premium Wall Frames & Desktop Calendar"
       ]
     },
     {
-      title: "Gold Lite Package",
-      price: "₹99,999",
-      tag: "Best Value",
-      desc: "Complete photography & videography coverage with a premium layflat album.",
+      title: "Wedding Photo & Pre-Wedding",
+      price: "₹54,999",
+      tag: "Premium",
+      desc: "Perfect for capturing your beautiful pre-wedding love story and the complete wedding day celebrations. Includes comprehensive coverage.",
       images: ["/uploaded_couple_blackwhite.jpg", "/kochi_couple_carry.jpg", "/deepak.jpg"],
       icon: <Heart className="w-10 h-10" />,
       features: [
-        "Wedding Photo + Video Coverage",
-        "Reception Photo + Video Coverage",
-        "Premium 70-Page Album",
-        "HD Cinematic Highlights Reel",
-        "Full HD Wedding Video",
-        "Social Media Reel",
-        "Personalised Desktop Calendar"
+        "Premium Pre-Wedding Photo Shoot included",
+        "Wedding Day Photography & Videography",
+        "Layflat panoramic album & duplicate parent copy",
+        "Cinematic Highlights film & Full HD video",
+        "1 Photographer + 1 Videographer Setup",
+        "Premium Wall Frames & Desktop Calendar"
       ]
     },
     {
-      title: "Gold Package",
-      price: "₹1,10,000",
+      title: "Candid Photo & Videography",
+      price: "₹69,999",
       tag: "Most Popular",
-      desc: "Our most-loved package — complete photo and video storytelling.",
+      desc: "Our creative 3-camera setup featuring dedicated candid photography. Ideal for artistic, natural, and unstaged storytelling.",
       images: ["/uploaded_bride_traditional.jpg", "/uploaded_bride_gold.jpg", "/chindu.jpg"],
       icon: <Video className="w-10 h-10" />,
       features: [
-        "Full Day Coverage (12 hrs)",
-        "2 Photographers + 1 Videographer",
-        "Cinematic Wedding Film (5–8 min)",
-        "Social Media Highlight Reel",
-        "500+ Edited High-Res Photos",
-        "Online Gallery Access"
+        "Premium Pre-Wedding Photo Shoot included",
+        "Dedicated Candid photography coverage",
+        "Traditional Wedding photo & video coverage",
+        "Layflat panoramic album & duplicate parent copy",
+        "1 Photographer + 1 Candid + 1 Videographer",
+        "Premium Wall Frames & Desktop Calendar"
       ]
     }
   ];
@@ -404,7 +404,7 @@ const Services = () => {
             description="Perfect for celebrating individual milestones or standalone day events with premium layflat albums and cinematic visuals."
           />
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto mt-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mt-16 items-start">
             
             {/* COLUMN 1: ENGAGEMENT SPECIAL COVERAGE */}
             <motion.div 
@@ -558,6 +558,112 @@ const Services = () => {
               </div>
             </motion.div>
 
+            {/* COLUMN 3: HALDI SPECIAL COVERAGE */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-8"
+            >
+              <div className="space-y-2 border-b border-zinc-300 pb-4">
+                <span className="text-[#5d665f] text-xs font-bold tracking-[0.25em] uppercase">Collection 03</span>
+                <h3 className="text-3xl text-zinc-900 font-normal tracking-tight font-serif italic">Haldi Special Coverage</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                {/* Pack A: Just Haldi Photography */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#d1a852]/25">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo Only</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photography (Only)</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹10,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Professional Photographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>2-3 Hours Event Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>50+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Online Gallery Access</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <Button to="/contact" variant="outline" className="w-full mt-8" onClick={(e) => e.stopPropagation()}>
+                    Book Haldi Photo
+                  </Button>
+                </div>
+
+                {/* Pack B: Haldi Photography with Album */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#d1a852]/25">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo + Album</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photography with Album</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹15,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>Dedicated Photographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>3-4 Hours Event Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>100+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span className="font-semibold text-zinc-800">Premium Layflat Panoramic Album</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <Button to="/contact" variant="outline" className="w-full mt-8" onClick={(e) => e.stopPropagation()}>
+                    Book Haldi Album
+                  </Button>
+                </div>
+
+                {/* Pack C: Haldi Photo & Videography */}
+                <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-zinc-200/60 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-500 h-full group hover:border-[#d1a852]/25 lg:col-span-1 sm:col-span-2">
+                  <div className="space-y-4">
+                    <span className="inline-flex bg-[#1e3f20]/5 text-[#1e3f20] px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase">Photo + Video</span>
+                    <h4 className="text-[20px] font-normal leading-tight text-zinc-900">Haldi Photo & Videography</h4>
+                    <p className="text-[28px] font-normal text-[#9b1c1c] numbers-pro">₹28,000/-</p>
+                    <ul className="space-y-3 pt-2">
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>1 Photographer + 1 Videographer</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>4 Hours Full Haldi Coverage</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span>150+ Edited High-Res Photos</span>
+                      </li>
+                      <li className="flex gap-2 items-start text-zinc-500 text-xs">
+                        <Heart size={14} className="text-[#5d665f] shrink-0 mt-0.5" />
+                        <span className="font-semibold text-zinc-800">Premium Layflat Album & Edited Video</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <Button to="/contact" variant="outline" className="w-full mt-8" onClick={(e) => e.stopPropagation()}>
+                    Book Full Haldi
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
@@ -591,7 +697,7 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-              <Button to="/contact" variant="outline" className="px-12">Request Bespoke Quote</Button>
+              <Button to="/packages" variant="outline" className="px-12">Request Bespoke Quote</Button>
             </motion.div>
             
             <motion.div
